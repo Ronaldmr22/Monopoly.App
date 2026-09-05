@@ -11,7 +11,12 @@ namespace Monopoly.App
 
         public static void AgregarJugador(Jugador Jugador)
         {
-            ListaJugadores[0] = Jugador;
+            for (int i=0; i != 4; i++){
+                if (ListaJugadores[i] == null){
+                    ListaJugadores[i] = Jugador;
+                    break;
+                }
+            }
         }
 
         public static Jugador GetJugador(int Indice)

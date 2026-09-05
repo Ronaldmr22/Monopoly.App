@@ -61,7 +61,14 @@ public class Jugador{
 
     public static void CrearJugador(int Id, string Nombre)
     {
-        Jugador jugador = new Jugador(Id, Nombre);
-        Servidor.AgregarJugador(jugador);
+        if (Servidor.GetJugador(3) == null)
+        {
+            Jugador jugador = new Jugador(Id, Nombre);
+            Servidor.AgregarJugador(jugador);
+        }
+        else
+        {
+            ///Enviar un error que se muestre en la pantalla diciendo que solo cuatro jugadores son posibles
+        }
     }
 }
