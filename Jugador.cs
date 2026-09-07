@@ -59,24 +59,11 @@ public class Jugador{
         return $"Nombre: {Nombre}, Id: {Id}, Saldo: {Saldo}, Posicion: {Posicion}, Estado: {Estado}, Propiedades: {Propiedades}";
     }
 
-    public static void CrearJugador(int Id, string Nombre)
+    public bool PagarDinero(int Dinero)
     {
-        if (Servidor.GetJugador(3) == null)
+        if (this.Saldo > Dinero)
         {
-            Jugador jugador = new Jugador(Id, Nombre);
-            Servidor.AgregarJugador(jugador);
-        }
-        else
-        {
-            ///Enviar un error que se muestre en la pantalla diciendo que solo cuatro jugadores son posibles
-        }
-    }
-
-    public bool PagarAlquiler(int Cobro)
-    {
-        if (this.Saldo > Cobro)
-        {
-            this.Saldo -= Cobro;
+            this.Saldo -= Dinero;
             return true;
         }
         return false;
@@ -85,5 +72,10 @@ public class Jugador{
     public void AgregarPropiedad(Object Propiedad)
     {
         Propiedades.Add(Propiedad);
+    }
+
+    public void RecibirDinero(int Dinero)
+    {
+        this.Saldo += Dinero;
     }
 }
