@@ -12,6 +12,7 @@ namespace Monopoly.App
 {
     public class Servidor
     {
+<<<<<<< HEAD
         private TcpListener listener;
         private Banco banco;
         private bool prendido;
@@ -109,6 +110,24 @@ namespace Monopoly.App
             var stream = socket.GetStream();
             Lector = new StreamReader(stream, Encoding.UTF8);
             Escritor = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+=======
+        static Jugador[] ListaJugadores = [null, null, null, null];
+
+
+        public static void AgregarJugador(Jugador Jugador)
+        {
+            for (int i=0; i != 4; i++){
+                if (ListaJugadores[i] == null){
+                    ListaJugadores[i] = Jugador;
+                    break;
+                }
+            }
+        }
+
+        public static Jugador GetJugador(int Indice)
+        {
+            return ListaJugadores[Indice];
+>>>>>>> origin/Desarrollo-Clase-Jugador
         }
     }
 }
