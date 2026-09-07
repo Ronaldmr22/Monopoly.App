@@ -50,28 +50,28 @@ namespace Monopoly.App
 
         private void RealizarAccion(ClienteConectado cliente, string linea)
         {
-            string[] partes = linea.Split(' ');
-            string comando = partes[0];
+            string[] comunicacion = linea.Split(' ');
+            string comando = comunicacion[0];
  
             switch (comando)
             {
                 case "CONECTAR":
-                    ConectarCLiente(cliente, partes);
+                    ConectarCLiente(cliente, comunicacion);
                     break;
  
                 case "TIRAR_DADOS":
-                    TirarDados(cliente, partes);
+                    TirarDados(cliente, comunicacion);
                     break;
  
                 case "COMPRAR_PROPIEDAD":
-                    ComprarPropiedad(cliente, partes);
+                    ComprarPropiedad(cliente, comunicacion);
                     break;
  
                 case "NO_COMPRAR":
                     break;
  
                 case "TERMINAR_TURNO":
-                    TerminarTurno(cliente, partes);
+                    TerminarTurno(cliente, comunicacion);
                     break;
  
                 case "CONSULTAR_Dinero":
@@ -88,7 +88,7 @@ namespace Monopoly.App
             }
         }
 
-        public void ConectarCLiente(ClienteConectado cliente, string[] partes)
+        public void ConectarCLiente(ClienteConectado cliente, string[] comunicaion)
         {
             string nombreJugador = partes[1];
             int id = jugadorId++;
@@ -101,14 +101,25 @@ namespace Monopoly.App
 
         }
 
-        public void TirarDados()
+        public void TirarDados(ClienteConectado cliente, string[] comunicacion)
         {
-            
+            int idJugador = int.Parse(comunicacion[1]);
         }
 
-        public void ComprarPropiedad()
+        public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
         {
-            
+            int idJugador = int.Parse(comunicacion[1]);
+            int idCasilla = int.Parse(comunicacion[2]);
+            bool exito = banco.ComprarPropiedad(idJugador, idCasilla);
+
+            if (!exito)
+            {
+                EnviarCliente(cliente, $"DINERO INSUFICIENTE");
+                return;
+            }
+
+            EnviarCliente(cliente, $"COMPRAR PROPIEDAD {idCasilla}");
+            EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
         }
 
         public void TerminarTurno()
@@ -118,7 +129,7 @@ namespace Monopoly.App
 
         public void EnviarCliente(ClienteConectado cliente, string mensaje)
         {
-            
+            cliente.Escritor.WriteLine(mensaje);
         }
 
         public void EnviarTodos(string mensaje)
