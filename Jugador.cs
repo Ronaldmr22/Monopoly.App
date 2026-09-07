@@ -6,7 +6,7 @@ public class Jugador{
     private int Saldo = 0;
     private int Posicion = 0;
     private bool Estado = false;
-    private object[] Propiedades = [];
+    private List<Object> Propiedades = [];
 
     public Jugador(int Id, string Nombre)
     {
@@ -44,12 +44,12 @@ public class Jugador{
         this.Estado = Estado;
     }
 
-    public object[] GetPropiedades()
+    public List<Object> GetPropiedades()
     {
         return this.Propiedades;
     }
 
-    public void SetPropiedades(object[] Propiedades)
+    public void SetPropiedades(List<Object> Propiedades)
     {
         this.Propiedades = Propiedades;
     }
@@ -70,5 +70,20 @@ public class Jugador{
         {
             ///Enviar un error que se muestre en la pantalla diciendo que solo cuatro jugadores son posibles
         }
+    }
+
+    public bool PagarAlquiler(int Cobro)
+    {
+        if (this.Saldo > Cobro)
+        {
+            this.Saldo -= Cobro;
+            return true;
+        }
+        return false;
+    }
+
+    public void AgregarPropiedad(Object Propiedad)
+    {
+        Propiedades.Add(Propiedad);
     }
 }
