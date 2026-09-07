@@ -40,6 +40,57 @@ namespace Monopoly.App
 
         public async Task EscucharClienteAsync(TcpClient sCliente)
         {
+            var cliente = new ClienteConectado(sCliente);
+            string linea;
+                while ((linea = await cliente.Lector.ReadLineAsync()) != null)
+                {
+                    RealizarAccion(cliente, linea);
+                }
+        }
+
+        private void RealizarAccion(ClienteConectado cliente, string linea)
+        {
+            string[] partes = linea.Split(' ');
+            string comando = partes[0];
+ 
+            switch (comando)
+            {
+                case "CONECTAR":
+                    ConectarCLiente(cliente, partes);
+                    break;
+ 
+                case "TIRAR_DADOS":
+                    TirarDados(cliente, partes);
+                    break;
+ 
+                case "COMPRAR_PROPIEDAD":
+                    ComprarPropiedad(cliente, partes);
+                    break;
+ 
+                case "NO_COMPRAR":
+                    // TODO: banco.RechazarCompra(...)
+                    break;
+ 
+                case "TERMINAR_TURNO":
+                    TerminarTurno(cliente, partes);
+                    break;
+ 
+                case "CONSULTAR_Dinero":
+                    EnviarCliente(cliente, "ESTADO " + banco.GetDinero());
+                    break;
+ 
+                case "CONSULTAR_TRANSACCIONES":
+                    
+                    break;
+ 
+                default:
+                    EnviarCliente(cliente, $"ERROR COMANDO_DESCONOCIDO {comando}");
+                    break;
+            }
+        }
+
+        public void ConectarCLiente(ClienteConectado cliente, string[] partes)
+        {
             
         }
 
