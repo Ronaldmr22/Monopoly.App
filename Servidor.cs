@@ -70,12 +70,12 @@ namespace Monopoly.App
                 case "NO_COMPRAR":
                     break;
  
-                case "TERMINAR_TURNO":
-                    TerminarTurno(cliente, comunicacion);
-                    break;
+                //case "TERMINAR_TURNO":
+                    //TerminarTurno(cliente, comunicacion);
+                    //break;
  
-                case "CONSULTAR_Dinero":
-                    EnviarCliente(cliente, "ESTADO " + banco.GetDinero());
+                case "CONSULTAR_ESTADO":
+                    EnviarCliente(cliente, "ESTADO " + banco.Getinfo());
                     break;
  
                 case "CONSULTAR_TRANSACCIONES":
@@ -90,12 +90,12 @@ namespace Monopoly.App
 
         public void ConectarCLiente(ClienteConectado cliente, string[] comunicaion)
         {
-            string nombreJugador = partes[1];
+            string nombreJugador = comunicaion[1];
             int id = jugadorId++;
             cliente.IdJugador = id;
             clientes.Add(cliente);
 
-            banco.RegistrarJugador(nombreJugador, id);
+            banco.AgregarJugador(nombreJugador, id);
             EnviarCliente(cliente, $"CONECTAR {id}");
             EnviarTodos($"JUGADOR {id} SE HA UNIDO");
 
