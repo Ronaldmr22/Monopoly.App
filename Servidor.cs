@@ -97,7 +97,7 @@ namespace Monopoly.App
 
             banco.RegistrarJugador(nombreJugador, id);
             EnviarCliente(cliente, $"CONECTAR {id}");
-            EnviarTodos($"JUGADOR {id} SE HA UNIDO")
+            EnviarTodos($"JUGADOR {id} SE HA UNIDO");
 
         }
 
@@ -119,6 +119,14 @@ namespace Monopoly.App
         public void EnviarCliente(ClienteConectado cliente, string mensaje)
         {
             
+        }
+
+        public void EnviarTodos(string mensaje)
+        {
+            foreach(ClienteConectado cliente in clientes)
+            {
+                cliente.Escritor.WriteLine(mensaje);
+            }
         }
 
 
