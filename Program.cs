@@ -1,17 +1,33 @@
+using System;
+using System.IO;
+
 namespace Monopoly.App
 {
-    internal static class Program
+    class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            Console.WriteLine("El programa inició");
+
+            Transaccion transaccion1 = new Transaccion(
+                1,
+                DateTime.Now,
+                1,
+                "Compra",
+                "Banco",
+                "Jugador 1",
+                200,
+                "Compra de propiedad"
+            );
+
+            Console.WriteLine("Transacción creada");
+
+            transaccion1.GuardarEnTxt();
+
+            Console.WriteLine("Transacción guardada correctamente.");
+            Console.WriteLine(Path.GetFullPath("transacciones.txt"));
+
+            Console.ReadKey();
         }
     }
 }
