@@ -1,12 +1,11 @@
+using System;
+using System.IO;
+
 namespace Monopoly.App
 {
-    internal static class Program
+    class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
 
             Tablero_LL tablerito = new Tablero_LL();
