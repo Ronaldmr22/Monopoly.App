@@ -60,7 +60,7 @@ namespace Monopoly.App
                     break;
  
                 case "TIRAR_DADOS":
-                    TirarDados(cliente, comunicacion);
+                    TirarDados(cliente);
                     break;
  
                 case "COMPRAR_PROPIEDAD":
@@ -101,14 +101,14 @@ namespace Monopoly.App
 
         }
 
-        public void TirarDados(ClienteConectado cliente, string[] comunicacion)
+        public void TirarDados(ClienteConectado cliente)
         {
-            int idJugador = int.Parse(comunicacion[1]);
+            int idJugador = cliente.IdJugador;
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
         {
-            int idJugador = int.Parse(comunicacion[1]);
+            int idJugador = cliente.IdJugador;
             int idCasilla = int.Parse(comunicacion[2]);
             bool exito = banco.ComprarPropiedad(idJugador, idCasilla);
 
@@ -120,6 +120,30 @@ namespace Monopoly.App
 
             EnviarCliente(cliente, $"COMPRAR PROPIEDAD {idCasilla}");
             EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
+        }
+
+        public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad)
+        {
+            int idJugador = cliente.IdJugador;
+
+            int idDueño;
+            int alquiler;
+
+            alquiler = banco.CobrarAlquiler(idJugador, idPropiedad, out idDueño);
+
+            if (alquiler > 0)
+            {
+                EnviarCliente(
+                    cliente,
+                    $"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
+                );
+                ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
+
+                if (dueño != null)
+                {
+                    EnviarCliente(dueño,$"RECIBIR_ALQUILER {idJugador} {alquiler} {idPropiedad}");
+                }
+            }
         }
 
         public void TerminarTurno()
