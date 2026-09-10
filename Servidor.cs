@@ -40,8 +40,108 @@ namespace Monopoly.App
 
         public async Task EscucharClienteAsync(TcpClient sCliente)
         {
+            var cliente = new ClienteConectado(sCliente);
+            string linea;
+                while ((linea = await cliente.Lector.ReadLineAsync()) != null)
+                {
+                    RealizarAccion(cliente, linea);
+                }
+        }
+
+        private void RealizarAccion(ClienteConectado cliente, string linea)
+        {
+            string[] comunicacion = linea.Split(' ');
+            string comando = comunicacion[0];
+ 
+            switch (comando)
+            {
+                case "CONECTAR":
+                    ConectarCLiente(cliente, comunicacion);
+                    break;
+ 
+                case "TIRAR_DADOS":
+                    TirarDados(cliente, comunicacion);
+                    break;
+ 
+                case "COMPRAR_PROPIEDAD":
+                    ComprarPropiedad(cliente, comunicacion);
+                    break;
+ 
+                case "NO_COMPRAR":
+                    break;
+ 
+                //case "TERMINAR_TURNO":
+                    //TerminarTurno(cliente, comunicacion);
+                    //break;
+ 
+                case "CONSULTAR_ESTADO":
+                    EnviarCliente(cliente, "ESTADO " + banco.Getinfo());
+                    break;
+ 
+                case "CONSULTAR_TRANSACCIONES":
+                    
+                    break;
+ 
+                default:
+                    EnviarCliente(cliente, $"ERROR COMANDO_DESCONOCIDO {comando}");
+                    break;
+            }
+        }
+
+        public void ConectarCLiente(ClienteConectado cliente, string[] comunicaion)
+        {
+            string nombreJugador = comunicaion[1];
+            int id = jugadorId++;
+            cliente.IdJugador = id;
+            clientes.Add(cliente);
+
+            banco.AgregarJugador(nombreJugador, id);
+            EnviarCliente(cliente, $"CONECTAR {id}");
+            EnviarTodos($"JUGADOR {id} SE HA UNIDO");
+
+        }
+
+        public void TirarDados(ClienteConectado cliente, string[] comunicacion)
+        {
+            int idJugador = int.Parse(comunicacion[1]);
+        }
+
+        public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
+        {
+            int idJugador = int.Parse(comunicacion[1]);
+            int idCasilla = int.Parse(comunicacion[2]);
+            bool exito = banco.ComprarPropiedad(idJugador, idCasilla);
+
+            if (!exito)
+            {
+                EnviarCliente(cliente, $"DINERO INSUFICIENTE");
+                return;
+            }
+
+            EnviarCliente(cliente, $"COMPRAR PROPIEDAD {idCasilla}");
+            EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
+        }
+
+        public void TerminarTurno()
+        {
             
         }
+
+        public void EnviarCliente(ClienteConectado cliente, string mensaje)
+        {
+            cliente.Escritor.WriteLine(mensaje);
+        }
+
+        public void EnviarTodos(string mensaje)
+        {
+            foreach(ClienteConectado cliente in clientes)
+            {
+                cliente.Escritor.WriteLine(mensaje);
+            }
+        }
+
+
+        
 
 
     }
