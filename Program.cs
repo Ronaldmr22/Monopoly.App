@@ -9,24 +9,11 @@ namespace Monopoly.App
         {
             Console.WriteLine("El programa inició");
 
-            Transaccion transaccion1 = new Transaccion(
-                1,
-                DateTime.Now,
-                1,
-                "Compra",
-                "Banco",
-                "Jugador 1",
-                200,
-                "Compra de propiedad"
-            );
-
-            Console.WriteLine("Transacción creada");
-
+            Transaccion transaccion1 = new Transaccion(01,DateTime.Now,5,"compra de propiedad","Banco","Jugador 1",350,"Compra de (nombre de la propiedad)");
+            Console.WriteLine("Transacción procesada correctamente");
             transaccion1.GuardarEnTxt();
-
             Console.WriteLine("Transacción guardada correctamente.");
             Console.WriteLine(Path.GetFullPath("transacciones.txt"));
-
             Console.ReadKey();
         }
     }

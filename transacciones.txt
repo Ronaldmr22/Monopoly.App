@@ -1,0 +1,1 @@
+ID: 1 - Fecha y hora: 9/9/2026 21:05:54 - Turno: 5 -Tipo: compra de propiedad | Origen: Banco - Destino: Jugador 1 - Monto: 350 - Descripción: Compra de (nombre de la propiedad)
