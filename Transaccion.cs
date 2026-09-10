@@ -27,21 +27,5 @@ namespace Monopoly.App
             Descripcion = descripcion;
         }
 
-        public void GuardarEnTxt()
-        {
-            string ruta = "transacciones.txt";
-
-            string transaccion =
-                $"ID: {Id} - " +
-                $"Fecha y hora: {FechaHora} - " +
-                $"Turno: {Turno} -" +
-                $"Tipo: {Tipo} | " +
-                $"Origen: {Origen} - " +
-                $"Destino: {Destino} - " +
-                $"Monto: {Monto} - " +
-                $"Descripción: {Descripcion}";
-
-            File.AppendAllText(ruta, transaccion + Environment.NewLine);
-        }
     }
 }
