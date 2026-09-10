@@ -1,4 +1,4 @@
-﻿namespace Casillas_new { 
+﻿namespace Monopoly.App{ 
 internal class Program
 {
     static void Main(string[] args)
