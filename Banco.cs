@@ -30,6 +30,6 @@ public class Banco
 
     public void DestruirJugador(int IdJugador)
     {
-        
+        int a = 10;
     }
 }
