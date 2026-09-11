@@ -11,7 +11,7 @@ namespace Monopoly.App
             Tablero_LL tablerito = new Tablero_LL();
 
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
-            Propiedad Casa1 = new Propiedad(2, 1, "Casa 1", 200, 50);
+            Propiedad Casa1 = new Propiedad(2, 1, "Casa 1", 300, 50);
             Propiedad Casa2 = new Propiedad(3, 2, "Casa 2", 200, 50);
             Propiedad Casa3 = new Propiedad(4, 3, "Casa 3", 200, 50);
             Propiedad Casa4 = new Propiedad(5, 4, "Casa 4", 200, 50);
