@@ -1,32 +1,45 @@
+using System;
+using System.IO;
+
 namespace Monopoly.App
 {
-    public class Historial_Transacciones
+    public class HistorialTransacciones
     {
-        public Transaccion head;
-        public Transaccion tail;
+        public Transaccion? head;
+        public Transaccion? tail;
         public int size;
 
-        public Historial_Transacciones()
+        private static readonly string RutaArchivo = Path.Combine(Directory.GetCurrentDirectory(),"historial_transacciones.txt");
+
+        public HistorialTransacciones()
         {
             head = null;
             tail = null;
             size = 0;
         }
 
-        public void InsertarTransaccion(Transaccion transaccion_nueva)
+        public void InsertarTransaccion(Transaccion transaccionNueva)
         {
             if (tail == null)
             {
-                head=transaccion_nueva;
-                tail=transaccion_nueva;
+                head=transaccionNueva;
+                tail=transaccionNueva;
             }
             else
             {
-                tail.Next=transaccion_nueva;
-                tail.Previous=tail;
-                tail=transaccion_nueva;  
+                transaccionNueva.Previous = tail;  
+                tail.Next = transaccionNueva;       
+                tail = transaccionNueva;            
             }
             size ++;
+            GuardarTransaccion(transaccionNueva);
+            
         }
+        private void GuardarTransaccion(Transaccion transaccionNueva)
+        {
+            string texto = $"{transaccionNueva.Id}|{transaccionNueva.FechaHora}|{transaccionNueva.Turno}|{transaccionNueva.Tipo}|{transaccionNueva.Origen}|{transaccionNueva.Destino}|{transaccionNueva.Monto}|{transaccionNueva.Descripcion}";
+            File.AppendAllText(RutaArchivo, texto + Environment.NewLine);
+        }
+        
     }
 }

@@ -12,8 +12,8 @@ namespace Monopoly.App
         public string Destino;
         public double Monto;
         public string Descripcion;
-        public Transaccion Next;
-        public Transaccion Previous;
+        public Transaccion? Next;
+        public Transaccion? Previous;
 
         public Transaccion(int id, DateTime fechaHora, int turno,string tipo, string origen, string destino,double monto, string descripcion)
         {
@@ -41,11 +41,11 @@ namespace Monopoly.App
         {
             return this.Tipo;
         }
-        public Transaccion GetNext()
+        public Transaccion? GetNext()
         {
             return this.Next;
         }
-        public Transaccion GetPrevious()
+        public Transaccion? GetPrevious()
         {
             return this.Previous;
         }
