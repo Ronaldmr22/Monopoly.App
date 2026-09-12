@@ -172,6 +172,11 @@ namespace Monopoly.App
             return tablerito;
         }
 
+        public Banco GetBanco()
+        {
+            return banco;
+        }
+
 
     }
 

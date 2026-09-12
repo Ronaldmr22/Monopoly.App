@@ -23,11 +23,11 @@ class Propiedad : Casilla
 {
     private int id_propiedad;
     private String nombre;
-    private double precio;
-    private double alquiler;
+    private int precio;
+    private int alquiler;
     // Propietario propietario;
 
-    public Propiedad(int numeroCasilla, int id_propiedad, String nombre, double precio, double alquiler)
+    public Propiedad(int numeroCasilla, int id_propiedad, String nombre, int precio, int alquiler)
     : base(numeroCasilla)
     {
         this.id_propiedad = id_propiedad;
@@ -35,12 +35,12 @@ class Propiedad : Casilla
         this.precio = precio;
         this.alquiler = alquiler;
     }
-    public double Precio
+    public int Precio
     {
         get
         {return this.precio; }
     }
-    public double Alquiler
+    public int Alquiler
     {
         get
         { return this.alquiler;}
