@@ -135,15 +135,24 @@ namespace Monopoly.App
             {
                 EnviarCliente(
                     cliente,
-                    $"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
+                    $"El alquiler ha sido pagado"
+                    ///$"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
                 );
-                ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
-
-                if (dueño != null)
-                {
-                    EnviarCliente(dueño,$"RECIBIR_ALQUILER {idJugador} {alquiler} {idPropiedad}");
-                }
+                
             }
+            else
+            {
+                EnviarCliente(
+                    cliente,
+                    $"El alquiler ha sido pagado, has quedado en bancarrota"
+                    ///$"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
+                );
+            }
+            ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
+            if (dueño != null)
+                {
+                    EnviarCliente(dueño,$"Ha recibido el alquiler de la propiedad");   /// $"RECIBIR_ALQUILER {idJugador} {alquiler} {idPropiedad}");
+                }
         }
 
         public void TerminarTurno()
