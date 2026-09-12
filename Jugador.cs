@@ -3,7 +3,7 @@ using Monopoly.App;
 public class Jugador{
     private int Id;
     private string Nombre;
-    private int Saldo = 0;
+    private int Saldo = 500;
     private int Posicion = 0;
     private bool Estado = false;
     private List<Object> Propiedades = [];

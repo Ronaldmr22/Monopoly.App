@@ -124,14 +124,12 @@ namespace Monopoly.App
             EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
         }
 
-        public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad)
+        public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad, int idDueño)
         {
             int idJugador = cliente.IdJugador;
-
-            int idDueño;
             int alquiler;
 
-            alquiler = banco.CobrarAlquiler(idJugador, idPropiedad, out idDueño);
+            alquiler = banco.CobrarAlquiler(idJugador, idPropiedad, idDueño);
 
             if (alquiler > 0)
             {

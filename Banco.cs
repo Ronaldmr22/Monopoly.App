@@ -2,7 +2,7 @@ using Monopoly.App;
 
 public class Banco
 {
-    private List<Jugador> ListaJugadores = [];
+    public List<Jugador> ListaJugadores = [];
     
     public bool Transferir(object Origen, object Destino, int Monto, string Razon)
     {
@@ -50,6 +50,7 @@ public class Banco
             if (ListaJugadores[i].GetId() == idJugador)
             {
                 jugador = ListaJugadores[i];
+                break;
             }
         }
 
@@ -65,5 +66,20 @@ public class Banco
             return true;
         }
         return false;
+    }
+
+    public int CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
+    {
+        return 1;
+    }
+
+    public void AgregarJugador(string nombreJugador, int id)
+    {
+        
+    }
+
+    public string Getinfo()
+    {
+        return "1";
     }
 }
