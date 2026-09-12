@@ -13,17 +13,19 @@ namespace Monopoly.App
     public class Servidor
     {
         private TcpListener listener;
+        public Tablero_LL tablerito;
         private Banco banco;
         private bool prendido;
         private int jugadorId;
         private List<ClienteConectado> clientes;
 
 
-        public Servidor(int puerto, Banco banco)
+        public Servidor(int puerto)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
             clientes = new List<ClienteConectado>();
-            this.banco = banco;
+            this.banco = new Banco();
+            tablerito = new Tablero_LL();
             jugadorId = 1;
         }
 //https://learn.microsoft.com/es-es/dotnet/csharp/asynchronous-programming/
@@ -165,7 +167,10 @@ namespace Monopoly.App
         }
 
 
-        
+        public Tablero_LL GetTablero()
+        {
+            return tablerito;
+        }
 
 
     }

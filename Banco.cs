@@ -1,6 +1,10 @@
+using Monopoly.App;
+
 public class Banco
 {
-    public bool Transferir(object Origen, object Destino, int Monto)
+    private List<Jugador> ListaJugadores = [];
+    
+    public bool Transferir(object Origen, object Destino, int Monto, string Razon)
     {
         if (Origen == this)
         {
@@ -30,6 +34,32 @@ public class Banco
 
     public void DestruirJugador(int IdJugador)
     {
-        int a = 10;
+        
+    }
+
+    public bool ComprarPropiedad(int idJugador, int idCasilla)
+    {
+        Jugador jugador;
+        Propiedad propiedad;
+
+        for (int i = 0; i < 4; i++)
+        {
+            if (ListaJugadores[i].GetId() == idJugador)
+            {
+                jugador = ListaJugadores[i];
+            }
+        }
+
+        for (Nodo nodo = Juego.servidor.tablerito.GetHead(); nodo.Next != Juego.servidor.tablerito.GetHead(); nodo = nodo.Next)
+        {
+            if (nodo.Data.NumeroCasilla == idCasilla)
+            {
+                propiedad = nodo.Data;
+            }
+        }
+        if (Transferir())
+        {
+            
+        }
     }
 }
