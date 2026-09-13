@@ -142,7 +142,7 @@ public class Tablero_LL
 
 
     }
-        public void ImprimirTablero()
+        public void ImprimirTablero()//esto se puede borrar luego, es solo para ver que se agregaron las casillas
         {
             if (head == null) return;
 
