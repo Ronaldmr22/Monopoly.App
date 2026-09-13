@@ -3,15 +3,26 @@ using Monopoly.App;
 public class Jugador{
     private int Id;
     private string Nombre;
-    private int Saldo = 0;
+    private int Saldo = 500;
     private int Posicion = 0;
     private bool Estado = false;
     private List<Object> Propiedades = [];
+    private bool TurnoPerdido = false;
 
     public Jugador(int Id, string Nombre)
     {
         this.Id = Id;
         this.Nombre = Nombre;
+    }
+
+        public string GetNombre()
+    {
+        return this.Nombre;
+    }
+
+    public int GetId()
+    {
+        return this.Id;
     }
 
     public int GetSaldo()
