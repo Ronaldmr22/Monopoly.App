@@ -9,7 +9,7 @@ namespace Monopoly.App
         public Transaccion? tail;
         public int size;
 
-        private static readonly string RutaArchivo = Path.Combine(Directory.GetCurrentDirectory(),"historial_transacciones.txt");
+        private static  string RutaArchivo { get; set;} = Path.Combine(Directory.GetCurrentDirectory(),"historial_transacciones.txt"); 
 
         public HistorialTransacciones()
         {
@@ -32,14 +32,35 @@ namespace Monopoly.App
                 tail = transaccionNueva;            
             }
             size ++;
-            GuardarTransaccion(transaccionNueva);
-            
         }
-        private void GuardarTransaccion(Transaccion transaccionNueva)
+
+        public void RecorrerDesdeMasAntigua()
         {
+            Transaccion? actual = tail;
+            while (actual != null)
+            {
+                GuardarTransaccion(actual,1);
+                actual=actual.Previous;
+            }
+        }
+        
+        private void GuardarTransaccion(Transaccion transaccionNueva,int identificador)
+        {
+            switch (identificador)
+            {
+                case 1:
+                    GenerarNombre("Orden desde el más antiguo");
+                    break;
+                default:
+                    GenerarNombre("Historial");
+                    break;            }
             string texto = $"{transaccionNueva.Id}|{transaccionNueva.FechaHora}|{transaccionNueva.Turno}|{transaccionNueva.Tipo}|{transaccionNueva.Origen}|{transaccionNueva.Destino}|{transaccionNueva.Monto}|{transaccionNueva.Descripcion}";
             File.AppendAllText(RutaArchivo, texto + Environment.NewLine);
         }
-        
+
+        private void GenerarNombre(string nombreTxt)
+        {
+            RutaArchivo=Path.Combine(Directory.GetCurrentDirectory(),nombreTxt); 
+        }
     }
 }

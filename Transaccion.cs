@@ -14,6 +14,7 @@ namespace Monopoly.App
         public string Descripcion;
         public Transaccion? Next;
         public Transaccion? Previous;
+        public bool Mostrada;
 
         public Transaccion(int id, DateTime fechaHora, int turno,string tipo, string origen, string destino,double monto, string descripcion)
         {
@@ -27,6 +28,7 @@ namespace Monopoly.App
             Descripcion = descripcion;
             Next = null;
             Previous = null;
+            Mostrada=false;
 
         }
         public DateTime GetFechaHora()
