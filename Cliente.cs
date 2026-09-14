@@ -11,88 +11,144 @@ namespace Monopoly.App
         private TcpClient socket;
         private StreamReader lector;
         private StreamWriter escritor;
-        public async Task ConectarAsync(string ip, int puerto)
+        private bool conectado;
+
+        public int IdJugador { get; private set; }
+
+        public event Action<string> ActualizacionJuego;
+        public event Action<string> ErrorRecibido;
+
+        public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
         {
             socket = new TcpClient();
-
             await socket.ConnectAsync(ip, puerto);
 
             NetworkStream stream = socket.GetStream();
-
             lector = new StreamReader(stream, Encoding.UTF8);
-            escritor = new StreamWriter(stream, Encoding.UTF8) {AutoFlush = true};
+            escritor = new StreamWriter(stream, Encoding.UTF8) { AutoFlush = true };
+            conectado = true;
+
+            EscucharServidorAsync();
+
+            EnviarMensaje("CONECTAR " + nombreJugador);
         }
 
-        public void EnviarMensaje(string mensaje)
+        private async Task EscucharServidorAsync()
         {
-            escritor.WriteLine(mensaje);
+            string linea;
+            while (conectado)
+            {
+                linea = await lector.ReadLineAsync();
+                if (linea == null)
+                {
+                    break;
+                }
+                ProcesarMensaje(linea);
+            }
         }
 
-        // Recibe un mensaje del servidor
-        public async Task<string> RecibirMensajeAsync()
+        private void ProcesarMensaje(string linea)
         {
-            return await lector.ReadLineAsync();
+            string[] partes = linea.Split(' ');
+            string comando = partes[0];
+
+            if (comando == "CONECTAR")
+            {
+                IdJugador = int.Parse(partes[1]);
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("Te conectaste como jugador " + IdJugador);
+                }
+            }
+            else if (comando == "JUGADOR")
+            {
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("Jugador " + partes[1] + " se unió a la partida");
+                }
+            }
+            else if (comando == "DADOS")
+            {
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("Jugador " + partes[1] + " tiró " + partes[2] + " y " + partes[3]);
+                }
+            }
+            else if (comando == "COMPRAR")
+            {
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("Compraste la casilla " + partes[2]);
+                }
+            }
+            else if (comando == "PROPIEDAD")
+            {
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("Jugador " + partes[2] + " compró la casilla " + partes[3]);
+                }
+            }
+            else if (comando == "DINERO")
+            {
+                if (ErrorRecibido != null)
+                {
+                    ErrorRecibido.Invoke("No tenés suficiente dinero para esa compra");
+                }
+            }
+            else if (comando == "ESTADO")
+            {
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke(linea.Substring(comando.Length + 1));
+                }
+            }
+            else if (comando == "ERROR")
+            {
+                if (ErrorRecibido != null)
+                {
+                    ErrorRecibido.Invoke(linea);
+                }
+            }
+            else
+            {
+                if (ErrorRecibido != null)
+                {
+                    ErrorRecibido.Invoke("Mensaje no reconocido: " + linea);
+                }
+            }
         }
 
-        // Conecta al jugador al juego
-        public async Task<string> ConectarJugadorAsync(string nombre)
+        public void TirarDados()
         {
-            string mensaje = $"CONECTAR {nombre}";
-            EnviarMensaje(mensaje);
-            return await RecibirMensajeAsync();
+            EnviarMensaje("TIRAR_DADOS");
         }
 
-        // Solicita tirar los dados
-        public async Task<string> TirarDadosAsync()
+        public void ComprarPropiedad(int idCasilla)
         {
-            string mensaje = "TIRAR_DADOS";
-            EnviarMensaje(mensaje);
-            return await RecibirMensajeAsync();
+            EnviarMensaje("COMPRAR_PROPIEDAD " + IdJugador + " " + idCasilla);
         }
 
-        // Solicita comprar una propiedad
-        public async Task<string> ComprarPropiedadAsync(int idCasilla)
+        public void NoComprar()
         {
-            string mensaje = $"COMPRAR_PROPIEDAD {idCasilla}";
-
-            EnviarMensaje(mensaje);
-
-            return await RecibirMensajeAsync();
+            EnviarMensaje("NO_COMPRAR");
         }
 
-        // Indica que no quiere comprar
-        public async Task<string> NoComprarAsync()
+        public void ConsultarEstado()
         {
-            string mensaje = "NO_COMPRAR";
-
-            EnviarMensaje(mensaje);
-
-            return await RecibirMensajeAsync();
+            EnviarMensaje("CONSULTAR_ESTADO");
         }
 
-        // Consulta el estado del juego
-        public async Task<string> ConsultarEstadoAsync()
+        private void EnviarMensaje(string mensaje)
         {
-            string mensaje = "CONSULTAR_ESTADO";
-
-            EnviarMensaje(mensaje);
-
-            return await RecibirMensajeAsync();
+            if (escritor != null)
+            {
+                escritor.WriteLine(mensaje);
+            }
         }
 
-        // Consulta las transacciones
-        public async Task<string> ConsultarTransaccionesAsync()
-        {
-            string mensaje = "CONSULTAR_TRANSACCIONES";
-
-            EnviarMensaje(mensaje);
-
-            return await RecibirMensajeAsync();
-        }
-
-        // Desconecta el cliente
         public void Desconectar()
         {
+            conectado = false;
             if (socket != null)
             {
                 socket.Close();

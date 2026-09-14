@@ -133,4 +133,12 @@ public class Banco
     {
         return "1";
     }
+
+    public int TirarDados(int jugador)
+    {
+        Dados dados = new Dados("COM5");
+        return dados.Lanzar(jugador);
+
+    }
+
 }
