@@ -4,7 +4,7 @@ namespace Monopoly.App
     {
         static void Main(string[] args)
         {
-            
+            Juego.CrearServidor();
             Tablero_LL tablerito = new Tablero_LL();
 // 
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
