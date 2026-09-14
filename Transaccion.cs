@@ -1,19 +1,20 @@
 using System;
-using System.IO;
 
 namespace Monopoly.App
-
 {
     public class Transaccion
     {
-        public int Id { get; set; }
-        public DateTime FechaHora { get; set; }
-        public int Turno { get; set; }
-        public string Tipo { get; set; }
-        public string Origen { get; set; }
-        public string Destino { get; set; }
-        public double Monto { get; set; }
-        public string Descripcion { get; set; }
+        public int Id;
+        public DateTime FechaHora;
+        public int Turno;  
+        public string Tipo;
+        public string Origen;
+        public string Destino;
+        public double Monto;
+        public string Descripcion;
+        public Transaccion? Next;
+        public Transaccion? Previous;
+        public bool Mostrada;
 
         public Transaccion(int id, DateTime fechaHora, int turno,string tipo, string origen, string destino,double monto, string descripcion)
         {
@@ -25,6 +26,30 @@ namespace Monopoly.App
             Destino = destino;
             Monto = monto;
             Descripcion = descripcion;
+            Next = null;
+            Previous = null;
+            Mostrada=false;
+
+        }
+        public DateTime GetFechaHora()
+        {
+            return this.FechaHora;
+        }
+        public int GetJugador()
+        {
+            return this.Id;
+        }
+        public string GetTipo()
+        {
+            return this.Tipo;
+        }
+        public Transaccion? GetNext()
+        {
+            return this.Next;
+        }
+        public Transaccion? GetPrevious()
+        {
+            return this.Previous;
         }
 
     }

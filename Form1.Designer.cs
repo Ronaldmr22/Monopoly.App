@@ -2,15 +2,8 @@
 {
     partial class Form1
     {
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,10 +15,6 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
@@ -82,15 +71,13 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            ClientSize = new Size(893, 857);
-            Controls.Add(btn_unirse);
-            Controls.Add(btn_host);
-            Controls.Add(txt_nombre);
+            ClientSize = new Size(913, 913);
             Controls.Add(lbl_nombre);
+            Controls.Add(txt_nombre);
+            Controls.Add(btn_host);
+            Controls.Add(btn_unirse);
             Name = "Form1";
-            Text = "Form1";
-            Load += Form1_Load;
+            Text = "Lobby";
             ResumeLayout(false);
             PerformLayout();
         }

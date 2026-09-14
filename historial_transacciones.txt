@@ -1,0 +1,3 @@
+1|11/9/2026 22:45:17|4|Ganancia por evento|Banco|Jugador 4|500|Recibe 500 del banco
+2|11/9/2026 22:45:17|1|Pago de alquiler|Jugador 1|Jugador 3|200|Pago de alquiler por caer en ....
+3|11/9/2026 22:45:17|2|Premio por pasar por el inicio|Banco|Jugador 1|200|Recibe 200 por pasar por la salida
