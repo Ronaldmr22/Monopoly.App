@@ -13,17 +13,19 @@ namespace Monopoly.App
     public class Servidor
     {
         private TcpListener listener;
+        public Tablero_LL tablerito;
         private Banco banco;
         private bool prendido;
         private int jugadorId;
         private List<ClienteConectado> clientes;
 
 
-        public Servidor(int puerto, Banco banco)
+        public Servidor(int puerto)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
             clientes = new List<ClienteConectado>();
-            this.banco = banco;
+            this.banco = new Banco();
+            tablerito = new Tablero_LL();
             jugadorId = 1;
         }
 //https://learn.microsoft.com/es-es/dotnet/csharp/asynchronous-programming/
@@ -122,28 +124,35 @@ namespace Monopoly.App
             EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
         }
 
-        public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad)
+        public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad, int idDueño)
         {
             int idJugador = cliente.IdJugador;
-
-            int idDueño;
             int alquiler;
 
-            alquiler = banco.CobrarAlquiler(idJugador, idPropiedad, out idDueño);
+            alquiler = banco.CobrarAlquiler(idJugador, idPropiedad, idDueño);
 
             if (alquiler > 0)
             {
                 EnviarCliente(
                     cliente,
-                    $"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
+                    $"El alquiler ha sido pagado"
+                    ///$"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
                 );
-                ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
-
-                if (dueño != null)
-                {
-                    EnviarCliente(dueño,$"RECIBIR_ALQUILER {idJugador} {alquiler} {idPropiedad}");
-                }
+                
             }
+            else
+            {
+                EnviarCliente(
+                    cliente,
+                    $"El alquiler ha sido pagado, has quedado en bancarrota"
+                    ///$"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
+                );
+            }
+            ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
+            if (dueño != null)
+                {
+                    EnviarCliente(dueño,$"Ha recibido el alquiler de la propiedad");   /// $"RECIBIR_ALQUILER {idJugador} {alquiler} {idPropiedad}");
+                }
         }
 
         public void TerminarTurno()
@@ -165,7 +174,15 @@ namespace Monopoly.App
         }
 
 
-        
+        public Tablero_LL GetTablero()
+        {
+            return tablerito;
+        }
+
+        public Banco GetBanco()
+        {
+            return banco;
+        }
 
 
     }

@@ -65,7 +65,6 @@
             btn_host.TabIndex = 2;
             btn_host.Text = "Host";
             btn_host.UseVisualStyleBackColor = false;
-            btn_host.Click += btn_host_Click;
             // 
             // btn_unirse
             // 
@@ -78,22 +77,19 @@
             btn_unirse.TabIndex = 3;
             btn_unirse.Text = "Unirse";
             btn_unirse.UseVisualStyleBackColor = false;
-            btn_unirse.Click += btn_unirse_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
-            BackgroundImageLayout = ImageLayout.Stretch;
-            ClientSize = new Size(913, 913);
-            Controls.Add(lbl_nombre);
-            Controls.Add(txt_nombre);
-            Controls.Add(btn_host);
+            ClientSize = new Size(893, 857);
             Controls.Add(btn_unirse);
-            DoubleBuffered = true;
+            Controls.Add(btn_host);
+            Controls.Add(txt_nombre);
+            Controls.Add(lbl_nombre);
             Name = "Form1";
-            Text = "Lobby";
+            Text = "Form1";
             Load += Form1_Load;
             ResumeLayout(false);
             PerformLayout();
