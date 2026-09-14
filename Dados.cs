@@ -12,10 +12,10 @@ public class Dados
         serial.Open();
     }
 
-    public void Lanzar(string jugador)
+    public int Lanzar(int jugador)
     {
-        serial.WriteLine(jugador);
+        serial.WriteLine(jugador.ToString());
         string respuesta = serial.ReadLine().Trim();
-        resultado =  int.Parse(respuesta);
+        return int.Parse(respuesta);
     }
 }

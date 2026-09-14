@@ -17,6 +17,7 @@ namespace Monopoly.App
         {
             Banco = new Banco();
             Tablero = new Tablero_LL();
+            Cliente = new Cliente();
         }
 
         public async Task IniciarAsync(int puerto, string nombreJugador)

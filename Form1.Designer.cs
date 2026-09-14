@@ -54,6 +54,7 @@
             btn_host.TabIndex = 2;
             btn_host.Text = "Host";
             btn_host.UseVisualStyleBackColor = false;
+            btn_host.Click += btn_host_Click;
             // 
             // btn_unirse
             // 
@@ -66,6 +67,7 @@
             btn_unirse.TabIndex = 3;
             btn_unirse.Text = "Unirse";
             btn_unirse.UseVisualStyleBackColor = false;
+            btn_unirse.Click += btn_unirse_Click;
             // 
             // Form1
             // 
