@@ -6,8 +6,6 @@ namespace Monopoly.App
         {
             InitializeComponent();
         }
-<<<<<<< Updated upstream
-=======
 
         private void label1_Click(object sender, EventArgs e)
         {
@@ -36,8 +34,17 @@ namespace Monopoly.App
 
         private void btn_unirse_Click(object sender, EventArgs e)
         {
-
+            if (!string.IsNullOrWhiteSpace(txt_nombre.Text))
+            {
+                FormCliente siguiente = new FormCliente();
+                siguiente.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un nombre.");
+            }
         }
->>>>>>> Stashed changes
+
     }
 }
