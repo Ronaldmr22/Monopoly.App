@@ -1,36 +1,21 @@
-using System;
 using System.IO.Ports;
 
-namespace Monopoly.App
+public class Dados
 {
-    public class Dado
+    private SerialPort serial;
+    public int resultado {get; private set;}
+
+    public Dados(string puerto)
     {
-        public int Dado1 { get; private set; }
-        public int Dado2 { get; private set; }
+        serial = new SerialPort(puerto, 115200);
+        serial.NewLine = "\n";
+        serial.Open();
+    }
 
-        private SerialPort arduino;
-
-        public Dado(string puerto)
-        {
-            arduino = new SerialPort(puerto, 9600);
-            arduino.Open();
-        }
-
-        public void Lanzar()
-        {
-            arduino.WriteLine("TIRAR");
-
-            string respuesta = arduino.ReadLine();
-
-            string[] valores = respuesta.Split(' ');
-
-            Dado1 = int.Parse(valores[0]);
-            Dado2 = int.Parse(valores[1]);
-        }
-
-        public int ObtenerTotal()
-        {
-            return Dado1 + Dado2;
-        }
+    public void Lanzar(string jugador)
+    {
+        serial.WriteLine(jugador);
+        string respuesta = serial.ReadLine().Trim();
+        resultado =  int.Parse(respuesta);
     }
 }
