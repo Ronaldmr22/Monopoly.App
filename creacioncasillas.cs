@@ -12,7 +12,7 @@ namespace Monopoly.App
 
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
             Propiedad Casa1 = new Propiedad(2, 1, "Avenida Mediterráneo", 50, 25);
-            Propiedad Casa2 = new Propiedad(3, 2, "Avenida Báltica", 60, 30);
+            Propiedad Casa2 = new Propiedad(3, 2, "Avenida Báltica", 50, 25);
             Propiedad Casa3 = new Propiedad(4, 3, "Avenida Oriental", 100, 50);
             Propiedad Casa4 = new Propiedad(5, 4, "Avenida Vermont", 100, 50);
             Propiedad Casa5 = new Propiedad(6, 5, "Avenida Connecticut", 120, 60);
