@@ -3,8 +3,9 @@ using Monopoly.App;
 public class Banco
 {
     public List<Jugador> ListaJugadores = [];
+    public int IdTransaccion = 1;
     
-    public bool Transferir(object Origen, object Destino, int Monto, string Razon)
+    public bool Transferir(object Origen, object Destino, int Monto, string tipo, string Razon)
     {
         if (Destino is Jugador jugadorD)
         {
@@ -12,45 +13,48 @@ public class Banco
             {
                 if (jugadorO.PagarDinero(Monto))
                 {
+                    Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), Monto, Razon);
+                    Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion1);
                     jugadorD.RecibirDinero(Monto);
                     return true;
                 }
                 else
                 {
+                    Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), jugadorO.GetSaldo(), Razon);
+                    Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion1);
                     jugadorD.RecibirDinero(jugadorO.GetSaldo());
-                    DestruirJugador(jugadorO.GetId());
+                    DestruirJugador(jugadorO);
                     return false;
                 }
             }
+            Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, "Banco", jugadorD.GetNombre(), Monto, Razon);
+            Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion);
             jugadorD.RecibirDinero(Monto);
             return true;
         }
         else
         {
-            if (Origen is Jugador jugadorO){
+            if (Origen is Jugador jugadorO){ 
                 if (jugadorO.PagarDinero(Monto))
                 {
+                    Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), "Banco", Monto, Razon);
+                    Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion);
                     return true;
                 }
                 else
+                {
+                    Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), "Banco", jugadorO.GetSaldo(), Razon);
+                    Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion);
+                    DestruirJugador(jugadorO);
                     return false;
+                }
             }
         }
         return false;
     }
 
-    public void DestruirJugador(int IdJugador)
+    public void DestruirJugador(Jugador jugador)
     {
-        Jugador? jugador = null;
-
-        for (int i = 0; i < 4; i++)
-        {
-            if (ListaJugadores[i].GetId() == IdJugador)
-            {
-                jugador = ListaJugadores[i];
-                break;
-            }
-        }
 
         ListaJugadores.Remove(jugador);
     }
@@ -69,18 +73,22 @@ public class Banco
             }
         }
 
-        for (Nodo nodo = Juego.servidor.tablerito.GetHead(); nodo.Next != Juego.servidor.tablerito.GetHead(); nodo = nodo.Next)
+        for (Nodo nodo = Juego.servidor.GetTablero().GetHead(); nodo.Next != Juego.servidor.GetTablero().GetHead(); nodo = nodo.Next)
         {
             if (nodo.Data.NumeroCasilla == idCasilla && nodo.Data is Propiedad propiedadObjetivo)
             {
                 propiedad = propiedadObjetivo;
             }
         }
-        if (Transferir(jugador, Juego.servidor.GetBanco(), propiedad.Precio, $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}"))
+        if (jugador.GetSaldo() < propiedad.Precio)
         {
+            return false;
+        }
+        else
+        {
+            Transferir(jugador, Juego.servidor.GetBanco(), propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
             return true;
         }
-        return false;
     }
 
     public int CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
@@ -105,14 +113,15 @@ public class Banco
                 break;
             }
         }
-        for (Nodo nodo = Juego.servidor.tablerito.GetHead(); nodo.Next != Juego.servidor.tablerito.GetHead(); nodo = nodo.Next)
+        for (Nodo nodo = Juego.servidor.GetTablero().GetHead(); nodo.Next != Juego.servidor.GetTablero().GetHead(); nodo = nodo.Next)
         {
             if (nodo.Data.NumeroCasilla == idPropiedad && nodo.Data is Propiedad propiedadObjetivo)
             {
                 propiedad = propiedadObjetivo;
+                break;
             }
         }
-        Transferir(jugador, Juego.servidor.GetBanco(), propiedad.Precio, $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
+        Transferir(jugador, dueño, propiedad.Precio, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
         return jugador.GetSaldo();
     }
 
@@ -133,4 +142,12 @@ public class Banco
     {
         return "1";
     }
+
+    public int TirarDados(int jugador)
+    {
+        Dados dados = new Dados("COM5");
+        return dados.Lanzar(jugador);
+
+    }
+
 }

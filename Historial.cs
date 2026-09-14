@@ -29,7 +29,9 @@ namespace Monopoly.App
             {
                 transaccionNueva.Previous = tail;  
                 tail.Next = transaccionNueva;       
-                tail = transaccionNueva;            
+                tail = transaccionNueva;     
+                transaccionNueva.Next = head;
+                head.Previous = transaccionNueva;       
             }
             size ++;
         }

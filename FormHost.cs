@@ -10,9 +10,18 @@ namespace Monopoly.App
 {
     public partial class FormHost : Form
     {
-        public FormHost()
+        private Host host;
+        public FormHost(Host host, string nombreJugador)
         {
             InitializeComponent();
+            this.host = host;
+
+            lbl_nombre1H.Text = nombreJugador;
+
+            host.Cliente.ActualizacionJuego += texto =>
+            {
+                this.Invoke(new Action(() => MessageBox.Show(texto)));
+            };
         }
 
         private void FormEspera_Load(object sender, EventArgs e)

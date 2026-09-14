@@ -13,19 +13,20 @@ namespace Monopoly.App
     public class Servidor
     {
         private TcpListener listener;
-        public Tablero_LL tablerito;
+        private Tablero_LL tablerito;
         private Banco banco;
         private bool prendido;
         private int jugadorId;
         private List<ClienteConectado> clientes;
+        private HistorialTransacciones historialtransacciones = new HistorialTransacciones();
 
 
-        public Servidor(int puerto)
+        public Servidor(int puerto, Banco banco, Tablero_LL tablerito)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
             clientes = new List<ClienteConectado>();
-            this.banco = new Banco();
-            tablerito = new Tablero_LL();
+            this.banco = banco;
+            this.tablerito = tablerito;
             jugadorId = 1;
         }
 //https://learn.microsoft.com/es-es/dotnet/csharp/asynchronous-programming/
@@ -106,6 +107,8 @@ namespace Monopoly.App
         public void TirarDados(ClienteConectado cliente)
         {
             int idJugador = cliente.IdJugador;
+            var resultado = banco.TirarDados(idJugador); // esto todavía no existe en Banco
+            EnviarTodos("DADOS " + idJugador + "HA SACADO"+resultado);
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
@@ -151,7 +154,7 @@ namespace Monopoly.App
             ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
             if (dueño != null)
                 {
-                    EnviarCliente(dueño,$"Ha recibido el alquiler de la propiedad");   /// $"RECIBIR_ALQUILER {idJugador} {alquiler} {idPropiedad}");
+                    EnviarCliente(dueño,$"Ha recibido el alquiler de la propiedad");
                 }
         }
 
@@ -184,7 +187,10 @@ namespace Monopoly.App
             return banco;
         }
 
-
+        public HistorialTransacciones GetHistorialTransacciones()
+        {
+            return historialtransacciones;
+        }
     }
 
     public class ClienteConectado
