@@ -44,6 +44,15 @@ namespace Monopoly.App
             }
         }
         
+        public void RecorrerDesdeMasReciente()
+        {
+            Transaccion? actual = head;
+            while (actual != null)
+            {
+                GuardarTransaccion(actual,2);
+                actual=actual.Next;
+            }
+        }
         private void GuardarTransaccion(Transaccion transaccionNueva,int identificador)
         {
             switch (identificador)
@@ -51,9 +60,18 @@ namespace Monopoly.App
                 case 1:
                     GenerarNombre("Orden desde el más antiguo");
                     break;
+                
+                case 2:
+                    GenerarNombre("Orden desde el más reciente");
+                    break;
+
                 default:
                     GenerarNombre("Historial");
-                    break;            }
+                    break;
+                       
+            
+            
+            }
             string texto = $"{transaccionNueva.Id}|{transaccionNueva.FechaHora}|{transaccionNueva.Turno}|{transaccionNueva.Tipo}|{transaccionNueva.Origen}|{transaccionNueva.Destino}|{transaccionNueva.Monto}|{transaccionNueva.Descripcion}";
             File.AppendAllText(RutaArchivo, texto + Environment.NewLine);
         }

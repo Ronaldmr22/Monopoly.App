@@ -1,16 +1,12 @@
-using System;
-using System.IO;
-using System.Windows.Forms;
-
 namespace Monopoly.App
 {
     class Program
     {
         static void Main(string[] args)
         {
-            /*
+            
             Tablero_LL tablerito = new Tablero_LL();
-
+// 
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
             Propiedad Casa1 = new Propiedad(2, 1, "Casa 1", 300, 50);
             Propiedad Casa2 = new Propiedad(3, 2, "Casa 2", 200, 50);
@@ -63,7 +59,7 @@ namespace Monopoly.App
             tablerito.AgregarCasilla(Casa18);
 
             tablerito.ImprimirTablero();
-            */
+            
 
             HistorialTransacciones historial = new HistorialTransacciones();
 
@@ -74,11 +70,14 @@ namespace Monopoly.App
             historial.InsertarTransaccion(t1);
             historial.InsertarTransaccion(t2);
             historial.InsertarTransaccion(t3);
-            historial.RecorrerDesdeMasAntigua();
+
 
             Console.WriteLine($"Total de transacciones: {historial.size}");
 
-
+            Jugador jugador = new Jugador(01, "Leo");
+            Juego.servidor.GetBanco().ListaJugadores.Add(jugador);
+            Console.WriteLine(Juego.servidor.GetBanco().ListaJugadores[0]);
+            Console.WriteLine(Juego.servidor.GetBanco().ComprarPropiedad(01, 02));
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
