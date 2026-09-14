@@ -53,6 +53,42 @@ namespace Monopoly.App
                 actual=actual.Next;
             }
         }
+
+        public void BuscarPorJugador(int jugador)
+        {
+            Transaccion? actual =head;
+            while (actual != null)
+            {
+                if (actual.GetJugador() == jugador)
+                {
+                    GuardarTransaccion(actual,3);
+                }
+                actual=actual.Next;
+            }
+        }
+
+        public void BuscarPorTipo(string tipo)
+        {
+            Transaccion? actual =head;
+            while(actual != null)
+            {
+                if (actual.GetTipo() == tipo)
+                {
+                    GuardarTransaccion(actual,2);
+                }
+                actual=actual.Next;
+            }
+        }
+
+        public void TodasLasTransacciones()
+        {
+            Transaccion? actual=head;
+            while(actual != null)
+            {
+                GuardarTransaccion(actual,5);
+                actual=actual.Next;
+            }
+        }
         private void GuardarTransaccion(Transaccion transaccionNueva,int identificador)
         {
             switch (identificador)
@@ -65,6 +101,17 @@ namespace Monopoly.App
                     GenerarNombre("Orden desde el más reciente");
                     break;
 
+                case 3:
+                    GenerarNombre("Búsqueda por jugador");
+                    break;
+                
+                case 4:
+                    GenerarNombre("Búsqueda por tipo");
+                    break;
+                
+                case 5:
+                    GenerarNombre("Todas las transacciones");
+                    break;
                 default:
                     GenerarNombre("Historial");
                     break;
