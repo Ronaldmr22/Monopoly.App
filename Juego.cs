@@ -3,6 +3,7 @@ using Monopoly.App;
 class Juego
 {
     public static Servidor? servidor = null;
+    public static int turno = 0;
 
 
     public static void CrearServidor()
