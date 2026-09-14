@@ -118,9 +118,10 @@ public class Banco
             if (nodo.Data.NumeroCasilla == idPropiedad && nodo.Data is Propiedad propiedadObjetivo)
             {
                 propiedad = propiedadObjetivo;
+                break;
             }
         }
-        Transferir(jugador, Juego.servidor.GetBanco(), propiedad.Precio, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
+        Transferir(jugador, dueño, propiedad.Precio, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
         return jugador.GetSaldo();
     }
 

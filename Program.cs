@@ -78,6 +78,7 @@ namespace Monopoly.App
             Juego.servidor.GetBanco().AgregarJugador("Ale", 02);
             Console.WriteLine(Juego.servidor.GetBanco().ListaJugadores[0].GetNombre());
             Console.WriteLine(Juego.servidor.GetBanco().CobrarAlquiler(01, 03, 02));
+            Console.WriteLine(Juego.servidor.GetHistorialTransacciones().tail.Descripcion);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
