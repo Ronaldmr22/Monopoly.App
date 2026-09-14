@@ -13,11 +13,12 @@ namespace Monopoly.App
     public class Servidor
     {
         private TcpListener listener;
-        public Tablero_LL tablerito;
+        private Tablero_LL tablerito;
         private Banco banco;
         private bool prendido;
         private int jugadorId;
         private List<ClienteConectado> clientes;
+        private HistorialTransacciones historialtransacciones = new HistorialTransacciones();
 
 
         public Servidor(int puerto, Banco banco, Tablero_LL tablerito)
@@ -186,7 +187,10 @@ namespace Monopoly.App
             return banco;
         }
 
-
+        public HistorialTransacciones GetHistorialTransacciones()
+        {
+            return historialtransacciones;
+        }
     }
 
     public class ClienteConectado

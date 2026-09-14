@@ -127,29 +127,29 @@ public class Tablero_LL
     {
         
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
-            Propiedad Casa1 = new Propiedad(2, 1, "Casa 1", 200, 50);
-            Propiedad Casa2 = new Propiedad(3, 2, "Casa 2", 200, 50);
-            Propiedad Casa3 = new Propiedad(4, 3, "Casa 3", 200, 50);
-            Propiedad Casa4 = new Propiedad(5, 4, "Casa 4", 200, 50);
-            Propiedad Casa5 = new Propiedad(6, 5, "Casa 5", 200, 50);
+            Propiedad Casa1 = new Propiedad(2, 1, "Avenida Mediterráneo", 50, 25);
+            Propiedad Casa2 = new Propiedad(3, 2, "Avenida Báltica", 50, 25);
+            Propiedad Casa3 = new Propiedad(4, 3, "Avenida Oriental", 100, 50);
+            Propiedad Casa4 = new Propiedad(5, 4, "Avenida Vermont", 100, 50);
+            Propiedad Casa5 = new Propiedad(6, 5, "Avenida Connecticut", 120, 60);
             CasillaEspecial carcel = new CasillaEspecial(7, "Carcel");
-            Propiedad Casa6 = new Propiedad(8, 6, "Casa 6", 200, 50);
+            Propiedad Casa6 = new Propiedad(8, 6, "Plaza San Carlos", 140, 70);
             CasillaEvento primerevento = new CasillaEvento(9,1);
-            Propiedad Casa7 = new Propiedad(10, 7, "Casa 7", 200, 50);
-            Propiedad Casa8 = new Propiedad(11, 8, "Casa 8", 200, 50);
-            Propiedad Casa9 = new Propiedad(12, 9, "Casa 9", 200, 50);
-            Propiedad Casa10= new Propiedad(13, 10, "Casa 10", 200, 50);
+            Propiedad Casa7 = new Propiedad(10, 7, "Avenida Estados", 140, 70);
+            Propiedad Casa8 = new Propiedad(11, 8, "Avenida Virginia", 160, 80);
+            Propiedad Casa9 = new Propiedad(12, 9, "Plaza St. James", 180, 90);
+            Propiedad Casa10= new Propiedad(13, 10, "Avenida Tenesse", 180, 90);
             CasillaEvento segundoevento = new CasillaEvento(14, 2);
-            Propiedad Casa11 = new Propiedad(15, 11, "Casa 11", 200, 50);
-            Propiedad Casa12 = new Propiedad(16, 12, "Casa 12", 200, 50);
-            Propiedad Casa13 = new Propiedad(17, 13, "Casa 13", 200, 50);
+            Propiedad Casa11 = new Propiedad(15, 11, "Avenida Nueva York", 200, 100);
+            Propiedad Casa12 = new Propiedad(16, 12, "Avenida Kentucky", 220, 110);
+            Propiedad Casa13 = new Propiedad(17, 13, "Avenida Pennsylvania", 220, 110);
             CasillaEvento tercerevento = new CasillaEvento(18, 2);
-            Propiedad Casa14 = new Propiedad(19, 14, "Casa 14", 200, 50);
-            Propiedad Casa15 = new Propiedad(20, 15, "Casa 15", 200, 50);
-            Propiedad Casa16 = new Propiedad(21, 16, "Casa 16", 200, 50);
+            Propiedad Casa14 = new Propiedad(19, 14, "Avenida Indiana", 240, 120);
+            Propiedad Casa15 = new Propiedad(20, 15, "Avenida Illinois", 240, 120);
+            Propiedad Casa16 = new Propiedad(21, 16, "Avenida Atlántico", 240, 120);
             CasillaEspecial libre = new CasillaEspecial(22, "Casilla Libre");
-            Propiedad Casa17 = new Propiedad(23, 17, "Casa 17", 200, 50);
-            Propiedad Casa18 = new Propiedad(24, 18, "Casa 18", 200, 50);
+            Propiedad Casa17 = new Propiedad(23, 17, "Jardines Marvin", 260, 130);
+            Propiedad Casa18 = new Propiedad(24, 18, "Plaza Park", 280, 140);
 
 
             this.AgregarCasilla(salida);

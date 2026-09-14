@@ -10,13 +10,13 @@ namespace Monopoly.App
         public string Tipo;
         public string Origen;
         public string Destino;
-        public double Monto;
+        public int Monto;
         public string Descripcion;
         public Transaccion? Next;
         public Transaccion? Previous;
         public bool Mostrada;
 
-        public Transaccion(int id, DateTime fechaHora, int turno,string tipo, string origen, string destino,double monto, string descripcion)
+        public Transaccion(int id, DateTime fechaHora, int turno,string tipo, string origen, string destino,int monto, string descripcion)
         {
             Id = id;
             FechaHora = fechaHora;

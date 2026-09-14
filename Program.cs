@@ -4,7 +4,7 @@ namespace Monopoly.App
     {
         static void Main(string[] args)
         {
-            
+            Juego.CrearServidor();
             Tablero_LL tablerito = new Tablero_LL();
 // 
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
@@ -63,9 +63,9 @@ namespace Monopoly.App
 
             HistorialTransacciones historial = new HistorialTransacciones();
 
-            Transaccion t1 = new Transaccion(1, DateTime.Now, 4, "Ganancia por evento", "Banco", "Jugador 4", 500.0, "Recibe 500 del banco");
-            Transaccion t2 = new Transaccion(2, DateTime.Now, 1, "Pago de alquiler", "Jugador 1", "Jugador 3", 200.0, "Pago de alquiler por caer en ....");
-            Transaccion t3 = new Transaccion(3, new DateTime(2026, 9, 20), 2, "Premio por pasar por el inicio", "Banco", "Jugador 1", 200.0, "Recibe 200 por pasar por la salida");
+            Transaccion t1 = new Transaccion(1, DateTime.Now, 4, "Ganancia por evento", "Banco", "Jugador 4", 500, "Recibe 500 del banco");
+            Transaccion t2 = new Transaccion(2, DateTime.Now, 1, "Pago de alquiler", "Jugador 1", "Jugador 3", 200, "Pago de alquiler por caer en ....");
+            Transaccion t3 = new Transaccion(3, new DateTime(2026, 9, 20), 2, "Premio por pasar por el inicio", "Banco", "Jugador 1", 200, "Recibe 200 por pasar por la salida");
 
             historial.InsertarTransaccion(t1);
             historial.InsertarTransaccion(t2);
@@ -74,10 +74,11 @@ namespace Monopoly.App
 
             Console.WriteLine($"Total de transacciones: {historial.size}");
 
-            Jugador jugador = new Jugador(01, "Leo");
-            Juego.servidor.GetBanco().ListaJugadores.Add(jugador);
-            Console.WriteLine(Juego.servidor.GetBanco().ListaJugadores[0]);
-            Console.WriteLine(Juego.servidor.GetBanco().ComprarPropiedad(01, 02));
+            Juego.servidor.GetBanco().AgregarJugador("Leo", 01);
+            Juego.servidor.GetBanco().AgregarJugador("Ale", 02);
+            Console.WriteLine(Juego.servidor.GetBanco().ListaJugadores[0].GetNombre());
+            Console.WriteLine(Juego.servidor.GetBanco().CobrarAlquiler(01, 03, 02));
+            Console.WriteLine(Juego.servidor.GetHistorialTransacciones().tail.Descripcion);
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
