@@ -23,7 +23,7 @@ namespace Monopoly.App
         public async Task IniciarAsync(int puerto, string nombreJugador)
         {
 
-            Servidor = new Servidor(puerto, Banco, Tablero);
+            Servidor = new Servidor(puerto, Banco, Tablero, "COM5");
             _ = Servidor.IniciarConexionAsync(); 
 
 

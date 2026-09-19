@@ -15,18 +15,22 @@ namespace Monopoly.App
         private TcpListener listener;
         private Tablero_LL tablerito;
         private Banco banco;
+
+        private Dado dado;
         private bool prendido;
         private int jugadorId;
         private List<ClienteConectado> clientes;
         private HistorialTransacciones historialtransacciones = new HistorialTransacciones();
 
 
-        public Servidor(int puerto, Banco banco, Tablero_LL tablerito)
+        public Servidor(int puerto, Banco banco, Tablero_LL tablerito, string puertoDado)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
             clientes = new List<ClienteConectado>();
             this.banco = banco;
             this.tablerito = tablerito;
+
+            dado = new Dado(puertoDado);
             jugadorId = 1;
         }
 //https://learn.microsoft.com/es-es/dotnet/csharp/asynchronous-programming/
@@ -107,14 +111,20 @@ namespace Monopoly.App
         public void TirarDados(ClienteConectado cliente)
         {
             int idJugador = cliente.IdJugador;
-            var resultado = banco.TirarDados(idJugador); // esto todavía no existe en Banco
-            EnviarTodos("DADOS " + idJugador + "HA SACADO"+resultado);
+            dado.LeerLanzamiento();
+            if (dado.IdJugador != idJugador)
+            {
+                EnviarCliente(cliente, "ERROR TARJETA_INCORRECTA");
+                return;
+            }
+
+            EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
         {
             int idJugador = cliente.IdJugador;
-            int idCasilla = int.Parse(comunicacion[2]);
+            int idCasilla = int.Parse(comunicacion[1]);
             bool exito = banco.ComprarPropiedad(idJugador, idCasilla);
 
             if (!exito)

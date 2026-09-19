@@ -18,6 +18,8 @@ namespace Monopoly.App
         public event Action<string> ActualizacionJuego;
         public event Action<string> ErrorRecibido;
 
+        public event Action<int, int> PropiedadDisponible;
+
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
         {
             socket = new TcpClient();
@@ -109,6 +111,38 @@ namespace Monopoly.App
                     ErrorRecibido.Invoke(linea);
                 }
             }
+            else if (comando == "PROPIEDAD_DISPONIBLE")
+            {
+                int idCasilla = int.Parse(partes[1]);
+                int precio = int.Parse(partes[2]);
+
+                if (ActualizacionJuego != null)
+                {
+                    PropiedadDisponible.Invoke(idCasilla, precio);
+                }
+            }
+            else if (comando == "ALQUILER")
+            {
+                int jugadorPaga = int.Parse(partes[1]);
+                int propietario = int.Parse(partes[2]);
+                int monto = int.Parse(partes[3]);
+
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("Jugador " + jugadorPaga +" pagó $" + monto +" al jugador " + propietario);
+                }
+            }
+            else if (comando == "PROPIEDAD_PROPIA")
+            {
+                int idCasilla = int.Parse(partes[1]);
+
+                if (ActualizacionJuego != null)
+                {
+                    ActualizacionJuego.Invoke("La casilla " + idCasilla + " ya es tuya");
+                }
+            }
+            
+            
             else
             {
                 if (ErrorRecibido != null)

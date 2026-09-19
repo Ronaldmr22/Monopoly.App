@@ -2,7 +2,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Monopoly.App
 {
-    class Juego
+    public class Juego
     {
         private ColaTurnos turnos;
 
