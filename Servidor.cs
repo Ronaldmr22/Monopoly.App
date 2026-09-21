@@ -89,6 +89,10 @@ namespace Monopoly.App
                 case "CONSULTAR_TRANSACCIONES":
                     
                     break;
+
+                case "CONSULTAR_LOBBY":
+                    EnviarLobby(cliente);
+                    break;
  
                 default:
                     EnviarCliente(cliente, $"ERROR COMANDO_DESCONOCIDO {comando}");
@@ -103,10 +107,16 @@ namespace Monopoly.App
             cliente.IdJugador = id;
             clientes.Add(cliente);
 
+            foreach (Jugador jugador in banco.ListaJugadores)
+            {
+                EnviarCliente(cliente,$"JUGADOR {jugador.GetId()} {jugador.GetNombre()}");
+            }
+
             banco.AgregarJugador(nombreJugador, id);
             juego.AgregarJugador(id);
-            EnviarCliente(cliente, $"CONECTAR {id}");
-            EnviarTodos($"JUGADOR {id} SE HA UNIDO");
+
+            EnviarCliente(cliente,$"CONECTAR {id} {nombreJugador}");
+            EnviarTodos($"JUGADOR {id} {nombreJugador}");
 
         }
 
@@ -182,6 +192,14 @@ namespace Monopoly.App
                 {
                     EnviarCliente(dueño,$"Ha recibido el alquiler de la propiedad");
                 }
+        }
+
+        public void EnviarLobby(ClienteConectado cliente)
+        {
+            foreach (Jugador jugador in banco.ListaJugadores)
+            {
+                EnviarCliente(cliente,$"JUGADOR {jugador.GetId()} {jugador.GetNombre()}");
+            }
         }
 
         public void TerminarTurno()

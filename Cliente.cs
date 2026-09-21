@@ -14,6 +14,7 @@ namespace Monopoly.App
         private bool conectado;
 
         public int IdJugador { get; private set; }
+        public event Action<int, string> JugadorConectado;
 
         public event Action<string> ActualizacionJuego;
         public event Action<string> ErrorRecibido;
@@ -57,16 +58,19 @@ namespace Monopoly.App
             if (comando == "CONECTAR")
             {
                 IdJugador = int.Parse(partes[1]);
+                string nombre = partes[2];
                 if (ActualizacionJuego != null)
                 {
-                    ActualizacionJuego.Invoke("Te conectaste como jugador " + IdJugador);
+                    ActualizacionJuego.Invoke($"Te conectaste como {nombre}, jugador {IdJugador}");
                 }
             }
             else if (comando == "JUGADOR")
             {
-                if (ActualizacionJuego != null)
+                int id = int.Parse(partes[1]);
+                string nombre = partes[2];
+                if (JugadorConectado != null)
                 {
-                    ActualizacionJuego.Invoke("Jugador " + partes[1] + " se unió a la partida");
+                    JugadorConectado.Invoke(id, nombre);
                 }
             }
             else if (comando == "DADOS")
@@ -187,6 +191,11 @@ namespace Monopoly.App
             {
                 socket.Close();
             }
+        }
+
+        public void ConsultarLobby()
+        {
+            EnviarMensaje("CONSULTAR_LOBBY");
         }
     }
 }

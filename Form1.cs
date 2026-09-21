@@ -23,20 +23,9 @@ namespace Monopoly.App
             {
                 string nombreJugador = txt_nombre.Text;
                 int puerto = 5000;
-
                 Host host = new Host();
-
-                host.Cliente.ActualizacionJuego += texto =>
-                {
-                    this.Invoke(new Action(() => MessageBox.Show(texto)));
-                };
-
-                host.Cliente.ErrorRecibido += texto =>
-                {this.Invoke(new Action(() =>{MessageBox.Show(texto);}));};
-
-                await host.IniciarAsync(puerto, nombreJugador);
-
-                FormHost siguiente = new FormHost(host, nombreJugador);
+                await host.IniciarAsync(5000,nombreJugador);
+                FormHost siguiente = new FormHost(host.Cliente,nombreJugador, true);
                 siguiente.Show();
                 this.Hide();
             }
@@ -54,17 +43,9 @@ namespace Monopoly.App
 
                 Cliente cliente = new Cliente();
 
-                cliente.ActualizacionJuego += texto =>{this.Invoke(new Action(() =>{MessageBox.Show(texto);}));};
-
-                cliente.ErrorRecibido += texto =>
-                {this.Invoke(new Action(() =>{MessageBox.Show(texto);}));};
-
                 await cliente.ConectarAsync("192.168.0.221",5000,nombreJugador);
 
-                FormCliente siguiente = new FormCliente(
-                    cliente,
-                    nombreJugador
-                );
+                FormHost siguiente = new FormHost(cliente,nombreJugador, false);
 
                 siguiente.Show();
                 this.Hide();

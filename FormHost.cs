@@ -1,27 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Monopoly.App
 {
     public partial class FormHost : Form
     {
-        private Host host;
-        public FormHost(Host host, string nombreJugador)
+        private Cliente cliente;
+        private string nombreJugador;
+
+        private bool esHost;
+
+        public FormHost(Cliente cliente, string nombreJugador, bool esHost)
         {
             InitializeComponent();
-            this.host = host;
 
-            lbl_nombre1H.Text = nombreJugador;
+            this.cliente = cliente;
+            this.nombreJugador = nombreJugador;
+            this.esHost = esHost;
 
-            host.Cliente.ActualizacionJuego += texto =>
+            cliente.JugadorConectado += MostrarJugador;
+            MostrarMenu();
+            cliente.ConsultarLobby();
+        }
+
+        private void MostrarMenu()
+        {
+            if (esHost)
             {
-                this.Invoke(new Action(() => MessageBox.Show(texto)));
-            };
+                lbl_esperahost1.Text = "Eres el host de la partida";
+                lbl_esperahost2.Text = "Esperando a que se unan los jugadores";
+
+                btn_comenzarH.Visible = true;
+            }
+            else
+            {
+                lbl_esperahost1.Text = "Te has unido a la partida";
+                lbl_esperahost2.Text = "Esperando a que el host comience";
+
+                btn_comenzarH.Visible = false;
+            }
+        }
+
+        private void MostrarJugador(int id, string nombre)
+        {
+            this.Invoke(new Action(() =>
+            {
+                if (id == 1)
+                {
+                    lbl_nombre1H.Text = nombre;
+                }
+                else if (id == 2)
+                {
+                    lbl_nombre2H.Text = nombre;
+                }
+                else if (id == 3)
+                {
+                    lbl_nombre3H.Text = nombre;
+                }
+                else if (id == 4)
+                {
+                    lbl_nombre4H.Text = nombre;
+                }
+            }));
         }
 
         private void FormEspera_Load(object sender, EventArgs e)
