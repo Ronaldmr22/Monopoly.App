@@ -10,9 +10,15 @@ namespace Monopoly.App
 {
     public partial class FormCliente : Form
     {
-        public FormCliente()
+        private Cliente cliente;
+        private string nombreJugador;
+
+        public FormCliente(Cliente cliente, string nombreJugador)
         {
             InitializeComponent();
+
+            this.cliente = cliente;
+            this.nombreJugador = nombreJugador;
         }
     }
 }

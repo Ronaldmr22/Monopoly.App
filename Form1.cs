@@ -26,11 +26,13 @@ namespace Monopoly.App
 
                 Host host = new Host();
 
-                // Suscribo ANTES de conectar, así no me pierdo el mensaje
                 host.Cliente.ActualizacionJuego += texto =>
                 {
                     this.Invoke(new Action(() => MessageBox.Show(texto)));
                 };
+
+                host.Cliente.ErrorRecibido += texto =>
+                {this.Invoke(new Action(() =>{MessageBox.Show(texto);}));};
 
                 await host.IniciarAsync(puerto, nombreJugador);
 
@@ -44,11 +46,26 @@ namespace Monopoly.App
             }
         }
 
-        private void btn_unirse_Click(object sender, EventArgs e)
+        private async void btn_unirse_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(txt_nombre.Text))
             {
-                FormCliente siguiente = new FormCliente();
+                string nombreJugador = txt_nombre.Text;
+
+                Cliente cliente = new Cliente();
+
+                cliente.ActualizacionJuego += texto =>{this.Invoke(new Action(() =>{MessageBox.Show(texto);}));};
+
+                cliente.ErrorRecibido += texto =>
+                {this.Invoke(new Action(() =>{MessageBox.Show(texto);}));};
+
+                await cliente.ConectarAsync("192.168.0.221",5000,nombreJugador);
+
+                FormCliente siguiente = new FormCliente(
+                    cliente,
+                    nombreJugador
+                );
+
                 siguiente.Show();
                 this.Hide();
             }
