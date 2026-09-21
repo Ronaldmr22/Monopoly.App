@@ -4,6 +4,19 @@ namespace Monopoly.App
     {
         public List<Jugador> ListaJugadores = [];
         public int IdTransaccion = 1;
+
+        private Tablero_LL tablero;
+        private HistorialTransacciones historial;
+        private Juego juego;
+
+        public Banco(Tablero_LL tablero, HistorialTransacciones historial, Juego juego)
+        {
+            this.tablero = tablero;
+            this.historial = historial;
+            this.juego = juego;
+        }
+
+
         
         public bool Transferir(object Origen, object Destino, int Monto, string tipo, string Razon)
         {
@@ -13,22 +26,22 @@ namespace Monopoly.App
                 {
                     if (jugadorO.PagarDinero(Monto))
                     {
-                        Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), Monto, Razon);
-                        Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion1);
+                        Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), Monto, Razon);
+                        historial.InsertarTransaccion(transaccion1);
                         jugadorD.RecibirDinero(Monto);
                         return true;
                     }
                     else
                     {
-                        Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), jugadorO.GetSaldo(), Razon);
-                        Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion1);
+                        Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), jugadorO.GetSaldo(), Razon);
+                        historial.InsertarTransaccion(transaccion1);
                         jugadorD.RecibirDinero(jugadorO.GetSaldo());
                         DestruirJugador(jugadorO);
                         return false;
                     }
                 }
-                Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, "Banco", jugadorD.GetNombre(), Monto, Razon);
-                Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion);
+                Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, "Banco", jugadorD.GetNombre(), Monto, Razon);
+                historial.InsertarTransaccion(transaccion);
                 jugadorD.RecibirDinero(Monto);
                 return true;
             }
@@ -37,14 +50,14 @@ namespace Monopoly.App
                 if (Origen is Jugador jugadorO){ 
                     if (jugadorO.PagarDinero(Monto))
                     {
-                        Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), "Banco", Monto, Razon);
-                        Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion);
+                        Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), "Banco", Monto, Razon);
+                        historial.InsertarTransaccion(transaccion);
                         return true;
                     }
                     else
                     {
-                        Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, Juego.turno, tipo, jugadorO.GetNombre(), "Banco", jugadorO.GetSaldo(), Razon);
-                        Juego.servidor.GetHistorialTransacciones().InsertarTransaccion(transaccion);
+                        Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), "Banco", jugadorO.GetSaldo(), Razon);
+                        historial.InsertarTransaccion(transaccion);
                         DestruirJugador(jugadorO);
                         return false;
                     }
@@ -73,7 +86,7 @@ namespace Monopoly.App
                 }
             }
 
-            for (Nodo nodo = Juego.servidor.GetTablero().GetHead(); nodo.Next != Juego.servidor.GetTablero().GetHead(); nodo = nodo.Next)
+            for (Nodo nodo = tablero.GetHead(); nodo.Next != tablero.GetHead(); nodo = nodo.Next)
             {
                 if (nodo.Data.NumeroCasilla == idCasilla && nodo.Data is Propiedad propiedadObjetivo)
                 {
@@ -86,7 +99,7 @@ namespace Monopoly.App
             }
             else
             {
-                Transferir(jugador, Juego.servidor.GetBanco(), propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
+                Transferir(jugador, this, propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
                 return true;
             }
         }
@@ -113,7 +126,7 @@ namespace Monopoly.App
                     break;
                 }
             }
-            for (Nodo nodo = Juego.servidor.GetTablero().GetHead(); nodo.Next != Juego.servidor.GetTablero().GetHead(); nodo = nodo.Next)
+            for (Nodo nodo = tablero.GetHead(); nodo.Next != tablero.GetHead(); nodo = nodo.Next)
             {
                 if (nodo.Data.NumeroCasilla == idPropiedad && nodo.Data is Propiedad propiedadObjetivo)
                 {

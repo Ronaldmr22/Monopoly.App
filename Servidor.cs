@@ -20,15 +20,16 @@ namespace Monopoly.App
         private bool prendido;
         private int jugadorId;
         private List<ClienteConectado> clientes;
-        private HistorialTransacciones historialtransacciones = new HistorialTransacciones();
+        private HistorialTransacciones historialtransacciones;
 
 
-        public Servidor(int puerto, Banco banco, Tablero_LL tablerito, string puertoDado)
+        public Servidor(int puerto, Banco banco, Tablero_LL tablerito, HistorialTransacciones historialTransacciones, string puertoDado)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
             clientes = new List<ClienteConectado>();
             this.banco = banco;
             this.tablerito = tablerito;
+            this.historialtransacciones = historialTransacciones;
 
             dado = new Dado(puertoDado);
             jugadorId = 1;

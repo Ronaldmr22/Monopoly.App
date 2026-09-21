@@ -2,10 +2,14 @@ namespace Monopoly.App
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            Console.WriteLine("ENTRE AL MAIN");
+
+            Host host = new Host();
+
             //Juego.CrearServidor();
-            Tablero_LL tablerito = new Tablero_LL();
+            Tablero_LL tablerito = host.Tablero;
 // 
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
             Propiedad Casa1 = new Propiedad(2, 1, "Avenida Mediterráneo", 50, 25);
@@ -61,18 +65,7 @@ namespace Monopoly.App
             tablerito.ImprimirTablero();
             
 
-            HistorialTransacciones historial = new HistorialTransacciones();
 
-            Transaccion t1 = new Transaccion(1, DateTime.Now, 4, "Ganancia por evento", "Banco", "Jugador 4", 500, "Recibe 500 del banco");
-            Transaccion t2 = new Transaccion(4, DateTime.Now, 1, "Pago de alquiler", "Jugador 1", "Jugador 3", 200, "Pago de alquiler por caer en ....");
-            Transaccion t3 = new Transaccion(2, DateTime.Now, 2, "Ganancia por evento", "Banco", "Jugador 4", 500, "Recibe 500 del banco");
-            Transaccion t4 = new Transaccion(4, DateTime.Now, 3, "Premio por pasar por el inicio", "Banco", "Jugador 1", 200, "Recibe 200 por pasar por la salida");
-
-            historial.InsertarTransaccion(t1);
-            historial.InsertarTransaccion(t2);
-            historial.InsertarTransaccion(t3);
-            historial.InsertarTransaccion(t4);
-            historial.RecorrerDesdeMasAntigua();
 
 
             /*
@@ -85,22 +78,46 @@ namespace Monopoly.App
 
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
-            ApplicationConfiguration.Initialize();
-            Application.Run(new Form1());
+            //ApplicationConfiguration.Initialize();
+            //Application.Run(new Form1());
 
 
-            Dado dado = new Dado("COM5");
+            Console.WriteLine("Iniciando servidor...");
 
-            Console.WriteLine("Acerca una tarjeta...");
+            await host.IniciarAsync(5000, "Ronald");
 
-            dado.LeerLanzamiento();
+            Console.WriteLine("Servidor iniciado.");
 
-            Console.WriteLine("Jugador: " + dado.IdJugador);
-            Console.WriteLine("Dado 1: " + dado.Dado1);
-            Console.WriteLine("Dado 2: " + dado.Dado2);
-            Console.WriteLine("Total: " + dado.ObtenerTotal());
+            await Task.Delay(1000);
 
-            dado.Cerrar();
+            Console.WriteLine(
+                "Jugador conectado con ID: " +
+                host.Cliente.IdJugador
+            );
+
+
+            // Escuchar respuestas del servidor
+            host.Cliente.ActualizacionJuego += mensaje =>
+            {
+                Console.WriteLine("SERVIDOR: " + mensaje);
+            };
+
+            host.Cliente.ErrorRecibido += mensaje =>
+            {
+                Console.WriteLine("ERROR: " + mensaje);
+            };
+
+
+            Console.WriteLine("Solicitando lanzamiento de dados...");
+            Console.WriteLine("Acerca la tarjeta RFID...");
+
+            // Cliente -> Servidor
+            host.Cliente.TirarDados();
+
+
+            // Evita que el programa se cierre
+            Console.ReadLine();
+            
         }
     }
 }

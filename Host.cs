@@ -12,31 +12,35 @@ namespace Monopoly.App
         public Cliente Cliente { get; private set; }
         public Banco Banco { get; private set; }
         public Tablero_LL Tablero { get; private set; }
+        public Juego Juego { get; private set; }
+        public HistorialTransacciones Historial { get; private set; }
 
         public Host()
         {
-            Banco = new Banco();
             Tablero = new Tablero_LL();
+            Historial = new HistorialTransacciones();
+            Juego = new Juego();
+
+            Banco = new Banco(Tablero, Historial, Juego);
+
             Cliente = new Cliente();
         }
 
         public async Task IniciarAsync(int puerto, string nombreJugador)
         {
+            Servidor = new Servidor(puerto,Banco,Tablero,Historial,"COM5");
 
-            Servidor = new Servidor(puerto, Banco, Tablero, "COM5");
-            _ = Servidor.IniciarConexionAsync(); 
-
+            _ = Servidor.IniciarConexionAsync();
 
             Cliente = new Cliente();
-            await Cliente.ConectarAsync("127.0.0.1", puerto, nombreJugador);
+
+            await Cliente.ConectarAsync("127.0.0.1",puerto,nombreJugador);
         }
 
         public string ObtenerIpLocal()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
-            return host.AddressList
-                .First(ip => ip.AddressFamily == AddressFamily.InterNetwork)
-                .ToString();
+            return host.AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString();
         }
     }
 }
