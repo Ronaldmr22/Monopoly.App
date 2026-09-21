@@ -4,9 +4,9 @@ public class Jugador{
     private int Id;
     private string Nombre;
     private int Saldo = 500;
-    private int Posicion = 0;
+    private int Posicion = 1;
     private bool Estado = false;
-    private List<Object> Propiedades = [];
+    private ListaPropiedades Propiedades;
     private bool TurnoPerdido = false;
 
     public Jugador(int Id, string Nombre)
@@ -55,14 +55,9 @@ public class Jugador{
         this.Estado = Estado;
     }
 
-    public List<Object> GetPropiedades()
+    public ListaPropiedades GetPropiedades()
     {
         return this.Propiedades;
-    }
-
-    public void SetPropiedades(List<Object> Propiedades)
-    {
-        this.Propiedades = Propiedades;
     }
 
     public string GetInfo()
@@ -80,9 +75,9 @@ public class Jugador{
         return false;
     }
 
-    public void AgregarPropiedad(Object Propiedad)
+    public void AgregarPropiedad(Propiedad propiedad)
     {
-        Propiedades.Add(Propiedad);
+        Propiedades.InsertarFinal(propiedad);
     }
 
     public void RecibirDinero(int Dinero)

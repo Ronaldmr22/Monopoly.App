@@ -19,7 +19,7 @@ public class Casilla
 }
 
 
-class Propiedad : Casilla
+public class Propiedad : Casilla
 {
     private int id_propiedad;
     private String nombre;
@@ -58,7 +58,7 @@ class Propiedad : Casilla
 }
 
 
-class CasillaEspecial : Casilla
+public class CasillaEspecial : Casilla
 {
     private string nombre;
     public CasillaEspecial(int numeroCasilla, String nombre)
@@ -75,7 +75,7 @@ class CasillaEspecial : Casilla
 }
 
 
-class CasillaEvento : Casilla
+public class CasillaEvento : Casilla
 {
     private int idEvento;
     public CasillaEvento(int numeroCasilla, int idEvento)

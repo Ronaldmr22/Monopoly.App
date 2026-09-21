@@ -21,16 +21,16 @@ namespace Monopoly.App
         private int jugadorId;
         private List<ClienteConectado> clientes;
         private HistorialTransacciones historialtransacciones;
+        private Juego juego;
 
-
-        public Servidor(int puerto, Banco banco, Tablero_LL tablerito, HistorialTransacciones historialTransacciones, string puertoDado)
+        public Servidor(int puerto, Banco banco, Tablero_LL tablerito, HistorialTransacciones historialTransacciones,Juego juego, string puertoDado)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
             clientes = new List<ClienteConectado>();
             this.banco = banco;
             this.tablerito = tablerito;
             this.historialtransacciones = historialTransacciones;
-
+            this.juego = juego;
             dado = new Dado(puertoDado);
             jugadorId = 1;
         }
@@ -104,6 +104,7 @@ namespace Monopoly.App
             clientes.Add(cliente);
 
             banco.AgregarJugador(nombreJugador, id);
+            juego.AgregarJugador(id);
             EnviarCliente(cliente, $"CONECTAR {id}");
             EnviarTodos($"JUGADOR {id} SE HA UNIDO");
 
@@ -112,14 +113,28 @@ namespace Monopoly.App
         public void TirarDados(ClienteConectado cliente)
         {
             int idJugador = cliente.IdJugador;
+
+            if (!juego.EsElTurnoDe(idJugador))
+            {
+                EnviarCliente(cliente, "ERROR NO_ES_TU_TURNO");
+                return;
+            }
+
             dado.LeerLanzamiento();
+
             if (dado.IdJugador != idJugador)
             {
                 EnviarCliente(cliente, "ERROR TARJETA_INCORRECTA");
                 return;
             }
 
+            int movimiento = dado.Dado1 + dado.Dado2;
+
+            int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
+
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
+
+            Console.WriteLine($"Jugador {idJugador} se movio a la casilla {nuevaPosicion}");
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)

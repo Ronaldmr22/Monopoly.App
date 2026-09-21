@@ -151,6 +151,35 @@ namespace Monopoly.App
             }
         }
 
+        public Jugador BuscarJugador(int idJugador)
+        {
+            foreach (Jugador jugador in ListaJugadores)
+            {
+                if (jugador.GetId() == idJugador)
+                {
+                    return jugador;
+                }
+            }
+
+            return null;
+        }
+
+        public int MoverJugador(int idJugador, int movimiento)
+        {
+            Jugador jugador = BuscarJugador(idJugador);
+
+            int nuevaPosicion = jugador.GetPosicion() + movimiento;
+
+            if (nuevaPosicion > 24)
+            {
+                nuevaPosicion = nuevaPosicion - 24;
+            }
+
+            jugador.SetPosicion(nuevaPosicion);
+
+            return nuevaPosicion;
+        }
+
         public string Getinfo()
         {
             return "1";
