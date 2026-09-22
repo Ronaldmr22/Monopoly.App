@@ -50,11 +50,16 @@ namespace Monopoly.App
             if (!string.IsNullOrWhiteSpace(txt_nombre.Text))
             {
                 string nombreJugador = txt_nombre.Text;
-
+                string nombreJugador2 = txt_nombre2.Text;
                 Cliente cliente = new Cliente();
 
                 await cliente.ConectarAsync("192.168.0.221", 5000, nombreJugador);
+                if (!string.IsNullOrWhiteSpace(nombreJugador2))
+                {
+                    Cliente cliente2 = new Cliente();
 
+                    await cliente2.ConectarAsync("192.168.0.221",5000,nombreJugador2);
+                }
                 FormHost siguiente = new FormHost(cliente, nombreJugador, false);
 
                 siguiente.Show();
