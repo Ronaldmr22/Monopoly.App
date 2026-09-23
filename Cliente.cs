@@ -24,6 +24,7 @@ namespace Monopoly.App
         public event Action<int> TurnoCambiado;
         public event Action<int, int> DineroActualizado;
 
+
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
         {
             socket = new TcpClient();
@@ -129,10 +130,8 @@ namespace Monopoly.App
                 int idCasilla = int.Parse(partes[1]);
                 int precio = int.Parse(partes[2]);
 
-                if (ActualizacionJuego != null)
-                {
-                    PropiedadDisponible.Invoke(idCasilla, precio);
-                }
+                PropiedadDisponible.Invoke(idCasilla, precio);
+
             }
             else if (comando == "ALQUILER")
             {

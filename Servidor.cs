@@ -149,6 +149,13 @@ namespace Monopoly.App
             banco.ResolverCasilla(idJugador);
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
             EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
+        
+            string resultadoCasilla = banco.ResolverCasilla(idJugador);
+            string[] resultado = resultadoCasilla.Split(' ');
+            if (resultado[0] == "DISPONIBLE")
+            {
+                EnviarCliente(cliente,$"PROPIEDAD_DISPONIBLE {resultado[1]} {resultado[2]}");
+            }
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)

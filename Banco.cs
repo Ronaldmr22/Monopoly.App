@@ -190,15 +190,15 @@ namespace Monopoly.App
                 Jugador? dueño = BuscarDueñoPropiedad(propiedad.IdPropiedad);
                 if (dueño == null)
                 {
-                    return "DISPONIBLE";
+                    return $"DISPONIBLE {propiedad.NumeroCasilla} {propiedad.Precio}";
                 }
                 else if (dueño.GetId() == idJugador)
                 {
-                    return "PROPIA";
+                    return $"PROPIA {propiedad.NumeroCasilla}";
                 }
                 else
                 {
-                    return "OCUPADA";
+                    return $"OCUPADA {propiedad.NumeroCasilla} {dueño.GetId()}";
                 }
             }
             else if(casilla is CasillaEvento casillaEvento)
