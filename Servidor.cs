@@ -78,9 +78,9 @@ namespace Monopoly.App
                 case "NO_COMPRAR":
                     break;
  
-                //case "TERMINAR_TURNO":
-                    //TerminarTurno(cliente, comunicacion);
-                    //break;
+                case "TERMINAR_TURNO":
+                    TerminarTurno();
+                    break;
  
                 case "CONSULTAR_ESTADO":
                     EnviarCliente(cliente, "ESTADO " + banco.Getinfo());
@@ -92,6 +92,10 @@ namespace Monopoly.App
 
                 case "CONSULTAR_LOBBY":
                     EnviarLobby(cliente);
+                    break;
+                
+                case "INICIAR_PARTIDA":
+                    EnviarTodos("PARTIDA_INICIADA");
                     break;
  
                 default:
@@ -143,8 +147,7 @@ namespace Monopoly.App
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
-
-            Console.WriteLine($"Jugador {idJugador} se movio a la casilla {nuevaPosicion}");
+            EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
@@ -204,7 +207,11 @@ namespace Monopoly.App
 
         public void TerminarTurno()
         {
-            
+            juego.PasarTurno();
+
+            int siguienteJugador = juego.TurnoActual();
+
+            EnviarTodos($"TURNO {siguienteJugador}");
         }
 
         public void EnviarCliente(ClienteConectado cliente, string mensaje)

@@ -148,16 +148,27 @@ public class Tablero_LL
 
 
     }
-        public void ImprimirTablero()//esto se puede borrar luego, es solo para ver que se agregaron las casillas
-        {
-            if (head == null) return;
 
-            Nodo actual = head;
-            do
-            {
-                // 'actual' es el Nodo, 'actual.Data' es la Casilla, 'actual.Next' es el siguiente Nodo
-                Console.WriteLine($"Casilla: {actual.Data.NumeroCasilla} -> Siguiente Casilla: {actual.Next.Data.NumeroCasilla}");
-                actual = actual.Next;
-            } while (actual != head);
+    public Casilla? BuscarCasilla(int numCasilla)
+    {
+        if (head == null)
+        {
+            return null;
         }
+
+        Nodo actual = head;
+
+        do
+        {
+            if (actual.Data.NumeroCasilla == numCasilla)
+            {
+                return actual.Data;
+            }
+
+            actual = actual.Next;
+
+        } while (actual != head);
+
+        return null;
+    }
 }
