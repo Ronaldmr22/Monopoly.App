@@ -212,20 +212,6 @@ namespace Monopoly.App
             return null;
         }
 
-        public Propiedad? ObtenerPropiedadActual(int idJugador)
-        {
-            Jugador jugador = BuscarJugador(idJugador);
-
-            Casilla casilla = tablero.BuscarCasilla(jugador.GetPosicion());
-
-            if (casilla is Propiedad propiedad)
-            {
-                return propiedad;
-            }
-
-            return null;
-        }
-
         public Jugador? BuscarDueñoPropiedad(int idPropiedad)
         {
             foreach (Jugador jugador in ListaJugadores)
