@@ -179,7 +179,7 @@ namespace Monopoly.App
 
             return nuevaPosicion;
         }
-        public Propiedad? ResolverCasilla(int idJugador)
+        public string ResolverCasilla(int idJugador)
         {
             Jugador jugador = BuscarJugador(idJugador);
 
@@ -190,15 +190,15 @@ namespace Monopoly.App
                 Jugador? dueño = BuscarDueñoPropiedad(propiedad.IdPropiedad);
                 if (dueño == null)
                 {
-                    
+                    return "DISPONIBLE";
                 }
                 else if (dueño.GetId() == idJugador)
                 {
-                    
+                    return "PROPIA";
                 }
                 else
                 {
-                    
+                    return "OCUPADA";
                 }
             }
             else if(casilla is CasillaEvento casillaEvento)
@@ -209,6 +209,20 @@ namespace Monopoly.App
             {
                 //return casillaEspecial;
             }
+            return null;
+        }
+
+        public Propiedad? ObtenerPropiedadActual(int idJugador)
+        {
+            Jugador jugador = BuscarJugador(idJugador);
+
+            Casilla casilla = tablero.BuscarCasilla(jugador.GetPosicion());
+
+            if (casilla is Propiedad propiedad)
+            {
+                return propiedad;
+            }
+
             return null;
         }
 
