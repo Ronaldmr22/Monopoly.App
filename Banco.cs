@@ -100,6 +100,7 @@ namespace Monopoly.App
             else
             {
                 Transferir(jugador, this, propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
+                jugador.AgregarPropiedad(propiedad);
                 return true;
             }
         }

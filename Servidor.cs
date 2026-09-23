@@ -166,12 +166,15 @@ namespace Monopoly.App
 
             if (!exito)
             {
-                EnviarCliente(cliente, $"DINERO INSUFICIENTE");
+                EnviarCliente(cliente, $"ERROR DINERO INSUFICIENTE");
                 return;
             }
 
-            EnviarCliente(cliente, $"COMPRAR PROPIEDAD {idCasilla}");
-            EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
+            Jugador jugador = banco.BuscarJugador(idJugador);
+            EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
+            EnviarCliente(cliente, $"COMPRAR_PROPIEDAD {idCasilla}");
+            EnviarTodos($"PROPIEDAD_COMPRADA {idJugador} {idCasilla}");
+            
         }
 
         public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad, int idDueño)
