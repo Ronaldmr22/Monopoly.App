@@ -26,6 +26,7 @@ namespace Monopoly.App
                 int puerto = 5000;
                 Host host = new Host();
                 await host.IniciarAsync(5000, nombreJugador);
+                
 
                 Cliente cliente2 = null;
                 if (!string.IsNullOrWhiteSpace(nombreJugador2))
@@ -33,6 +34,7 @@ namespace Monopoly.App
                     cliente2 = new Cliente();
 
                     await cliente2.ConectarAsync("127.0.0.1",puerto,nombreJugador2);
+                
                 }
 
 

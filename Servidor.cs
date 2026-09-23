@@ -146,6 +146,7 @@ namespace Monopoly.App
 
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
+            banco.ResolverCasilla(idJugador);
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
             EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
         }

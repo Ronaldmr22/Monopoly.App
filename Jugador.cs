@@ -13,6 +13,7 @@ public class Jugador{
     {
         this.Id = Id;
         this.Nombre = Nombre;
+        this.Propiedades = new ListaPropiedades();
     }
 
         public string GetNombre()

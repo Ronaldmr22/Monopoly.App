@@ -179,6 +179,51 @@ namespace Monopoly.App
 
             return nuevaPosicion;
         }
+        public Propiedad? ResolverCasilla(int idJugador)
+        {
+            Jugador jugador = BuscarJugador(idJugador);
+
+            Casilla casilla = tablero.BuscarCasilla(jugador.GetPosicion());
+
+            if (casilla is Propiedad propiedad)
+            {
+                Jugador? dueño = BuscarDueñoPropiedad(propiedad.IdPropiedad);
+                if (dueño == null)
+                {
+                    
+                }
+                else if (dueño.GetId() == idJugador)
+                {
+                    
+                }
+                else
+                {
+                    
+                }
+            }
+            else if(casilla is CasillaEvento casillaEvento)
+            {
+                //return casillaEvento;
+            }
+            else if(casilla is CasillaEspecial casillaEspecial)
+            {
+                //return casillaEspecial;
+            }
+            return null;
+        }
+
+        public Jugador? BuscarDueñoPropiedad(int idPropiedad)
+        {
+            foreach (Jugador jugador in ListaJugadores)
+            {
+                if (jugador.GetPropiedades().TienePropiedad(idPropiedad))
+                {
+                    return jugador;
+                }
+            }
+
+            return null;
+        }
 
         public string Getinfo()
         {
