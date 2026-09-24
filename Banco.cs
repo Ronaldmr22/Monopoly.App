@@ -68,7 +68,7 @@ namespace Monopoly.App
 
         public void DestruirJugador(Jugador jugador)
         {
-
+            juego.MuereJugador(jugador.GetId());
             ListaJugadores.Remove(jugador);
         }
 
@@ -99,13 +99,18 @@ namespace Monopoly.App
             }
             else
             {
-                Transferir(jugador, this, propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
-                jugador.AgregarPropiedad(propiedad);
-                return true;
+                bool compraExitosa = Transferir(jugador, this, propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
+                if (compraExitosa)
+                {
+                    jugador.AgregarPropiedad(propiedad);
+                    return true;
+                }
+
+                return false;
             }
         }
 
-        public int CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
+        public bool CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
         {
             Jugador? jugador = null;
             Propiedad? propiedad = null;
@@ -135,8 +140,7 @@ namespace Monopoly.App
                     break;
                 }
             }
-            Transferir(jugador, dueño, propiedad.Precio, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
-            return jugador.GetSaldo();
+            return Transferir(jugador, dueño, propiedad.Alquiler, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
         }
 
         public void AgregarJugador(string nombreJugador, int id)
@@ -199,6 +203,11 @@ namespace Monopoly.App
                 }
                 else
                 {
+                    bool pagoExitoso = CobrarAlquiler(idJugador,propiedad.NumeroCasilla,dueño.GetId());
+                    if (!pagoExitoso)
+                    {
+                        return $"ELIMINADO {idJugador} {dueño.GetId()}";
+                    }
                     return $"OCUPADA {propiedad.NumeroCasilla} {dueño.GetId()}";
                 }
             }

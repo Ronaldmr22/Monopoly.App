@@ -68,7 +68,7 @@ public class Jugador{
 
     public bool PagarDinero(int Dinero)
     {
-        if (this.Saldo > Dinero)
+        if (this.Saldo >= Dinero)
         {
             this.Saldo -= Dinero;
             return true;
