@@ -78,5 +78,12 @@ namespace Monopoly.App
         {
 
         }
+
+        private void btn_comenzarH_Click(object sender, EventArgs e)
+        {
+            FormsTablero pantallaTablero = new FormsTablero();
+            pantallaTablero.Show();
+            this.Hide();
+        }
     }
 }

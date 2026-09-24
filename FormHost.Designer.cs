@@ -143,6 +143,7 @@
             btn_comenzarH.TabIndex = 8;
             btn_comenzarH.Text = "¡Comenzar!";
             btn_comenzarH.UseVisualStyleBackColor = false;
+            btn_comenzarH.Click += btn_comenzarH_Click;
             // 
             // lbl_jugador1H
             // 
