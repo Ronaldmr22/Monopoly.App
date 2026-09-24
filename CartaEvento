@@ -1,0 +1,50 @@
+namespace Monopoly.App
+{
+    public class CartaEvento
+    {
+        private int id_carta;
+        private string descripcion;
+        
+
+        public CartaEvento(int id_carta, string descripcion)
+        {
+            this.id_carta = id_carta;
+            this.descripcion = descripcion;
+        }
+        public virtual void EjecutarEvento(Jugador jugador)
+        {
+            Console.WriteLine("Se ejecutó el evento de la carta: " + this.descripcion);
+        }
+        
+
+        public int IdCarta
+        {
+            get { return this.id_carta; }
+        }
+
+        public string Descripcion
+        {
+            get { return this.descripcion; }
+        }
+
+       
+    }
+     public class CartaGanarDinero : CartaEvento
+    {
+    public CartaGanarDinero(int id_carta, string descripcion, int monto)
+    : base(id_carta, descripcion)
+    {
+        this.monto = monto;
+    }
+    public int Monto
+      {
+        get
+        {return this.monto; }
+      }
+    public override void EjecutarEvento(Jugador jugador)
+    {
+        jugador.AgregarDinero(this.monto);
+        Console.WriteLine($"El jugador {jugador.GetNombre()} ha ganado {this.monto} de dinero.");
+    }
+}
+}
