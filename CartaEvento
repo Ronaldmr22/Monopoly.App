@@ -44,7 +44,26 @@ namespace Monopoly.App
       }
     public override void EjecutarEvento(Jugador jugador, Banco banco)
     {
-        Transferir(banco, jugador, this.monto, "Ganado", "Evento de carta");
+        Transferir(banco, jugador, this.monto, "Jugador gana dinero", "Evento de carta");
+    }
+}
+
+ public class CartaPerderDinero : CartaEvento
+    {
+        private int monto;
+    public CartaPerderDinero(int id_carta, string descripcion, int monto)
+    : base(id_carta, descripcion)
+    {
+        this.monto = monto;
+    }
+    public int Monto
+      {
+        get
+        {return this.monto; }
+      }
+    public override void EjecutarEvento(Jugador jugador, Banco banco)
+    {
+        Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
     }
 }
 }
