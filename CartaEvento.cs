@@ -11,7 +11,7 @@ namespace Monopoly.App
             this.id_carta = id_carta;
             this.descripcion = descripcion;
         }
-        public virtual void EjecutarEvento(Jugador jugador)
+        public virtual void EjecutarEvento(Jugador jugador, Banco banco)
         {
             Console.WriteLine("Se ejecutó el evento de la carta: " + this.descripcion);
         }
@@ -44,7 +44,7 @@ namespace Monopoly.App
       }
     public override void EjecutarEvento(Jugador jugador, Banco banco)
     {
-        Transferir(banco, jugador, this.monto, "Jugador gana dinero", "Evento de carta");
+    banco.Transferir(banco, jugador, this.monto, "Jugador gana dinero", "Evento de carta");
     }
 }
 
@@ -63,7 +63,7 @@ namespace Monopoly.App
       }
     public override void EjecutarEvento(Jugador jugador, Banco banco)
     {
-        Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
+        banco.Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
     }
 }
 }
