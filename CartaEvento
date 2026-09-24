@@ -31,6 +31,7 @@ namespace Monopoly.App
     }
      public class CartaGanarDinero : CartaEvento
     {
+        private int monto;
     public CartaGanarDinero(int id_carta, string descripcion, int monto)
     : base(id_carta, descripcion)
     {
@@ -41,10 +42,9 @@ namespace Monopoly.App
         get
         {return this.monto; }
       }
-    public override void EjecutarEvento(Jugador jugador)
+    public override void EjecutarEvento(Jugador jugador, Banco banco)
     {
-        jugador.AgregarDinero(this.monto);
-        Console.WriteLine($"El jugador {jugador.GetNombre()} ha ganado {this.monto} de dinero.");
+        Transferir(banco, jugador, this.monto, "Ganado", "Evento de carta");
     }
 }
 }
