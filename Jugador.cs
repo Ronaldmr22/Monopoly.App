@@ -13,6 +13,7 @@ public class Jugador{
     {
         this.Id = Id;
         this.Nombre = Nombre;
+        this.Propiedades = new ListaPropiedades();
     }
 
         public string GetNombre()
@@ -67,7 +68,7 @@ public class Jugador{
 
     public bool PagarDinero(int Dinero)
     {
-        if (this.Saldo > Dinero)
+        if (this.Saldo >= Dinero)
         {
             this.Saldo -= Dinero;
             return true;

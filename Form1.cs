@@ -26,16 +26,19 @@ namespace Monopoly.App
                 int puerto = 5000;
                 Host host = new Host();
                 await host.IniciarAsync(5000, nombreJugador);
+                
 
+                Cliente cliente2 = null;
                 if (!string.IsNullOrWhiteSpace(nombreJugador2))
                 {
-                    Cliente cliente2 = new Cliente();
+                    cliente2 = new Cliente();
 
                     await cliente2.ConectarAsync("127.0.0.1",puerto,nombreJugador2);
+                
                 }
 
 
-                FormHost siguiente = new FormHost(host.Cliente, nombreJugador, true);
+                FormHost siguiente = new FormHost(host.Cliente,cliente2, nombreJugador, true);
                 siguiente.Show();
                 this.Hide();
             }
@@ -54,13 +57,16 @@ namespace Monopoly.App
                 Cliente cliente = new Cliente();
 
                 await cliente.ConectarAsync("192.168.0.221", 5000, nombreJugador);
+                
+                Cliente cliente2 = null;
+                
                 if (!string.IsNullOrWhiteSpace(nombreJugador2))
                 {
-                    Cliente cliente2 = new Cliente();
+                    cliente2 = new Cliente();
 
                     await cliente2.ConectarAsync("192.168.0.221",5000,nombreJugador2);
                 }
-                FormHost siguiente = new FormHost(cliente, nombreJugador, false);
+                FormHost siguiente = new FormHost(cliente,cliente2, nombreJugador, false);
 
                 siguiente.Show();
                 this.Hide();

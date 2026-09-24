@@ -78,9 +78,9 @@ namespace Monopoly.App
                 case "NO_COMPRAR":
                     break;
  
-                //case "TERMINAR_TURNO":
-                    //TerminarTurno(cliente, comunicacion);
-                    //break;
+                case "TERMINAR_TURNO":
+                    TerminarTurno();
+                    break;
  
                 case "CONSULTAR_ESTADO":
                     EnviarCliente(cliente, "ESTADO " + banco.Getinfo());
@@ -92,6 +92,10 @@ namespace Monopoly.App
 
                 case "CONSULTAR_LOBBY":
                     EnviarLobby(cliente);
+                    break;
+                
+                case "INICIAR_PARTIDA":
+                    EnviarTodos("PARTIDA_INICIADA");
                     break;
  
                 default:
@@ -142,9 +146,47 @@ namespace Monopoly.App
 
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
+            banco.ResolverCasilla(idJugador);
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
+            EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
+        
+            string resultadoCasilla = banco.ResolverCasilla(idJugador);
+            string[] resultado = resultadoCasilla.Split(' ');
+            if (resultado[0] == "DISPONIBLE")
+            {
+                EnviarCliente(cliente,$"PROPIEDAD_DISPONIBLE {resultado[1]} {resultado[2]}");
+            }
+            else if (resultado[0] == "OCUPADA")
+            {
+                int idDueño = int.Parse(resultado[2]);
 
-            Console.WriteLine($"Jugador {idJugador} se movio a la casilla {nuevaPosicion}");
+                Jugador jugador = banco.BuscarJugador(idJugador);
+                Jugador dueño = banco.BuscarJugador(idDueño);
+
+                EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
+                EnviarTodos($"DINERO_ACTUALIZADO {idDueño} {dueño.GetSaldo()}");
+                EnviarTodos($"ALQUILER_PAGADO {idJugador} {idDueño} {resultado[1]}");
+            }
+            else if (resultado[0] == "PROPIA")
+            {
+                EnviarCliente(cliente, $"PROPIEDAD_PROPIA {resultado[1]}");
+            }
+            else if (resultado[0] == "ELIMINADO")
+            {
+                int idEliminado = int.Parse(resultado[1]);
+                int idDueño = int.Parse(resultado[2]);
+
+                Jugador dueño = banco.BuscarJugador(idDueño);
+
+                EnviarTodos($"JUGADOR_ELIMINADO {idEliminado}");
+                EnviarTodos($"DINERO_ACTUALIZADO {idDueño} {dueño.GetSaldo()}");
+                if (juego.CantidadJugadores() == 1)
+                {
+                    int idGanador = juego.TurnoActual();
+
+                    EnviarTodos($"FIN_PARTIDA {idGanador}");
+                }
+            }
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
@@ -155,44 +197,17 @@ namespace Monopoly.App
 
             if (!exito)
             {
-                EnviarCliente(cliente, $"DINERO INSUFICIENTE");
+                EnviarCliente(cliente, $"ERROR DINERO INSUFICIENTE");
                 return;
             }
 
-            EnviarCliente(cliente, $"COMPRAR PROPIEDAD {idCasilla}");
-            EnviarTodos($"PROPIEDAD COMPRADA {idJugador} {idCasilla}");
+            Jugador jugador = banco.BuscarJugador(idJugador);
+            EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
+            EnviarCliente(cliente, $"COMPRAR_PROPIEDAD {idCasilla}");
+            EnviarTodos($"PROPIEDAD_COMPRADA {idJugador} {idCasilla}");
+            
         }
 
-        public void CobrarAlquiler(ClienteConectado cliente, int idPropiedad, int idDueño)
-        {
-            int idJugador = cliente.IdJugador;
-            int alquiler;
-
-            alquiler = banco.CobrarAlquiler(idJugador, idPropiedad, idDueño);
-
-            if (alquiler > 0)
-            {
-                EnviarCliente(
-                    cliente,
-                    $"El alquiler ha sido pagado"
-                    ///$"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
-                );
-                
-            }
-            else
-            {
-                EnviarCliente(
-                    cliente,
-                    $"El alquiler ha sido pagado, has quedado en bancarrota"
-                    ///$"PAGAR_ALQUILER {idPropiedad} {alquiler} {idDueño}"
-                );
-            }
-            ClienteConectado dueño = clientes.Find(c => c.IdJugador == idDueño);
-            if (dueño != null)
-                {
-                    EnviarCliente(dueño,$"Ha recibido el alquiler de la propiedad");
-                }
-        }
 
         public void EnviarLobby(ClienteConectado cliente)
         {
@@ -204,7 +219,11 @@ namespace Monopoly.App
 
         public void TerminarTurno()
         {
-            
+            juego.PasarTurno();
+
+            int siguienteJugador = juego.TurnoActual();
+
+            EnviarTodos($"TURNO {siguienteJugador}");
         }
 
         public void EnviarCliente(ClienteConectado cliente, string mensaje)

@@ -6,15 +6,17 @@ namespace Monopoly.App
     public partial class FormHost : Form
     {
         private Cliente cliente;
+        private Cliente cliente2;
         private string nombreJugador;
 
         private bool esHost;
 
-        public FormHost(Cliente cliente, string nombreJugador, bool esHost)
+        public FormHost(Cliente cliente,Cliente cliente2, string nombreJugador, bool esHost)
         {
             InitializeComponent();
 
             this.cliente = cliente;
+            this.cliente2 = cliente2;
             this.nombreJugador = nombreJugador;
             this.esHost = esHost;
 

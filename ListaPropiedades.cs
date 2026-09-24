@@ -45,6 +45,20 @@ namespace Monopoly.App
             size++;
         }
 
+        public bool TienePropiedad(int idPropiedad)
+        {
+            NodoPropiedad actual = head;
+            while (actual != null)
+            {
+                if (actual.Dato.IdPropiedad == idPropiedad)
+                {
+                    return true;
+                }
+                actual = actual.Siguiente;
+            }
+            return false;
+        }
+
 
         public int GetSize()
         {

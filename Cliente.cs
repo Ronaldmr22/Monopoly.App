@@ -15,11 +15,20 @@ namespace Monopoly.App
 
         public int IdJugador { get; private set; }
         public event Action<int, string> JugadorConectado;
-
         public event Action<string> ActualizacionJuego;
         public event Action<string> ErrorRecibido;
-
         public event Action<int, int> PropiedadDisponible;
+        public event Action<int, int> PropiedadComprada;
+        public event Action PartidaIniciada;
+        public event Action<int, int> JugadorMovido;
+        public event Action<int, int, int> DadosLanzados;
+        public event Action<int> TurnoCambiado;
+        public event Action<int, int> DineroActualizado;
+        public event Action<int> PropiedadPropia;
+        public event Action<int, int, int> AlquilerPagado;
+        public event Action<int> JugadorEliminado;
+        public event Action<int> PartidaTerminada;
+
 
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
         {
@@ -75,9 +84,15 @@ namespace Monopoly.App
             }
             else if (comando == "DADOS")
             {
+                int idJugador = int.Parse(partes[1]);
+                int dado1 = int.Parse(partes[2]);
+                int dado2 = int.Parse(partes[3]);
+
+                DadosLanzados?.Invoke(idJugador, dado1, dado2);
+
                 if (ActualizacionJuego != null)
                 {
-                    ActualizacionJuego.Invoke("Jugador " + partes[1] + " tiró " + partes[2] + " y " + partes[3]);
+                    ActualizacionJuego.Invoke("Jugador " + idJugador + " tiró " +dado1 + " y " + dado2);
                 }
             }
             else if (comando == "COMPRAR")
@@ -120,10 +135,15 @@ namespace Monopoly.App
                 int idCasilla = int.Parse(partes[1]);
                 int precio = int.Parse(partes[2]);
 
-                if (ActualizacionJuego != null)
-                {
-                    PropiedadDisponible.Invoke(idCasilla, precio);
-                }
+                PropiedadDisponible.Invoke(idCasilla, precio);
+
+            }
+            else if (comando == "PROPIEDAD_COMPRADA")
+            {
+                int idJugador = int.Parse(partes[1]);
+                int idCasilla = int.Parse(partes[2]);
+
+                PropiedadComprada?.Invoke(idJugador, idCasilla);
             }
             else if (comando == "ALQUILER")
             {
@@ -136,6 +156,14 @@ namespace Monopoly.App
                     ActualizacionJuego.Invoke("Jugador " + jugadorPaga +" pagó $" + monto +" al jugador " + propietario);
                 }
             }
+            else if (comando == "ALQUILER_PAGADO")
+            {
+                int idJugador = int.Parse(partes[1]);
+                int idDueño = int.Parse(partes[2]);
+                int idCasilla = int.Parse(partes[3]);
+
+                AlquilerPagado?.Invoke(idJugador, idDueño, idCasilla);
+            }
             else if (comando == "PROPIEDAD_PROPIA")
             {
                 int idCasilla = int.Parse(partes[1]);
@@ -145,8 +173,52 @@ namespace Monopoly.App
                     ActualizacionJuego.Invoke("La casilla " + idCasilla + " ya es tuya");
                 }
             }
-            
-            
+            else if (comando == "PROPIEDAD_PROPIA")
+            {
+                int idCasilla = int.Parse(partes[1]);
+
+                PropiedadPropia?.Invoke(idCasilla);
+            }
+            else if (comando == "PARTIDA_INICIADA")
+            {
+                if (PartidaIniciada != null)
+                {
+                    PartidaIniciada.Invoke();
+                }
+            }
+            else if (comando == "JUGADOR_MOVIDO")
+            {
+                int idJugador = int.Parse(partes[1]);
+                int posicion = int.Parse(partes[2]);
+
+                JugadorMovido?.Invoke(idJugador, posicion);
+            }
+            else if (comando == "TURNO")
+            {
+                int idJugador = int.Parse(partes[1]);
+
+                TurnoCambiado?.Invoke(idJugador);
+            }
+            else if (comando == "DINERO_ACTUALIZADO")
+            {
+                int idJugador = int.Parse(partes[1]);
+                int nuevoSaldo = int.Parse(partes[2]);
+
+                DineroActualizado?.Invoke(idJugador, nuevoSaldo);
+            }
+            else if (comando == "JUGADOR_ELIMINADO")
+            {
+                int idJugador = int.Parse(partes[1]);
+
+                JugadorEliminado?.Invoke(idJugador);
+            }
+            else if (comando == "FIN_PARTIDA")
+            {
+                int idGanador = int.Parse(partes[1]);
+
+                PartidaTerminada?.Invoke(idGanador);
+            }
+
             else
             {
                 if (ErrorRecibido != null)
@@ -196,6 +268,16 @@ namespace Monopoly.App
         public void ConsultarLobby()
         {
             EnviarMensaje("CONSULTAR_LOBBY");
+        }
+
+        public void IniciarPartida()
+        {
+            EnviarMensaje("INICIAR_PARTIDA");
+        }
+
+        public void TerminarTurno()
+        {
+            EnviarMensaje("TERMINAR_TURNO");
         }
     }
 }

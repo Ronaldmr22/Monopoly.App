@@ -5,15 +5,24 @@ namespace Monopoly.App
     public class Juego
     {
         private ColaTurnos turnos;
+        private int rondaActual;
+        private int jugadorInicioRonda;
+        private int maxRondas = 10;
 
         public Juego()
         {
             turnos = new ColaTurnos();
+            rondaActual = 1;
+            jugadorInicioRonda = -1;
         }
 
         public void AgregarJugador(int idJugador)
         {
             turnos.Encolar(idJugador);
+            if (jugadorInicioRonda == -1)
+            {
+                jugadorInicioRonda = idJugador;
+            }
         }
 
         public int TurnoActual()
@@ -29,11 +38,31 @@ namespace Monopoly.App
         public void PasarTurno()
         {
             turnos.PasarTurno();
+            if (turnos.TurnoActual() == jugadorInicioRonda)
+            {
+                rondaActual++;
+            }
         }
 
         public void MuereJugador(int idJugador)
         {
+            bool muerePrimero = idJugador ==jugadorInicioRonda;
             turnos.MuereJugador(idJugador);
+
+            if(muerePrimero && turnos.Cantidad() > 0)
+            {
+                jugadorInicioRonda = turnos.TurnoActual();
+            }
+        }
+
+        public int CantidadJugadores()
+        {
+            return turnos.Cantidad();
+        }
+
+        public bool TerminoPorRondas()
+        {
+            return rondaActual > maxRondas;
         }
     }
 

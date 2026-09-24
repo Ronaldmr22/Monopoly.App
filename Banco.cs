@@ -68,7 +68,7 @@ namespace Monopoly.App
 
         public void DestruirJugador(Jugador jugador)
         {
-
+            juego.MuereJugador(jugador.GetId());
             ListaJugadores.Remove(jugador);
         }
 
@@ -99,12 +99,18 @@ namespace Monopoly.App
             }
             else
             {
-                Transferir(jugador, this, propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
-                return true;
+                bool compraExitosa = Transferir(jugador, this, propiedad.Precio, "Compra de propiedad", $"{jugador.GetNombre()} ha comprado la propiedad {propiedad.Nombre} por {propiedad.Precio}");
+                if (compraExitosa)
+                {
+                    jugador.AgregarPropiedad(propiedad);
+                    return true;
+                }
+
+                return false;
             }
         }
 
-        public int CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
+        public bool CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
         {
             Jugador? jugador = null;
             Propiedad? propiedad = null;
@@ -134,8 +140,7 @@ namespace Monopoly.App
                     break;
                 }
             }
-            Transferir(jugador, dueño, propiedad.Precio, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
-            return jugador.GetSaldo();
+            return Transferir(jugador, dueño, propiedad.Alquiler, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
         }
 
         public void AgregarJugador(string nombreJugador, int id)
@@ -178,6 +183,56 @@ namespace Monopoly.App
             jugador.SetPosicion(nuevaPosicion);
 
             return nuevaPosicion;
+        }
+        public string ResolverCasilla(int idJugador)
+        {
+            Jugador jugador = BuscarJugador(idJugador);
+
+            Casilla casilla = tablero.BuscarCasilla(jugador.GetPosicion());
+
+            if (casilla is Propiedad propiedad)
+            {
+                Jugador? dueño = BuscarDueñoPropiedad(propiedad.IdPropiedad);
+                if (dueño == null)
+                {
+                    return $"DISPONIBLE {propiedad.NumeroCasilla} {propiedad.Precio}";
+                }
+                else if (dueño.GetId() == idJugador)
+                {
+                    return $"PROPIA {propiedad.NumeroCasilla}";
+                }
+                else
+                {
+                    bool pagoExitoso = CobrarAlquiler(idJugador,propiedad.NumeroCasilla,dueño.GetId());
+                    if (!pagoExitoso)
+                    {
+                        return $"ELIMINADO {idJugador} {dueño.GetId()}";
+                    }
+                    return $"OCUPADA {propiedad.NumeroCasilla} {dueño.GetId()}";
+                }
+            }
+            else if(casilla is CasillaEvento casillaEvento)
+            {
+                //return casillaEvento;
+            }
+            else if(casilla is CasillaEspecial casillaEspecial)
+            {
+                //return casillaEspecial;
+            }
+            return null;
+        }
+
+        public Jugador? BuscarDueñoPropiedad(int idPropiedad)
+        {
+            foreach (Jugador jugador in ListaJugadores)
+            {
+                if (jugador.GetPropiedades().TienePropiedad(idPropiedad))
+                {
+                    return jugador;
+                }
+            }
+
+            return null;
         }
 
         public string Getinfo()
