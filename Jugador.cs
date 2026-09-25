@@ -50,6 +50,10 @@ public class Jugador{
     {
         return this.Estado;
     }
+    public bool SetTurnoPerdido(bool TurnoPerdido)
+    {
+        this.TurnoPerdido = TurnoPerdido;
+    }
 
     public void SetEstado(bool Estado)
     {
