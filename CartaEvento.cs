@@ -100,5 +100,82 @@ namespace Monopoly.App
         banco.MoverJugador(jugador.GetId(), this.movimiento);
           }
     }
-  }
+public class NodoCarta
+    {
+        public CartaEvento Carta;
+        public NodoCarta Siguiente;
+
+        public NodoCarta(CartaEvento carta)
+        {
+            Carta = carta;
+            Siguiente = null;
+        }
+    }
+    
+
+    public class ColaCartas
+    {
+        private NodoCarta cartaActual;
+        private NodoCarta cartaUltima;
+        private int cantidad;
+
+        public ColaCartas()
+        {
+            cartaActual = null;
+            cartaUltima = null;
+            cantidad = 0;
+        }
+
+        public void Encolar(CartaEvento carta)
+        {
+            NodoCarta nuevo = new NodoCarta(carta);
+
+            if (cartaActual == null)
+            {
+                cartaActual = nuevo;
+                cartaUltima = nuevo;
+            }
+            else
+            {
+                cartaUltima.Siguiente = nuevo;
+                cartaUltima = nuevo;
+            }
+
+            cantidad++;
+        }
+        public CartaEvento Desencolar()
+        {
+            if (cartaActual == null)
+            {
+                return null;
+            }
+
+            CartaEvento carta = cartaActual.Carta;
+            cartaActual = cartaActual.Siguiente;
+
+            if (cartaActual == null)
+            {
+                cartaUltima = null;
+            }
+
+            cantidad--;
+            return carta;
+        }
+    public CartaEvento SacarCarta()
+        {
+            CartaEvento carta = Desencolar();
+            if (carta != null)
+            {
+                Encolar(carta);
+            }
+            return carta;
+        }
+ 
+        public int Cantidad()
+        {
+            return cantidad;
+        }
+    }
 }
+}
+  
