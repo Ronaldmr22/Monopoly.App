@@ -102,7 +102,7 @@ namespace Monopoly.App
             CartaPerderDinero carta2 = new CartaPerderDinero(2, "Pierde $50", 50);
             CartaPerderTurno carta3 = new CartaPerderTurno(3, "Pierda un turno");
             CartaMoverseDeCasilla carta4 = new CartaMoverseDeCasilla(4, "Avance 10 casillas", 10);
-            CartaMoverseDeCasilla carta5 = new CartaMoverseDeCasilla(5, "Retroceda 5 casillas", -5);
+            CartaMoverseDeCasilla carta5 = new CartaMoverseDeCasilla(5, "Retroceda 1 casilla", 23);
             CartaGanarDinero carta6 = new CartaGanarDinero(6, "Gana $200", 200);
             CartaPerderDinero carta7 = new CartaPerderDinero(7, "Perdiste el juego, fantasma", 1000000000);
             CartaPerderTurno carta8 = new CartaPerderTurno(8, "Pierda dos turnos");
