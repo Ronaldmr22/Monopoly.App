@@ -9,6 +9,7 @@ namespace Monopoly.App
         public CartaEvento(int id_carta, string descripcion)
         {
             this.id_carta = id_carta;
+    
             this.descripcion = descripcion;
         }
         public virtual void EjecutarEvento(Jugador jugador, Banco banco)
@@ -65,5 +66,19 @@ namespace Monopoly.App
     {
         banco.Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
     }
-}
+  }
+   public class CartaPerderTurno : CartaEvento
+    {
+        private int monto;
+    public CartaPerderTurno(int id_carta, string descripcion)
+    : base(id_carta, descripcion)
+    {
+      
+    }
+   
+    public override void EjecutarEvento(Jugador jugador, Banco banco)
+    {
+        jugador.SetTurnoPerdido(true);
+    }
+  }
 }
