@@ -14,6 +14,7 @@ namespace Monopoly.App
         public Tablero_LL Tablero { get; private set; }
         public Juego Juego { get; private set; }
         public HistorialTransacciones Historial { get; private set; }
+        public ColaCartas Cartas { get; private set; } 
 
         public Host()
         {
@@ -94,6 +95,28 @@ namespace Monopoly.App
             Tablero.AgregarCasilla(libre);
             Tablero.AgregarCasilla(Casa17);
             Tablero.AgregarCasilla(Casa18);
+        }
+        private void CrearCartas()
+        {
+            CartaGanarDinero carta1 = new CartaGanarDinero(1, "Gana $100", 100);
+            CartaPerderDinero carta2 = new CartaPerderDinero(2, "Pierde $50", 50);
+            CartaPerderTurno carta3 = new CartaPerderTurno(3, "Pierda un turno");
+            CartaMoverseDeCasilla carta4 = new CartaMoverseDeCasilla(4, "Avance 10 casillas", 10);
+            CartaMoverseDeCasilla carta5 = new CartaMoverseDeCasilla(5, "Retroceda 5 casillas", -5);
+            CartaGanarDinero carta6 = new CartaGanarDinero(6, "Gana $200", 200);
+            CartaPerderDinero carta7 = new CartaPerderDinero(7, "Perdiste el juego, fantasma", 1000000000);
+            CartaPerderTurno carta8 = new CartaPerderTurno(8, "Pierda dos turnos");
+            CartaMoverseDeCasilla carta9 = new CartaMoverseDeCasilla(9, "Avance 3 casillas", 3);
+
+            Cartas.Encolar(carta1);
+            Cartas.Encolar(carta2);
+            Cartas.Encolar(carta3);
+            Cartas.Encolar(carta4);
+            Cartas.Encolar(carta5);
+            Cartas.Encolar(carta6);
+            Cartas.Encolar(carta7);
+            Cartas.Encolar(carta8);
+            Cartas.Encolar(carta9);
         }
     }
 }
