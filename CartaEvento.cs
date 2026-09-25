@@ -80,5 +80,25 @@ namespace Monopoly.App
     {
         jugador.SetTurnoPerdido(true);
     }
+  
+
+  public class CartaMoverseDeCasilla : CartaEvento
+    {
+        private int movimiento;
+    public CartaMoverseDeCasilla(int id_carta, string descripcion, int movimiento)
+    : base(id_carta, descripcion)
+    {
+      this.movimiento = movimiento;
+    }
+   public int Movimiento
+      {
+        get
+        {return this.movimiento; }
+      }
+    public override void EjecutarEvento(Jugador jugador, Banco banco)
+    {
+        banco.MoverJugador(jugador.GetId(), this.movimiento);
+          }
+    }
   }
 }
