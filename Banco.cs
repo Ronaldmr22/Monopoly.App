@@ -1,10 +1,11 @@
+using System.Diagnostics.Tracing;
+
 namespace Monopoly.App
 {
     public class Banco
     {
-        public List<Jugador> ListaJugadores = [];
+        public LL_Jugadores ListaJugadores = new LL_Jugadores();
         public int IdTransaccion = 1;
-
         private Tablero_LL tablero;
         private HistorialTransacciones historial;
         private Juego juego;
@@ -76,7 +77,7 @@ namespace Monopoly.App
         public void DestruirJugador(Jugador jugador)
         {
             juego.MuereJugador(jugador.GetId());
-            ListaJugadores.Remove(jugador);
+            ListaJugadores.BorrarJugador(jugador);
         }
 
         public bool ComprarPropiedad(int idJugador, int idCasilla)
@@ -84,11 +85,11 @@ namespace Monopoly.App
             Jugador? jugador = null;
             Propiedad? propiedad = null;
 
-            for (int i = 0; i < ListaJugadores.Count; i++)
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
             {
-                if (ListaJugadores[i].GetId() == idJugador)
+                if (nodo.GetData().GetId() == idJugador)
                 {
-                    jugador = ListaJugadores[i];
+                    jugador = nodo.GetData();
                     break;
                 }
             }
@@ -114,6 +115,7 @@ namespace Monopoly.App
 
                 return false;
             }
+            
         }
 
         public bool CobrarAlquiler(int idJugador, int idPropiedad, int idDueño)
@@ -122,19 +124,19 @@ namespace Monopoly.App
             Propiedad? propiedad = null;
             Jugador? dueño = null;
 
-            for (int i = 0; i < ListaJugadores.Count; i++)
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
             {
-                if (ListaJugadores[i].GetId() == idJugador)
+                if (nodo.GetData().GetId() == idJugador)
                 {
-                    jugador = ListaJugadores[i];
+                    jugador = nodo.GetData();
                     break;
                 }
             }
-            for (int i = 0; i < ListaJugadores.Count; i++)
+            for (NodoJugador nodo1 = ListaJugadores.GetHead(); nodo1 == null; nodo1.GetNext())
             {
-                if (ListaJugadores[i].GetId() == idDueño)
+                if (nodo1.GetData().GetId() == idJugador)
                 {
-                    dueño = ListaJugadores[i];
+                    dueño = nodo1.GetData();
                     break;
                 }
             }
@@ -146,13 +148,15 @@ namespace Monopoly.App
             }
             return Transferir(jugador, dueño, propiedad.Alquiler, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Alquiler}");
         }
+            
+        
 
         public void AgregarJugador(string nombreJugador, int id)
         {
-            if (ListaJugadores.Count() < 4)
+            if (ListaJugadores.GetCantidad() < 4)
             {
                 Jugador jugador = new Jugador(id, nombreJugador);
-                ListaJugadores.Add(jugador);
+                ListaJugadores.AgregarJugador(jugador);
             }
             else
             {
@@ -162,11 +166,11 @@ namespace Monopoly.App
 
         public Jugador BuscarJugador(int idJugador)
         {
-            foreach (Jugador jugador in ListaJugadores)
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
             {
-                if (jugador.GetId() == idJugador)
+                if (nodo.GetData().GetId() == idJugador)
                 {
-                    return jugador;
+                    return nodo.GetData();
                 }
             }
 
@@ -246,11 +250,11 @@ namespace Monopoly.App
 
         public Jugador? BuscarDueñoPropiedad(int idPropiedad)
         {
-            foreach (Jugador jugador in ListaJugadores)
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
             {
-                if (jugador.GetPropiedades().TienePropiedad(idPropiedad))
+                if (nodo.GetData().GetPropiedades().TienePropiedad(idPropiedad))
                 {
-                    return jugador;
+                    return nodo.GetData();
                 }
             }
 
@@ -259,13 +263,13 @@ namespace Monopoly.App
 
         public Jugador ObtenerGanadorPorPatrimonio()
         {
-            Jugador ganador = ListaJugadores[0];
+            Jugador? ganador = ListaJugadores.GetHead().GetData();
 
-            foreach (Jugador jugador in ListaJugadores)
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
             {
-                if (jugador.GetPatrimonio() > ganador.GetPatrimonio())
+                if (nodo.GetData().GetPatrimonio() == ganador.GetPatrimonio())
                 {
-                    ganador = jugador;
+                    ganador = nodo.GetData();
                 }
             }
 
@@ -277,5 +281,124 @@ namespace Monopoly.App
             return "1";
         }
 
+    }
+    
+
+    public class NodoJugador
+    {
+        private Jugador data;
+        private NodoJugador? next = null;
+        public NodoJugador(Jugador jugador)
+        {
+            Jugador data = jugador;
+        }
+        
+        public Jugador GetData()
+        {
+            return data;
+        }
+
+        public void SetData(Jugador jugador)
+        {
+            data = jugador;
+        }
+
+        public NodoJugador GetNext()
+        {
+            return next;
+        }
+
+        public void SetNext(NodoJugador siguiente)
+        {
+            next = siguiente;
+        }
+    }
+
+    public class LL_Jugadores
+    {
+        private NodoJugador? head = null;
+        private NodoJugador? tail = null;
+        private int cantidad = 0;
+
+        public NodoJugador GetHead()
+        {
+            return head;
+        }
+
+        public NodoJugador GetTail()
+        {
+            return tail;
+        }
+
+
+        public void SetHead(NodoJugador jugador)
+        {
+            head = jugador;
+        }
+
+        public void SetTail(NodoJugador jugador)
+        {
+            tail = jugador;
+        }
+
+
+        public int GetCantidad()
+        {
+            return cantidad;
+        }
+
+        public void SetCantidad(int CantidadNueva)
+        {
+            cantidad = CantidadNueva;
+        }
+        public void AgregarJugador(Jugador jugador)
+        {
+            if (cantidad == 4)
+            {
+                return;
+            }
+
+            NodoJugador nuevo = new NodoJugador(jugador);
+
+            if (head == null)
+            {
+                SetHead(nuevo);
+                SetTail(nuevo);
+            }
+            else
+            {
+                tail.SetNext(nuevo);
+                SetTail(nuevo);
+            }
+
+            cantidad++;
+        }
+
+        public void BorrarJugador(Jugador jugador)
+        {
+            if (head.GetData() == jugador)
+            {
+                cantidad--;
+                head = head.GetNext();
+                return;
+            }
+            for (NodoJugador nodo = head; nodo == null; nodo.GetNext())
+            {
+                if (nodo.GetNext().GetData() == jugador)
+                {
+                    cantidad--;
+                    if (nodo.GetNext().GetNext() == null)
+                    {
+                        nodo.SetNext(null);
+                        return;
+                    }
+                    else
+                    {
+                        nodo.SetNext(nodo.GetNext().GetNext());
+                        return;
+                    }
+                }
+            }
+        }
     }
 }
