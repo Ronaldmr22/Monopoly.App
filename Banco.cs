@@ -85,7 +85,7 @@ namespace Monopoly.App
             Jugador? jugador = null;
             Propiedad? propiedad = null;
 
-            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo != null; nodo = nodo.GetNext())
             {
                 if (nodo.GetData().GetId() == idJugador)
                 {
@@ -124,7 +124,7 @@ namespace Monopoly.App
             Propiedad? propiedad = null;
             Jugador? dueño = null;
 
-            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo != null; nodo = nodo.GetNext())
             {
                 if (nodo.GetData().GetId() == idJugador)
                 {
@@ -132,9 +132,9 @@ namespace Monopoly.App
                     break;
                 }
             }
-            for (NodoJugador nodo1 = ListaJugadores.GetHead(); nodo1 == null; nodo1.GetNext())
+            for (NodoJugador nodo1 = ListaJugadores.GetHead(); nodo1 != null; nodo1 = nodo1.GetNext())
             {
-                if (nodo1.GetData().GetId() == idJugador)
+                if (nodo1.GetData().GetId() == idDueño)
                 {
                     dueño = nodo1.GetData();
                     break;
@@ -166,7 +166,7 @@ namespace Monopoly.App
 
         public Jugador BuscarJugador(int idJugador)
         {
-            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo != null; nodo = nodo.GetNext())
             {
                 if (nodo.GetData().GetId() == idJugador)
                 {
@@ -250,7 +250,7 @@ namespace Monopoly.App
 
         public Jugador? BuscarDueñoPropiedad(int idPropiedad)
         {
-            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo != null; nodo = nodo.GetNext())
             {
                 if (nodo.GetData().GetPropiedades().TienePropiedad(idPropiedad))
                 {
@@ -265,9 +265,9 @@ namespace Monopoly.App
         {
             Jugador? ganador = ListaJugadores.GetHead().GetData();
 
-            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo == null; nodo.GetNext())
+            for (NodoJugador nodo = ListaJugadores.GetHead(); nodo != null; nodo = nodo.GetNext())
             {
-                if (nodo.GetData().GetPatrimonio() == ganador.GetPatrimonio())
+                if (nodo.GetData().GetPatrimonio() > ganador.GetPatrimonio())
                 {
                     ganador = nodo.GetData();
                 }
@@ -290,7 +290,7 @@ namespace Monopoly.App
         private NodoJugador? next = null;
         public NodoJugador(Jugador jugador)
         {
-            Jugador data = jugador;
+            this.data = jugador;
         }
         
         public Jugador GetData()
@@ -382,7 +382,7 @@ namespace Monopoly.App
                 head = head.GetNext();
                 return;
             }
-            for (NodoJugador nodo = head; nodo == null; nodo.GetNext())
+            for (NodoJugador nodo = head; nodo != null; nodo = nodo.GetNext())
             {
                 if (nodo.GetNext().GetData() == jugador)
                 {
@@ -390,6 +390,7 @@ namespace Monopoly.App
                     if (nodo.GetNext().GetNext() == null)
                     {
                         nodo.SetNext(null);
+                        tail = nodo;
                         return;
                     }
                     else

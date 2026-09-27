@@ -111,9 +111,15 @@ namespace Monopoly.App
             cliente.IdJugador = id;
             clientes.Add(cliente);
 
-            foreach (Jugador jugador in banco.ListaJugadores)
+            NodoJugador nodo = banco.ListaJugadores.GetHead();
+
+            while (nodo != null)
             {
+                Jugador jugador = nodo.GetData();
+
                 EnviarCliente(cliente,$"JUGADOR {jugador.GetId()} {jugador.GetNombre()}");
+
+                nodo = nodo.GetNext();
             }
 
             banco.AgregarJugador(nombreJugador, id);
@@ -121,7 +127,6 @@ namespace Monopoly.App
 
             EnviarCliente(cliente,$"CONECTAR {id} {nombreJugador}");
             EnviarTodos($"JUGADOR {id} {nombreJugador}");
-
         }
 
         public void TirarDados(ClienteConectado cliente)
@@ -316,10 +321,16 @@ namespace Monopoly.App
 
         public void EnviarLobby(ClienteConectado cliente)
         {
-            foreach (Jugador jugador in banco.ListaJugadores)
+            NodoJugador nodo = banco.ListaJugadores.GetHead();
+
+            while (nodo != null)
             {
-                EnviarCliente(cliente,$"JUGADOR {jugador.GetId()} {jugador.GetNombre()}");
+                Jugador jugador = nodo.GetData();
+
+                EnviarCliente(cliente, $"JUGADOR {jugador.GetId()} {jugador.GetNombre()}");
                 EnviarCliente(cliente, $"DINERO_ACTUALIZADO {jugador.GetId()} {jugador.GetSaldo()}");
+
+                nodo = nodo.GetNext();
             }
         }
 

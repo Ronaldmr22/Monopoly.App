@@ -57,7 +57,7 @@ namespace Monopoly.App
                 string nombreJugador2 = txt_nombre2.Text;
                 Cliente cliente = new Cliente();
 
-                await cliente.ConectarAsync("192.168.0.221", 5000, nombreJugador);
+                await cliente.ConectarAsync("100.93.128.66", 5000, nombreJugador);
                 
                 Cliente cliente2 = null;
                 
@@ -65,7 +65,7 @@ namespace Monopoly.App
                 {
                     cliente2 = new Cliente();
 
-                    await cliente2.ConectarAsync("192.168.0.221",5000,nombreJugador2);
+                    await cliente2.ConectarAsync("100.93.128.66",5000,nombreJugador2);
                 }
                 FormHost siguiente = new FormHost(cliente,cliente2, nombreJugador, false);
 
