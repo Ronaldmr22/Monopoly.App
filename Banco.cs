@@ -8,12 +8,14 @@ namespace Monopoly.App
         private Tablero_LL tablero;
         private HistorialTransacciones historial;
         private Juego juego;
+        private ColaCartas cartas;
 
-        public Banco(Tablero_LL tablero, HistorialTransacciones historial, Juego juego)
+        public Banco(Tablero_LL tablero, HistorialTransacciones historial, Juego juego, ColaCartas cartas)
         {
             this.tablero = tablero;
             this.historial = historial;
             this.juego = juego;
+            this.cartas = cartas;
         }
 
 
@@ -28,6 +30,7 @@ namespace Monopoly.App
                     {
                         Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), Monto, Razon);
                         historial.InsertarTransaccion(transaccion1);
+                        IdTransaccion++;
                         jugadorD.RecibirDinero(Monto);
                         return true;
                     }
@@ -35,6 +38,7 @@ namespace Monopoly.App
                     {
                         Transaccion transaccion1 = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), jugadorD.GetNombre(), jugadorO.GetSaldo(), Razon);
                         historial.InsertarTransaccion(transaccion1);
+                        IdTransaccion++;
                         jugadorD.RecibirDinero(jugadorO.GetSaldo());
                         DestruirJugador(jugadorO);
                         return false;
@@ -213,11 +217,29 @@ namespace Monopoly.App
             }
             else if(casilla is CasillaEvento casillaEvento)
             {
-                //return casillaEvento;
+                CartaEvento carta = cartas.SacarCarta();
+
+                carta.EjecutarEvento(jugador, this);
+
+                return $"EVENTO {carta.IdCarta}";
             }
             else if(casilla is CasillaEspecial casillaEspecial)
             {
-                //return casillaEspecial;
+                if (casillaEspecial.Nombre == "Salida")
+                {
+                    Transferir(this, jugador, 200, "Premio de salida", $"{jugador.GetNombre()} recibió $200 por llegar a Salida");
+                    return $"SALIDA {casillaEspecial.NumeroCasilla}";
+                }
+                else if (casillaEspecial.Nombre == "Carcel")
+                {
+                    jugador.SetTurnoPerdido(true);
+
+                    return $"CARCEL {casillaEspecial.NumeroCasilla}";
+                }
+                else if (casillaEspecial.Nombre == "Casilla Libre")
+                {
+                    return $"LIBRE {casillaEspecial.NumeroCasilla}";
+                }
             }
             return null;
         }

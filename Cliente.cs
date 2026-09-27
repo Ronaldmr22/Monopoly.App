@@ -12,6 +12,7 @@ namespace Monopoly.App
         private StreamReader lector;
         private StreamWriter escritor;
         private bool conectado;
+        
 
         public int IdJugador { get; private set; }
         public event Action<int, string> JugadorConectado;
@@ -28,6 +29,7 @@ namespace Monopoly.App
         public event Action<int, int, int> AlquilerPagado;
         public event Action<int> JugadorEliminado;
         public event Action<int> PartidaTerminada;
+        public event Action<int, int> CartaEventoRecibida;
 
 
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
@@ -213,6 +215,13 @@ namespace Monopoly.App
                 int idGanador = int.Parse(partes[1]);
 
                 PartidaTerminada?.Invoke(idGanador);
+            }
+            else if (comando == "CARTA_EVENTO")
+            {
+                int idJugador = int.Parse(partes[1]);
+                int idCarta = int.Parse(partes[2]);
+
+                CartaEventoRecibida?.Invoke(idJugador, idCarta);
             }
 
             else

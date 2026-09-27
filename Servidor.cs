@@ -204,6 +204,56 @@ namespace Monopoly.App
                     EnviarTodos($"TURNO {siguienteJugador}");
                 }
             }
+            else if (resultado[0] == "EVENTO")
+            {
+                int idCarta = int.Parse(resultado[1]);
+
+                EnviarTodos($"CARTA_EVENTO {idJugador} {idCarta}");
+
+                Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
+
+                if (jugadorActualizado == null)
+                {
+                    EnviarTodos($"JUGADOR_ELIMINADO {idJugador}");
+
+                    if (juego.CantidadJugadores() == 1)
+                    {
+                        int idGanador = juego.TurnoActual();
+                        EnviarTodos($"FIN_PARTIDA {idGanador}");
+                    }
+                    else
+                    {
+                        int siguienteJugador = juego.TurnoActual();
+                        EnviarTodos($"TURNO {siguienteJugador}");
+                    }
+
+                    return;
+                }
+
+                EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
+                EnviarTodos($"JUGADOR_MOVIDO {idJugador} {jugadorActualizado.GetPosicion()}");
+
+                TerminarTurno();
+            }
+            else if (resultado[0] == "SALIDA")
+            {
+                Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
+
+                EnviarTodos($"CASILLA_ESPECIAL {idJugador} SALIDA");
+                EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
+
+                TerminarTurno();
+            }
+            else if (resultado[0] == "CARCEL")
+            {
+                EnviarTodos($"CASILLA_ESPECIAL {idJugador} CARCEL");
+                TerminarTurno();
+            }
+            else if (resultado[0] == "LIBRE")
+            {
+                EnviarTodos($"CASILLA_ESPECIAL {idJugador} LIBRE");
+                TerminarTurno();
+            }
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
@@ -233,10 +283,29 @@ namespace Monopoly.App
                 return;
             }
 
-            Jugador jugador = banco.BuscarJugador(idJugador);
-            EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
-            EnviarTodos($"PROPIEDAD_COMPRADA {idJugador} {idCasilla}");
-            
+            Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
+
+            if (jugadorActualizado == null)
+            {
+                EnviarTodos($"JUGADOR_ELIMINADO {idJugador}");
+
+                if (juego.CantidadJugadores() == 1)
+                {
+                    int idGanador = juego.TurnoActual();
+                    EnviarTodos($"FIN_PARTIDA {idGanador}");
+                }
+                else
+                {
+                    int siguienteJugador = juego.TurnoActual();
+                    EnviarTodos($"TURNO {siguienteJugador}");
+                }
+
+                return;
+            }
+
+            EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
+            EnviarTodos($"JUGADOR_MOVIDO {idJugador} {jugadorActualizado.GetPosicion()}");
+
             TerminarTurno();
         }
 
@@ -262,6 +331,15 @@ namespace Monopoly.App
             }
 
             int siguienteJugador = juego.TurnoActual();
+            
+            Jugador jugadorSiguiente = banco.BuscarJugador(siguienteJugador);
+
+            if (jugadorSiguiente.GetTurnoPerdido())
+            {
+                jugadorSiguiente.SetTurnoPerdido(false);
+                juego.PasarTurno();
+                siguienteJugador = juego.TurnoActual();
+            }
 
             EnviarTodos($"TURNO {siguienteJugador}");
         }

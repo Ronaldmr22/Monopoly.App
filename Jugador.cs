@@ -54,6 +54,10 @@ public class Jugador{
     {
         this.TurnoPerdido = TurnoPerdido;
     }
+    public bool GetTurnoPerdido()
+    {
+        return this.TurnoPerdido;
+    }
 
     public void SetEstado(bool Estado)
     {
