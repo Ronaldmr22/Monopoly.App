@@ -12,6 +12,7 @@ namespace Monopoly.App
         private StreamReader lector;
         private StreamWriter escritor;
         private bool conectado;
+        
 
         public int IdJugador { get; private set; }
         public event Action<int, string> JugadorConectado;
@@ -28,6 +29,7 @@ namespace Monopoly.App
         public event Action<int, int, int> AlquilerPagado;
         public event Action<int> JugadorEliminado;
         public event Action<int> PartidaTerminada;
+        public event Action<int, int> CartaEventoRecibida;
 
 
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
@@ -168,16 +170,12 @@ namespace Monopoly.App
             {
                 int idCasilla = int.Parse(partes[1]);
 
+                PropiedadPropia?.Invoke(idCasilla);
+
                 if (ActualizacionJuego != null)
                 {
                     ActualizacionJuego.Invoke("La casilla " + idCasilla + " ya es tuya");
                 }
-            }
-            else if (comando == "PROPIEDAD_PROPIA")
-            {
-                int idCasilla = int.Parse(partes[1]);
-
-                PropiedadPropia?.Invoke(idCasilla);
             }
             else if (comando == "PARTIDA_INICIADA")
             {
@@ -218,6 +216,13 @@ namespace Monopoly.App
 
                 PartidaTerminada?.Invoke(idGanador);
             }
+            else if (comando == "CARTA_EVENTO")
+            {
+                int idJugador = int.Parse(partes[1]);
+                int idCarta = int.Parse(partes[2]);
+
+                CartaEventoRecibida?.Invoke(idJugador, idCarta);
+            }
 
             else
             {
@@ -235,7 +240,7 @@ namespace Monopoly.App
 
         public void ComprarPropiedad(int idCasilla)
         {
-            EnviarMensaje("COMPRAR_PROPIEDAD " + IdJugador + " " + idCasilla);
+            EnviarMensaje("COMPRAR_PROPIEDAD " + idCasilla);
         }
 
         public void NoComprar()
@@ -275,9 +280,6 @@ namespace Monopoly.App
             EnviarMensaje("INICIAR_PARTIDA");
         }
 
-        public void TerminarTurno()
-        {
-            EnviarMensaje("TERMINAR_TURNO");
-        }
+
     }
 }

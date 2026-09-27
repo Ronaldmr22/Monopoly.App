@@ -54,6 +54,10 @@ public class Jugador{
     {
         this.TurnoPerdido = TurnoPerdido;
     }
+    public bool GetTurnoPerdido()
+    {
+        return this.TurnoPerdido;
+    }
 
     public void SetEstado(bool Estado)
     {
@@ -88,5 +92,10 @@ public class Jugador{
     public void RecibirDinero(int Dinero)
     {
         this.Saldo += Dinero;
+    }
+
+    public int GetPatrimonio()
+    {
+        return Saldo + Propiedades.ValorTotal();
     }
 }

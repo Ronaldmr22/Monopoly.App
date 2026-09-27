@@ -21,11 +21,14 @@ namespace Monopoly.App
             Tablero = new Tablero_LL();
             Historial = new HistorialTransacciones();
             Juego = new Juego();
+            Cartas = new ColaCartas();
 
-            Banco = new Banco(Tablero, Historial, Juego);
+            Banco = new Banco(Tablero, Historial, Juego, Cartas);
 
             Cliente = new Cliente();
             CrearTablero();
+            CrearCartas();
+
         }
 
         public async Task IniciarAsync(int puerto, string nombreJugador)

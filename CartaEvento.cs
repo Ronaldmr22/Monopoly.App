@@ -49,7 +49,7 @@ namespace Monopoly.App
     }
 }
 
- public class CartaPerderDinero : CartaEvento
+public class CartaPerderDinero : CartaEvento
     {
         private int monto;
     public CartaPerderDinero(int id_carta, string descripcion, int monto)
@@ -67,25 +67,25 @@ namespace Monopoly.App
         banco.Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
     }
   }
-   public class CartaPerderTurno : CartaEvento
+public class CartaPerderTurno : CartaEvento
     {
         private int monto;
-    public CartaPerderTurno(int id_carta, string descripcion)
-    : base(id_carta, descripcion)
-    {
-      
-    }
+        public CartaPerderTurno(int id_carta, string descripcion): base(id_carta, descripcion)
+        {
+        
+        }
    
-    public override void EjecutarEvento(Jugador jugador, Banco banco)
-    {
-        jugador.SetTurnoPerdido(true);
+        public override void EjecutarEvento(Jugador jugador, Banco banco)
+        {
+            jugador.SetTurnoPerdido(true);
+        }
     }
 
     }
 
   
 
-  public class CartaMoverseDeCasilla : CartaEvento
+public class CartaMoverseDeCasilla : CartaEvento
     {
         private int movimiento;
     public CartaMoverseDeCasilla(int id_carta, string descripcion, int movimiento)
@@ -116,7 +116,7 @@ public class NodoCarta
     }
     
 
-    public class ColaCartas
+public class ColaCartas
     {
         private NodoCarta cartaActual;
         private NodoCarta cartaUltima;
