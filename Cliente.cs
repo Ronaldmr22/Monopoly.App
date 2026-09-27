@@ -168,16 +168,12 @@ namespace Monopoly.App
             {
                 int idCasilla = int.Parse(partes[1]);
 
+                PropiedadPropia?.Invoke(idCasilla);
+
                 if (ActualizacionJuego != null)
                 {
                     ActualizacionJuego.Invoke("La casilla " + idCasilla + " ya es tuya");
                 }
-            }
-            else if (comando == "PROPIEDAD_PROPIA")
-            {
-                int idCasilla = int.Parse(partes[1]);
-
-                PropiedadPropia?.Invoke(idCasilla);
             }
             else if (comando == "PARTIDA_INICIADA")
             {
@@ -235,7 +231,7 @@ namespace Monopoly.App
 
         public void ComprarPropiedad(int idCasilla)
         {
-            EnviarMensaje("COMPRAR_PROPIEDAD " + IdJugador + " " + idCasilla);
+            EnviarMensaje("COMPRAR_PROPIEDAD " + idCasilla);
         }
 
         public void NoComprar()
@@ -275,9 +271,6 @@ namespace Monopoly.App
             EnviarMensaje("INICIAR_PARTIDA");
         }
 
-        public void TerminarTurno()
-        {
-            EnviarMensaje("TERMINAR_TURNO");
-        }
+
     }
 }

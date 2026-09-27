@@ -23,6 +23,8 @@ namespace Monopoly.App
         private HistorialTransacciones historialtransacciones;
         private Juego juego;
 
+        private bool esperandoCompra = false;
+
         public Servidor(int puerto, Banco banco, Tablero_LL tablerito, HistorialTransacciones historialTransacciones,Juego juego, string puertoDado)
         {
             listener = new TcpListener(IPAddress.Any, puerto);
@@ -76,10 +78,7 @@ namespace Monopoly.App
                     break;
  
                 case "NO_COMPRAR":
-                    break;
- 
-                case "TERMINAR_TURNO":
-                    TerminarTurno();
+                    NoComprar(cliente);
                     break;
  
                 case "CONSULTAR_ESTADO":
@@ -96,6 +95,7 @@ namespace Monopoly.App
                 
                 case "INICIAR_PARTIDA":
                     EnviarTodos("PARTIDA_INICIADA");
+                    EnviarTodos($"TURNO {juego.TurnoActual()}");
                     break;
  
                 default:
@@ -133,6 +133,11 @@ namespace Monopoly.App
                 EnviarCliente(cliente, "ERROR NO_ES_TU_TURNO");
                 return;
             }
+            if (esperandoCompra)
+            {
+                EnviarCliente(cliente, "ERROR ESPERANDO_DECISION_COMPRA");
+                return;
+            }
 
             dado.LeerLanzamiento();
 
@@ -146,7 +151,6 @@ namespace Monopoly.App
 
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
-            banco.ResolverCasilla(idJugador);
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
             EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
         
@@ -154,6 +158,11 @@ namespace Monopoly.App
             string[] resultado = resultadoCasilla.Split(' ');
             if (resultado[0] == "DISPONIBLE")
             {
+                esperandoCompra = true;
+
+                Console.WriteLine(
+                    $"ESPERANDO COMPRA - Jugador {idJugador} - Casilla {resultado[1]} - Precio {resultado[2]}"
+                );
                 EnviarCliente(cliente,$"PROPIEDAD_DISPONIBLE {resultado[1]} {resultado[2]}");
             }
             else if (resultado[0] == "OCUPADA")
@@ -166,10 +175,12 @@ namespace Monopoly.App
                 EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
                 EnviarTodos($"DINERO_ACTUALIZADO {idDueño} {dueño.GetSaldo()}");
                 EnviarTodos($"ALQUILER_PAGADO {idJugador} {idDueño} {resultado[1]}");
+                TerminarTurno();
             }
             else if (resultado[0] == "PROPIA")
             {
                 EnviarCliente(cliente, $"PROPIEDAD_PROPIA {resultado[1]}");
+                TerminarTurno();
             }
             else if (resultado[0] == "ELIMINADO")
             {
@@ -186,26 +197,47 @@ namespace Monopoly.App
 
                     EnviarTodos($"FIN_PARTIDA {idGanador}");
                 }
+                else
+                {
+                    int siguienteJugador = juego.TurnoActual();
+
+                    EnviarTodos($"TURNO {siguienteJugador}");
+                }
             }
         }
 
         public void ComprarPropiedad(ClienteConectado cliente, string[] comunicacion)
         {
             int idJugador = cliente.IdJugador;
+
+            if (!juego.EsElTurnoDe(idJugador))
+            {
+                EnviarCliente(cliente, "ERROR NO_ES_TU_TURNO");
+                return;
+            }
+            if (!esperandoCompra)
+            {
+                EnviarCliente(cliente, "ERROR NO_HAY_COMPRA_PENDIENTE");
+                return;
+            }
+
+            esperandoCompra = false;
+
             int idCasilla = int.Parse(comunicacion[1]);
             bool exito = banco.ComprarPropiedad(idJugador, idCasilla);
 
             if (!exito)
             {
                 EnviarCliente(cliente, $"ERROR DINERO INSUFICIENTE");
+                TerminarTurno();
                 return;
             }
 
             Jugador jugador = banco.BuscarJugador(idJugador);
             EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
-            EnviarCliente(cliente, $"COMPRAR_PROPIEDAD {idCasilla}");
             EnviarTodos($"PROPIEDAD_COMPRADA {idJugador} {idCasilla}");
             
+            TerminarTurno();
         }
 
 
@@ -221,9 +253,38 @@ namespace Monopoly.App
         {
             juego.PasarTurno();
 
+            if (juego.TerminoPorRondas())
+            {
+                Jugador ganador = banco.ObtenerGanadorPorPatrimonio();
+
+                EnviarTodos($"FIN_PARTIDA {ganador.GetId()}");
+                return;
+            }
+
             int siguienteJugador = juego.TurnoActual();
 
             EnviarTodos($"TURNO {siguienteJugador}");
+        }
+
+        public void NoComprar(ClienteConectado cliente)
+        {
+            int idJugador = cliente.IdJugador;
+
+            if (!juego.EsElTurnoDe(idJugador))
+            {
+                EnviarCliente(cliente, "ERROR NO_ES_TU_TURNO");
+                return;
+            }
+
+            if (!esperandoCompra)
+            {
+                EnviarCliente(cliente, "ERROR NO_HAY_COMPRA_PENDIENTE");
+                return;
+            }
+
+            esperandoCompra = false;
+
+            TerminarTurno();
         }
 
         public void EnviarCliente(ClienteConectado cliente, string mensaje)
@@ -238,6 +299,8 @@ namespace Monopoly.App
                 cliente.Escritor.WriteLine(mensaje);
             }
         }
+
+
 
 
         public Tablero_LL GetTablero()

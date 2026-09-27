@@ -7,7 +7,7 @@ namespace Monopoly.App
         private ColaTurnos turnos;
         private int rondaActual;
         private int jugadorInicioRonda;
-        private int maxRondas = 10;
+        private int maxRondas = 2;
 
         public Juego()
         {
@@ -63,6 +63,11 @@ namespace Monopoly.App
         public bool TerminoPorRondas()
         {
             return rondaActual > maxRondas;
+        }
+
+        public int GetRondaActual()
+        {
+            return rondaActual;
         }
     }
 
@@ -197,5 +202,7 @@ namespace Monopoly.App
                 nodo = nodo.Siguiente;
             }
         }
+
+        
     }
 }

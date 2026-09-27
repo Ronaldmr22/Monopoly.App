@@ -42,6 +42,7 @@ namespace Monopoly.App
                 }
                 Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, "Banco", jugadorD.GetNombre(), Monto, Razon);
                 historial.InsertarTransaccion(transaccion);
+                IdTransaccion++;
                 jugadorD.RecibirDinero(Monto);
                 return true;
             }
@@ -52,12 +53,14 @@ namespace Monopoly.App
                     {
                         Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), "Banco", Monto, Razon);
                         historial.InsertarTransaccion(transaccion);
+                        IdTransaccion++;
                         return true;
                     }
                     else
                     {
                         Transaccion transaccion = new Transaccion(IdTransaccion, DateTime.Now, juego.TurnoActual(), tipo, jugadorO.GetNombre(), "Banco", jugadorO.GetSaldo(), Razon);
                         historial.InsertarTransaccion(transaccion);
+                        IdTransaccion++;
                         DestruirJugador(jugadorO);
                         return false;
                     }
@@ -77,7 +80,7 @@ namespace Monopoly.App
             Jugador? jugador = null;
             Propiedad? propiedad = null;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < ListaJugadores.Count; i++)
             {
                 if (ListaJugadores[i].GetId() == idJugador)
                 {
@@ -86,12 +89,11 @@ namespace Monopoly.App
                 }
             }
 
-            for (Nodo nodo = tablero.GetHead(); nodo.Next != tablero.GetHead(); nodo = nodo.Next)
+            Casilla casilla = tablero.BuscarCasilla(idCasilla);
+
+            if (casilla is Propiedad propiedadObjetivo)
             {
-                if (nodo.Data.NumeroCasilla == idCasilla && nodo.Data is Propiedad propiedadObjetivo)
-                {
-                    propiedad = propiedadObjetivo;
-                }
+                propiedad = propiedadObjetivo;
             }
             if (jugador.GetSaldo() < propiedad.Precio)
             {
@@ -116,7 +118,7 @@ namespace Monopoly.App
             Propiedad? propiedad = null;
             Jugador? dueño = null;
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < ListaJugadores.Count; i++)
             {
                 if (ListaJugadores[i].GetId() == idJugador)
                 {
@@ -124,7 +126,7 @@ namespace Monopoly.App
                     break;
                 }
             }
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < ListaJugadores.Count; i++)
             {
                 if (ListaJugadores[i].GetId() == idDueño)
                 {
@@ -132,15 +134,13 @@ namespace Monopoly.App
                     break;
                 }
             }
-            for (Nodo nodo = tablero.GetHead(); nodo.Next != tablero.GetHead(); nodo = nodo.Next)
+            Casilla casilla = tablero.BuscarCasilla(idPropiedad);
+
+            if (casilla is Propiedad propiedadObjetivo)
             {
-                if (nodo.Data.NumeroCasilla == idPropiedad && nodo.Data is Propiedad propiedadObjetivo)
-                {
-                    propiedad = propiedadObjetivo;
-                    break;
-                }
+                propiedad = propiedadObjetivo;
             }
-            return Transferir(jugador, dueño, propiedad.Alquiler, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Precio}");
+            return Transferir(jugador, dueño, propiedad.Alquiler, "Cobro de alquiler", $"{jugador.GetNombre()} le ha pagado renta a {dueño.GetNombre()} por una cantidad de {propiedad.Alquiler}");
         }
 
         public void AgregarJugador(string nombreJugador, int id)
@@ -233,6 +233,21 @@ namespace Monopoly.App
             }
 
             return null;
+        }
+
+        public Jugador ObtenerGanadorPorPatrimonio()
+        {
+            Jugador ganador = ListaJugadores[0];
+
+            foreach (Jugador jugador in ListaJugadores)
+            {
+                if (jugador.GetPatrimonio() > ganador.GetPatrimonio())
+                {
+                    ganador = jugador;
+                }
+            }
+
+            return ganador;
         }
 
         public string Getinfo()

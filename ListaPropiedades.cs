@@ -71,16 +71,18 @@ namespace Monopoly.App
             return head == null;
         }
 
-
-        public void Imprimir()
+        public int ValorTotal()
         {
+            int total = 0;
             NodoPropiedad actual = head;
 
             while (actual != null)
             {
-                Console.WriteLine(actual.Dato);
+                total += actual.Dato.Precio;
                 actual = actual.Siguiente;
             }
+
+            return total;
         }
     }
 }

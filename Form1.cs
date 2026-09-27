@@ -5,6 +5,7 @@ namespace Monopoly.App
         public Form1()
         {
             InitializeComponent();
+            Host host = new Host();
         }
 
         private void label1_Click(object sender, EventArgs e)

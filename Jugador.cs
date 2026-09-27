@@ -89,4 +89,9 @@ public class Jugador{
     {
         this.Saldo += Dinero;
     }
+
+    public int GetPatrimonio()
+    {
+        return Saldo + Propiedades.ValorTotal();
+    }
 }
