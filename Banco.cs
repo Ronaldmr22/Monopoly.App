@@ -221,7 +221,7 @@ namespace Monopoly.App
 
                 carta.EjecutarEvento(jugador, this);
 
-                return $"EVENTO {carta.IdCarta}";
+                return $"EVENTO {carta.IdCarta} {carta.Descripcion}";
             }
             else if(casilla is CasillaEspecial casillaEspecial)
             {

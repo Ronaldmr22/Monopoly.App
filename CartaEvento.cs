@@ -33,41 +33,41 @@ namespace Monopoly.App
      public class CartaGanarDinero : CartaEvento
     {
         private int monto;
-    public CartaGanarDinero(int id_carta, string descripcion, int monto)
-    : base(id_carta, descripcion)
-    {
-        this.monto = monto;
+        public CartaGanarDinero(int id_carta, string descripcion, int monto)
+        : base(id_carta, descripcion)
+        {
+            this.monto = monto;
+        }
+        public int Monto
+        {
+            get
+            {return this.monto; }
+        }
+        public override void EjecutarEvento(Jugador jugador, Banco banco)
+        {
+        banco.Transferir(banco, jugador, this.monto, "Jugador gana dinero", "Evento de carta");
+        }
     }
-    public int Monto
-      {
-        get
-        {return this.monto; }
-      }
-    public override void EjecutarEvento(Jugador jugador, Banco banco)
-    {
-    banco.Transferir(banco, jugador, this.monto, "Jugador gana dinero", "Evento de carta");
-    }
-}
 
-public class CartaPerderDinero : CartaEvento
+    public class CartaPerderDinero : CartaEvento
     {
         private int monto;
-    public CartaPerderDinero(int id_carta, string descripcion, int monto)
-    : base(id_carta, descripcion)
-    {
-        this.monto = monto;
+        public CartaPerderDinero(int id_carta, string descripcion, int monto)
+        : base(id_carta, descripcion)
+        {
+            this.monto = monto;
+        }
+        public int Monto
+        {
+            get
+            {return this.monto; }
+        }
+        public override void EjecutarEvento(Jugador jugador, Banco banco)
+        {
+            banco.Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
+        }
     }
-    public int Monto
-      {
-        get
-        {return this.monto; }
-      }
-    public override void EjecutarEvento(Jugador jugador, Banco banco)
-    {
-        banco.Transferir(jugador, banco, this.monto, "Jugador pierde dinero", "Evento de carta");
-    }
-  }
-public class CartaPerderTurno : CartaEvento
+    public class CartaPerderTurno : CartaEvento
     {
         private int monto;
         public CartaPerderTurno(int id_carta, string descripcion): base(id_carta, descripcion)
@@ -79,8 +79,6 @@ public class CartaPerderTurno : CartaEvento
         {
             jugador.SetTurnoPerdido(true);
         }
-    }
-
     }
 
   

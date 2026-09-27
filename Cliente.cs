@@ -29,7 +29,8 @@ namespace Monopoly.App
         public event Action<int, int, int> AlquilerPagado;
         public event Action<int> JugadorEliminado;
         public event Action<int> PartidaTerminada;
-        public event Action<int, int> CartaEventoRecibida;
+        public event Action<int, int, string> CartaEventoRecibida;
+        public event Action<int, string>? CasillaEspecialRecibida;
 
 
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
@@ -220,8 +221,16 @@ namespace Monopoly.App
             {
                 int idJugador = int.Parse(partes[1]);
                 int idCarta = int.Parse(partes[2]);
+                string descripcion = string.Join(" ", partes[3..]);
 
-                CartaEventoRecibida?.Invoke(idJugador, idCarta);
+                CartaEventoRecibida?.Invoke(idJugador, idCarta, descripcion);
+            }
+            else if (comando == "CASILLA_ESPECIAL")
+            {
+                int idJugador = int.Parse(partes[1]);
+                string tipoCasilla = partes[2];
+
+                CasillaEspecialRecibida?.Invoke(idJugador, tipoCasilla);
             }
 
             else

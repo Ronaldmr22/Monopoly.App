@@ -208,12 +208,13 @@ namespace Monopoly.App
             {
                 int idCarta = int.Parse(resultado[1]);
 
-                EnviarTodos($"CARTA_EVENTO {idJugador} {idCarta}");
+                string descripcion = string.Join(" ", resultado[2..]);
 
                 Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
 
                 if (jugadorActualizado == null)
                 {
+                    EnviarTodos($"CARTA_EVENTO {idJugador} {idCarta} {descripcion}");
                     EnviarTodos($"JUGADOR_ELIMINADO {idJugador}");
 
                     if (juego.CantidadJugadores() == 1)
@@ -232,6 +233,7 @@ namespace Monopoly.App
 
                 EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
                 EnviarTodos($"JUGADOR_MOVIDO {idJugador} {jugadorActualizado.GetPosicion()}");
+                EnviarTodos($"CARTA_EVENTO {idJugador} {idCarta} {descripcion}");
 
                 TerminarTurno();
             }
@@ -305,6 +307,8 @@ namespace Monopoly.App
 
             EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
             EnviarTodos($"JUGADOR_MOVIDO {idJugador} {jugadorActualizado.GetPosicion()}");
+            EnviarTodos($"PROPIEDAD_COMPRADA {idJugador} {idCasilla}");
+
 
             TerminarTurno();
         }
@@ -315,6 +319,7 @@ namespace Monopoly.App
             foreach (Jugador jugador in banco.ListaJugadores)
             {
                 EnviarCliente(cliente,$"JUGADOR {jugador.GetId()} {jugador.GetNombre()}");
+                EnviarCliente(cliente, $"DINERO_ACTUALIZADO {jugador.GetId()} {jugador.GetSaldo()}");
             }
         }
 

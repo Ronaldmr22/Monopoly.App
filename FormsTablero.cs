@@ -11,11 +11,14 @@ namespace Monopoly.App
     public partial class FormsTablero : Form
     {
         private Cliente cliente; 
+        private Cliente? cliente2;
+        private Cliente? clienteEnTurno;
         private Dictionary<int, Panel> casillas;
+        
         private Dictionary<int, Label> fichas = new Dictionary<int, Label>();
         private int casillaDisponible;
 
-        public FormsTablero(Cliente cliente)
+        public FormsTablero(Cliente cliente, Cliente? cliente2)
         {
             InitializeComponent();
             btnDados.Click += btnDados_Click;
@@ -49,6 +52,8 @@ namespace Monopoly.App
                 { 24, Casa18 }
             };
             this.cliente = cliente;
+            this.cliente2 = cliente2;
+            
             btnDados.Enabled = false;
             cliente.TurnoCambiado += MostrarTurno;
             cliente.JugadorConectado += CrearFicha;
@@ -59,7 +64,21 @@ namespace Monopoly.App
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
             cliente.PropiedadDisponible += MostrarPropiedadDisponible;
+            if (cliente2 != null)
+            {
+                cliente2.PropiedadDisponible += MostrarPropiedadDisponible;
+            }
             cliente.PropiedadComprada += MostrarPropiedadComprada;
+            cliente.AlquilerPagado += MostrarAlquilerPagado;
+            cliente.CartaEventoRecibida += MostrarCartaEvento;
+            cliente.JugadorEliminado += MostrarJugadorEliminado;
+            cliente.PartidaTerminada += MostrarFinPartida;
+            cliente.CasillaEspecialRecibida += MostrarCasillaEspecial;
+            cliente.ErrorRecibido += MostrarError;
+            if (cliente2 != null)
+            {
+                cliente2.ErrorRecibido += MostrarError;
+            }
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -158,13 +177,19 @@ namespace Monopoly.App
             }
 
             label2.Text = $"Jugador {idJugador}";
-            btnDados.Enabled = idJugador == cliente.IdJugador;
+            clienteEnTurno = idJugador == cliente.IdJugador
+                ? cliente
+                : cliente2 != null && idJugador == cliente2.IdJugador
+                    ? cliente2
+                    : null;
+
+            btnDados.Enabled = clienteEnTurno != null;
         }
 
         private void btnDados_Click(object? sender, EventArgs e)
         {
             btnDados.Enabled = false;
-            cliente.TirarDados();
+            clienteEnTurno?.TirarDados();
         }
         private void MostrarDados(int idJugador, int dado1, int dado2)
         {
@@ -219,7 +244,7 @@ namespace Monopoly.App
         {
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
-            cliente.ComprarPropiedad(casillaDisponible);
+            clienteEnTurno?.ComprarPropiedad(casillaDisponible);
         }
 
         private void btnNoComprar_Click(object? sender, EventArgs e)
@@ -228,7 +253,7 @@ namespace Monopoly.App
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
             lblMensaje.Text = "Decidiste no comprar la propiedad.";
-            cliente.NoComprar();
+            clienteEnTurno?.NoComprar();
 
         }
          private void MostrarPropiedadComprada(int idJugador, int idCasilla)
@@ -240,6 +265,101 @@ namespace Monopoly.App
             }
 
             lblMensaje.Text = $"Jugador {idJugador} compró la casilla {idCasilla}.";
+        }
+
+        private void MostrarAlquilerPagado(int idJugador, int idDueño, int idCasilla)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => MostrarAlquilerPagado(idJugador, idDueño, idCasilla)));
+                return;
+            }
+
+            lblMensaje.Text = $"Jugador {idJugador} pagó alquiler al jugador {idDueño} por la casilla {idCasilla}.";
+        }
+
+        private void MostrarCartaEvento(int idJugador, int idCarta, string descripcion)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => MostrarCartaEvento(idJugador, idCarta, descripcion)));
+                return;
+            }
+
+            lblMensaje.Text = $"Jugador {idJugador} sacó la carta {idCarta}: {descripcion}.";
+        }
+
+        private void MostrarJugadorEliminado(int idJugador)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => MostrarJugadorEliminado(idJugador)));
+                return;
+            }
+
+            if (fichas.TryGetValue(idJugador, out Label? ficha))
+            {
+                ficha.Parent?.Controls.Remove(ficha);
+                ficha.Dispose();
+                fichas.Remove(idJugador);
+            }
+
+            if (lblMensaje.Text.StartsWith($"Jugador {idJugador} sacó la carta "))
+            {
+                lblMensaje.Text += " Quedó eliminado.";
+            }
+            else
+            {
+                lblMensaje.Text = $"Jugador {idJugador} quedó eliminado.";
+            }
+        }
+
+        private void MostrarFinPartida(int idGanador)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => MostrarFinPartida(idGanador)));
+                return;
+            }
+
+            btnDados.Enabled = false;
+            btnComprar.Enabled = false;
+            btnNoComprar.Enabled = false;
+            lblMensaje.Text += Environment.NewLine
+                + $"Terminó la partida. Ganó el jugador {idGanador}.";
+        }
+
+        private void MostrarCasillaEspecial(int idJugador, string tipoCasilla)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => MostrarCasillaEspecial(idJugador, tipoCasilla)));
+                return;
+            }
+
+            lblMensaje.Text = tipoCasilla switch
+            {
+                "SALIDA" => $"Jugador {idJugador} cayó en Salida.",
+                "CARCEL" => $"Jugador {idJugador} cayó en Cárcel y perderá un turno.",
+                "LIBRE" => $"Jugador {idJugador} cayó en Casilla Libre.",
+                _ => $"Jugador {idJugador} cayó en {tipoCasilla}."
+            };
+        }
+
+        private void MostrarError(string mensaje)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => MostrarError(mensaje)));
+                return;
+            }
+
+            lblMensaje.Text = mensaje;
+
+            if (mensaje.Contains("TARJETA_INCORRECTA"))
+            {
+                btnDados.Enabled = clienteEnTurno != null;
+            }
         }
 
     }

@@ -7,7 +7,7 @@ namespace Monopoly.App
         private ColaTurnos turnos;
         private int rondaActual;
         private int jugadorInicioRonda;
-        private int maxRondas = 2;
+        private int maxRondas = 4;
 
         public Juego()
         {

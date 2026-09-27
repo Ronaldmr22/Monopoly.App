@@ -95,7 +95,7 @@ namespace Monopoly.App
                 return;
             }
 
-            FormsTablero pantallaTablero = new FormsTablero(cliente);
+            FormsTablero pantallaTablero = new FormsTablero(cliente, cliente2);
             pantallaTablero.Show();
             Hide();
         }
