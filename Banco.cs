@@ -219,7 +219,7 @@ namespace Monopoly.App
             {
                 //return casillaEspecial;
             }
-            return null;
+            return "SIN_ACCION";
         }
 
         public Jugador? BuscarDueñoPropiedad(int idPropiedad)

@@ -16,6 +16,7 @@ namespace Monopoly.App
             InitializeComponent();
 
             this.cliente = cliente;
+            cliente.PartidaIniciada += AbrirTablero;
             this.cliente2 = cliente2;
             this.nombreJugador = nombreJugador;
             this.esHost = esHost;
@@ -83,9 +84,20 @@ namespace Monopoly.App
 
         private void btn_comenzarH_Click(object sender, EventArgs e)
         {
-            FormsTablero pantallaTablero = new FormsTablero();
+        cliente.IniciarPartida();
+        }
+
+        private void AbrirTablero()
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(AbrirTablero));
+                return;
+            }
+
+            FormsTablero pantallaTablero = new FormsTablero(cliente);
             pantallaTablero.Show();
-            this.Hide();
+            Hide();
         }
     }
 }

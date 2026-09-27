@@ -76,6 +76,7 @@ namespace Monopoly.App
                     break;
  
                 case "NO_COMPRAR":
+                    TerminarTurno();
                     break;
  
                 case "TERMINAR_TURNO":
@@ -93,9 +94,10 @@ namespace Monopoly.App
                 case "CONSULTAR_LOBBY":
                     EnviarLobby(cliente);
                     break;
-                
+
                 case "INICIAR_PARTIDA":
                     EnviarTodos("PARTIDA_INICIADA");
+                    EnviarTodos($"TURNO {juego.TurnoActual()}");
                     break;
  
                 default:
@@ -146,7 +148,6 @@ namespace Monopoly.App
 
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
-            banco.ResolverCasilla(idJugador);
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
             EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
         
@@ -166,10 +167,12 @@ namespace Monopoly.App
                 EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
                 EnviarTodos($"DINERO_ACTUALIZADO {idDueño} {dueño.GetSaldo()}");
                 EnviarTodos($"ALQUILER_PAGADO {idJugador} {idDueño} {resultado[1]}");
+                TerminarTurno();
             }
             else if (resultado[0] == "PROPIA")
             {
                 EnviarCliente(cliente, $"PROPIEDAD_PROPIA {resultado[1]}");
+                TerminarTurno();
             }
             else if (resultado[0] == "ELIMINADO")
             {
@@ -186,6 +189,15 @@ namespace Monopoly.App
 
                     EnviarTodos($"FIN_PARTIDA {idGanador}");
                 }
+                else
+                {
+                    TerminarTurno();
+                }
+                
+            }
+            else if (resultado[0] == "SIN_ACCION")
+            {
+                TerminarTurno();
             }
         }
 
@@ -198,6 +210,7 @@ namespace Monopoly.App
             if (!exito)
             {
                 EnviarCliente(cliente, $"ERROR DINERO INSUFICIENTE");
+                TerminarTurno();
                 return;
             }
 
@@ -205,6 +218,7 @@ namespace Monopoly.App
             EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
             EnviarCliente(cliente, $"COMPRAR_PROPIEDAD {idCasilla}");
             EnviarTodos($"PROPIEDAD_COMPRADA {idJugador} {idCasilla}");
+            TerminarTurno();
             
         }
 

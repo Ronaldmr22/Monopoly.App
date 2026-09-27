@@ -80,6 +80,9 @@ namespace Monopoly.App
     {
         jugador.SetTurnoPerdido(true);
     }
+
+    }
+
   
 
   public class CartaMoverseDeCasilla : CartaEvento
@@ -177,5 +180,5 @@ public class NodoCarta
         }
     }
 }
-}
+
   
