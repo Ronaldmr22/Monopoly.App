@@ -186,6 +186,7 @@ namespace Monopoly.App
             if (nuevaPosicion > 24)
             {
                 nuevaPosicion = nuevaPosicion - 24;
+                jugador.RecibirDinero(200);
             }
 
             jugador.SetPosicion(nuevaPosicion);
@@ -231,7 +232,6 @@ namespace Monopoly.App
             {
                 if (casillaEspecial.Nombre == "Salida")
                 {
-                    Transferir(this, jugador, 200, "Premio de salida", $"{jugador.GetNombre()} recibió $200 por llegar a Salida");
                     return $"SALIDA {casillaEspecial.NumeroCasilla}";
                 }
                 else if (casillaEspecial.Nombre == "Carcel")
