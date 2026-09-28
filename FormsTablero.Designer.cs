@@ -658,7 +658,7 @@
             panelCasa9.BackColor = Color.FromArgb(255, 128, 0);
             panelCasa9.Location = new Point(-8, -1);
             panelCasa9.Name = "panelCasa9";
-            panelCasa9.Size = new Size(296, 30);
+            panelCasa9.Size = new Size(324, 30);
             panelCasa9.TabIndex = 13;
             // 
             // lblCasa9
@@ -722,7 +722,7 @@
             panelCasa10.BackColor = Color.FromArgb(255, 128, 0);
             panelCasa10.Location = new Point(-1, -4);
             panelCasa10.Name = "panelCasa10";
-            panelCasa10.Size = new Size(229, 34);
+            panelCasa10.Size = new Size(305, 34);
             panelCasa10.TabIndex = 14;
             // 
             // lblCasa10
@@ -778,7 +778,7 @@
             panel1.BackColor = Color.FromArgb(255, 128, 0);
             panel1.Location = new Point(-1, -7);
             panel1.Name = "panel1";
-            panel1.Size = new Size(225, 37);
+            panel1.Size = new Size(307, 37);
             panel1.TabIndex = 15;
             // 
             // lblCasa11
@@ -810,7 +810,7 @@
             panelCasa12.BackColor = Color.FromArgb(192, 0, 0);
             panelCasa12.Location = new Point(-1, -7);
             panelCasa12.Name = "panelCasa12";
-            panelCasa12.Size = new Size(250, 37);
+            panelCasa12.Size = new Size(307, 37);
             panelCasa12.TabIndex = 16;
             // 
             // lblCasa12
@@ -842,7 +842,7 @@
             panelCasa13.BackColor = Color.FromArgb(192, 0, 0);
             panelCasa13.Location = new Point(-6, -7);
             panelCasa13.Name = "panelCasa13";
-            panelCasa13.Size = new Size(223, 37);
+            panelCasa13.Size = new Size(316, 37);
             panelCasa13.TabIndex = 17;
             // 
             // lblCasa13
@@ -898,7 +898,7 @@
             panelCasa14.BackColor = Color.FromArgb(192, 0, 0);
             panelCasa14.Location = new Point(-1, -4);
             panelCasa14.Name = "panelCasa14";
-            panelCasa14.Size = new Size(228, 34);
+            panelCasa14.Size = new Size(274, 34);
             panelCasa14.TabIndex = 20;
             // 
             // lblCasa14

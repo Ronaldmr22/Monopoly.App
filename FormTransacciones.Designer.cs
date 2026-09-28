@@ -92,7 +92,7 @@
             // btnMostrarTodas
             // 
             btnMostrarTodas.Font = new Font("Tahoma", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnMostrarTodas.Location = new Point(248, 431);
+            btnMostrarTodas.Location = new Point(248, 470);
             btnMostrarTodas.Name = "btnMostrarTodas";
             btnMostrarTodas.Size = new Size(401, 76);
             btnMostrarTodas.TabIndex = 5;
@@ -115,6 +115,7 @@
             Controls.Add(btnBuscarMasReciente);
             Name = "FormTransacciones";
             Text = "Form2";
+            Load += FormTransacciones_Load;
             ResumeLayout(false);
             PerformLayout();
         }

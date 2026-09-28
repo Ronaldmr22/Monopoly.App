@@ -18,8 +18,9 @@ namespace Monopoly.App
         {
             InitializeComponent();
             this.cliente = cliente;
-            cmbTipo.Location = new Point(466, 285);
-            cmbTipo.Size = new Size(401, 30);
+            cmbTipo.Location = new Point(330, 245);
+            cmbTipo.Size = new Size(170, 30);
+            cmbTipo.Font = new Font("Tahoma", 11F);
             cmbTipo.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbTipo.Items.AddRange(new object[]
             {
@@ -31,12 +32,13 @@ namespace Monopoly.App
             });
             Controls.Add(cmbTipo);
             txtJugador.PlaceholderText = "Nombre del jugador";
-            txtJugador.Location = new Point(21, 285);
-            txtJugador.Size = new Size(401, 30);
+            txtJugador.Location = new Point(21, 245);
+            txtJugador.Size = new Size(200, 30);
+            txtJugador.Font = new Font("Tahoma", 11F);
             Controls.Add(txtJugador);
             cliente.TransaccionesGeneradas += MostrarArchivoGenerado;
-            btnBuscarMasAntigua.Click += (_, _)=>cliente.ConsultarTransacciones("ANTIGUAS");
-            btnBuscarMasReciente.Click += (_, _) =>cliente.ConsultarTransacciones("RECIENTES");
+            btnBuscarMasAntigua.Click += (_, _) => cliente.ConsultarTransacciones("ANTIGUAS");
+            btnBuscarMasReciente.Click += (_, _) => cliente.ConsultarTransacciones("RECIENTES");
             btnBuscarPorJugador.Click += btnBuscarPorJugador_Click;
             btnBuscarPorTipo.Click += btnBuscarPorTipo_Click;
             FormClosed += (_, _) => cliente.TransaccionesGeneradas -= MostrarArchivoGenerado;
@@ -85,6 +87,11 @@ namespace Monopoly.App
             }
 
             cliente.ConsultarTransacciones("TIPO", tipo);
+        }
+
+        private void FormTransacciones_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
