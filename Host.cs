@@ -33,7 +33,7 @@ namespace Monopoly.App
 
         public async Task IniciarAsync(int puerto, string nombreJugador)
         {
-            Servidor = new Servidor(puerto,Banco,Tablero,Historial,Juego,"COM9");
+            Servidor = new Servidor(puerto,Banco,Tablero,Historial,Juego,"COM5");
 
             _ = Servidor.IniciarConexionAsync();
 
@@ -111,6 +111,7 @@ namespace Monopoly.App
             CartaPerderTurno carta8 = new CartaPerderTurno(8, "Pierda dos turnos");
             CartaMoverseDeCasilla carta9 = new CartaMoverseDeCasilla(9, "Avance 3 casillas", 3);
 
+            
             Cartas.Encolar(carta1);
             Cartas.Encolar(carta2);
             Cartas.Encolar(carta3);

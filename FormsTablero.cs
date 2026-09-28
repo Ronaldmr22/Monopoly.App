@@ -17,6 +17,7 @@ namespace Monopoly.App
         
         private Dictionary<int, Label> fichas = new Dictionary<int, Label>();
         private Dictionary<int, string> nombresJugadores = new Dictionary<int, string>();
+        private Dictionary<int, int> dueñosPropiedades = new Dictionary<int, int>();
         private int casillaDisponible;
 
         public FormsTablero(Cliente cliente, Cliente? cliente2)
@@ -280,6 +281,8 @@ namespace Monopoly.App
                 ? encontrado
                 : $"Jugador {idJugador}";
 
+            dueñosPropiedades[idCasilla] = idJugador;
+
             lblMensaje.Text = $"{nombre} compró la casilla {idCasilla}.";
             if (casillas.TryGetValue(idCasilla, out Panel? casilla))
             {
@@ -335,6 +338,26 @@ namespace Monopoly.App
                 ficha.Parent?.Controls.Remove(ficha);
                 ficha.Dispose();
                 fichas.Remove(idJugador);
+            }
+            List<int> propiedadesLiberadas = new List<int>();
+
+            foreach (var propiedad in dueñosPropiedades)
+            {
+                if (propiedad.Value == idJugador)
+                {
+                    propiedadesLiberadas.Add(propiedad.Key);
+                }
+            }
+
+            foreach (int idCasilla in propiedadesLiberadas)
+            {
+                if (casillas.TryGetValue(idCasilla, out Panel? casilla))
+                {
+                    casilla.BackColor = SystemColors.Control;
+                    casilla.BorderStyle = BorderStyle.FixedSingle;
+                }
+
+                dueñosPropiedades.Remove(idCasilla);
             }
             string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)
                 ? encontrado
