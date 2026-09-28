@@ -186,7 +186,8 @@ namespace Monopoly.App
             if (nuevaPosicion > 24)
             {
                 nuevaPosicion = nuevaPosicion - 24;
-                jugador.RecibirDinero(200);
+                Transferir(this,jugador,200,"Premio de salida","Paso por Salida");
+
             }
 
             jugador.SetPosicion(nuevaPosicion);
