@@ -31,6 +31,7 @@ namespace Monopoly.App
         public event Action<int> PartidaTerminada;
         public event Action<int, int, string> CartaEventoRecibida;
         public event Action<int, string>? CasillaEspecialRecibida;
+        public event Action<string>? TransaccionesGeneradas;
 
 
         public async Task ConectarAsync(string ip, int puerto, string nombreJugador)
@@ -232,6 +233,11 @@ namespace Monopoly.App
 
                 CasillaEspecialRecibida?.Invoke(idJugador, tipoCasilla);
             }
+            else if (comando == "TRANSACCIONES_GENERADAS")
+            {
+                string nombreArchivo = string.Join(" ", partes[1..]);
+                TransaccionesGeneradas?.Invoke(nombreArchivo);
+            }
 
             else
             {
@@ -287,6 +293,18 @@ namespace Monopoly.App
         public void IniciarPartida()
         {
             EnviarMensaje("INICIAR_PARTIDA");
+        }
+
+        public void ConsultarTransacciones(string opcion, string? filtro = null)
+        {
+            string mensaje = $"CONSULTAR_TRANSACCIONES {opcion}";
+
+            if (!string.IsNullOrWhiteSpace(filtro))
+            {
+                mensaje += $" {filtro}";
+            }
+
+            EnviarMensaje(mensaje);
         }
 
 

@@ -29,54 +29,63 @@ namespace Monopoly.App
             {
                 transaccionNueva.Previous = tail;  
                 tail.Next = transaccionNueva;       
-                tail = transaccionNueva;     
-                transaccionNueva.Next = head;
-                head.Previous = transaccionNueva;       
+                tail = transaccionNueva;           
             }
             size ++;
         }
 
         public void RecorrerDesdeMasAntigua()
         {
-            Transaccion? actual = tail;
+            GenerarNombre("Orden desde el más antiguo");
+            File.WriteAllText(RutaArchivo, string.Empty);
+            Transaccion? actual = head;
+
             while (actual != null)
             {
-                GuardarTransaccion(actual,1);
-                actual=actual.Previous;
+                GuardarTransaccion(actual, 1);
+                actual = actual.Next;
             }
         }
-        
+                
         public void RecorrerDesdeMasReciente()
         {
-            Transaccion? actual = head;
+            GenerarNombre("Orden desde el más reciente");
+            File.WriteAllText(RutaArchivo, string.Empty);
+            Transaccion? actual = tail;
+
             while (actual != null)
             {
-                GuardarTransaccion(actual,2);
-                actual=actual.Next;
+                GuardarTransaccion(actual, 2);
+                actual = actual.Previous;
             }
         }
-
-        public void BuscarPorJugador(int jugador)
+        public void BuscarPorJugador(string nombreJugador)
         {
+            GenerarNombre("Búsqueda por jugador");
+            File.WriteAllText(RutaArchivo, string.Empty);
             Transaccion? actual =head;
             while (actual != null)
             {
-                if (actual.GetJugador() == jugador)
+                if (string.Equals(actual.Origen, nombreJugador, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(actual.Destino, nombreJugador, StringComparison.OrdinalIgnoreCase))
                 {
-                    GuardarTransaccion(actual,3);
+                    GuardarTransaccion(actual, 3);
                 }
-                actual=actual.Next;
+
+                actual = actual.Next;
             }
         }
 
         public void BuscarPorTipo(string tipo)
         {
+            GenerarNombre("Búsqueda por tipo");
+            File.WriteAllText(RutaArchivo, string.Empty);
             Transaccion? actual =head;
             while(actual != null)
             {
                 if (actual.GetTipo() == tipo)
                 {
-                    GuardarTransaccion(actual,2);
+                    GuardarTransaccion(actual,4);
                 }
                 actual=actual.Next;
             }
@@ -84,6 +93,8 @@ namespace Monopoly.App
 
         public void TodasLasTransacciones()
         {
+            GenerarNombre("Todas las transacciones");
+            File.WriteAllText(RutaArchivo, string.Empty);
             Transaccion? actual=head;
             while(actual != null)
             {
@@ -127,7 +138,14 @@ namespace Monopoly.App
 
         private void GenerarNombre(string nombreTxt)
         {
-            RutaArchivo=Path.Combine(Directory.GetCurrentDirectory(),nombreTxt); 
+            string proyecto = Path.GetFullPath(
+                Path.Combine(AppContext.BaseDirectory, "..", "..", "..")
+            );
+
+            string carpeta = Path.Combine(proyecto, "Transacciones");
+            Directory.CreateDirectory(carpeta);
+
+            RutaArchivo = Path.Combine(carpeta, $"{nombreTxt}.txt");
         }
     }
 }

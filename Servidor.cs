@@ -86,9 +86,38 @@ namespace Monopoly.App
                     break;
  
                 case "CONSULTAR_TRANSACCIONES":
-                    
+                    if (comunicacion.Length >= 2 && comunicacion[1] == "TODAS")
+                    {
+                        historialtransacciones.TodasLasTransacciones();
+                        EnviarCliente(cliente, "TRANSACCIONES_GENERADAS Todas las transacciones.txt");
+                    }
+                    else if (comunicacion.Length >= 2 && comunicacion[1] == "ANTIGUAS")
+                    {
+                        historialtransacciones.RecorrerDesdeMasAntigua();
+                        EnviarCliente(cliente, "TRANSACCIONES_GENERADAS Orden desde el más antiguo.txt");
+                    }
+                    else if (comunicacion.Length >= 2 && comunicacion[1] == "RECIENTES")
+                    {
+                        historialtransacciones.RecorrerDesdeMasReciente();
+                        EnviarCliente(cliente, "TRANSACCIONES_GENERADAS Orden desde el más reciente.txt");
+                    }
+                    else if (comunicacion.Length >= 3 && comunicacion[1] == "JUGADOR")
+                    {
+                        string nombreJugador = string.Join(" ", comunicacion[2..]);
+                        historialtransacciones.BuscarPorJugador(nombreJugador);
+                        EnviarCliente(cliente, "TRANSACCIONES_GENERADAS Búsqueda por jugador.txt");
+                    }
+                    else if (comunicacion.Length >= 3 && comunicacion[1] == "TIPO")
+                    {
+                        string tipo = string.Join(" ", comunicacion[2..]);
+                        historialtransacciones.BuscarPorTipo(tipo);
+                        EnviarCliente(cliente, "TRANSACCIONES_GENERADAS Búsqueda por tipo.txt");
+                    }
+                    else
+                    {
+                        EnviarCliente(cliente, "ERROR CONSULTA_TRANSACCIONES_INVALIDA");
+                    }
                     break;
-
                 case "CONSULTAR_LOBBY":
                     EnviarLobby(cliente);
                     break;

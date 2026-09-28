@@ -16,6 +16,7 @@ namespace Monopoly.App
         private Dictionary<int, Panel> casillas;
         
         private Dictionary<int, Label> fichas = new Dictionary<int, Label>();
+        private Dictionary<int, string> nombresJugadores = new Dictionary<int, string>();
         private int casillaDisponible;
 
         public FormsTablero(Cliente cliente, Cliente? cliente2)
@@ -63,6 +64,7 @@ namespace Monopoly.App
             cliente.DineroActualizado += MostrarDinero;
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
+            btnConsultar.Click += btnConsultar_Click;
             cliente.PropiedadDisponible += MostrarPropiedadDisponible;
             if (cliente2 != null)
             {
@@ -140,9 +142,12 @@ namespace Monopoly.App
             casillaDestino.Controls.Add(ficha);
             ficha.Location = new Point(10 + fichasEnDestino * 35, 10);
             ficha.BringToFront();
+            lblMensaje.Text = string.Empty;
 
-            lblMensaje.Text = $"Jugador {idJugador} llegó a la casilla {posicion}";
-        }
+            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)
+                ? encontrado
+                : $"Jugador {idJugador}";
+                    }
 
         private void CrearFicha(int idJugador, string nombre)
         {
@@ -151,7 +156,13 @@ namespace Monopoly.App
                 Invoke(new Action(() => CrearFicha(idJugador, nombre)));
                 return;
             }
+            nombresJugadores[idJugador] = nombre;
+            Label[] etiquetasNombres = { Jugador1, Jugador2, Jugador3, Jugador4 };
 
+            if (idJugador >= 1 && idJugador <= etiquetasNombres.Length)
+            {
+            etiquetasNombres[idJugador - 1].Text = $"{idJugador}. {nombre}";
+            }
             if (fichas.ContainsKey(idJugador))
                 return;
 
@@ -159,7 +170,7 @@ namespace Monopoly.App
             ficha.Text = idJugador.ToString();
             ficha.Size = new Size(30, 30);
             ficha.Location = new Point(10 + (idJugador - 1) * 35, 10);
-            ficha.BackColor = Color.DarkRed;
+            ficha.BackColor = Color.SkyBlue;
             ficha.ForeColor = Color.White;
             ficha.TextAlign = ContentAlignment.MiddleCenter;
 
@@ -176,7 +187,9 @@ namespace Monopoly.App
                 return;
             }
 
-            label2.Text = $"Jugador {idJugador}";
+            label2.Text = nombresJugadores.TryGetValue(idJugador, out string? nombre)
+                ? $"Turno de {nombre}"
+                : $"Turno del jugador {idJugador}";
             clienteEnTurno = idJugador == cliente.IdJugador
                 ? cliente
                 : cliente2 != null && idJugador == cliente2.IdJugador
@@ -263,8 +276,16 @@ namespace Monopoly.App
                 Invoke(() => MostrarPropiedadComprada(idJugador, idCasilla));
                 return;
             }
+            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)
+                ? encontrado
+                : $"Jugador {idJugador}";
 
-            lblMensaje.Text = $"Jugador {idJugador} compró la casilla {idCasilla}.";
+            lblMensaje.Text = $"{nombre} compró la casilla {idCasilla}.";
+            if (casillas.TryGetValue(idCasilla, out Panel? casilla))
+            {
+                casilla.BackColor = Color.LightGoldenrodYellow;
+                casilla.BorderStyle = BorderStyle.Fixed3D;
+            }
         }
 
         private void MostrarAlquilerPagado(int idJugador, int idDueño, int idCasilla)
@@ -275,7 +296,15 @@ namespace Monopoly.App
                 return;
             }
 
-            lblMensaje.Text = $"Jugador {idJugador} pagó alquiler al jugador {idDueño} por la casilla {idCasilla}.";
+            string quienPaga = nombresJugadores.TryGetValue(idJugador, out string? nombreJugador)
+                ? nombreJugador
+                : $"Jugador {idJugador}";
+
+            string quienCobra = nombresJugadores.TryGetValue(idDueño, out string? nombreDueño)
+                ? nombreDueño
+                : $"Jugador {idDueño}";
+
+            lblMensaje.Text = $"{quienPaga} pagó alquiler a {quienCobra} por la casilla {idCasilla}.";
         }
 
         private void MostrarCartaEvento(int idJugador, int idCarta, string descripcion)
@@ -286,7 +315,11 @@ namespace Monopoly.App
                 return;
             }
 
-            lblMensaje.Text = $"Jugador {idJugador} sacó la carta {idCarta}: {descripcion}.";
+            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)
+                ? encontrado
+                : $"Jugador {idJugador}";
+
+            lblMensaje.Text = $"{nombre} sacó la carta {idCarta}: {descripcion}.";
         }
 
         private void MostrarJugadorEliminado(int idJugador)
@@ -303,14 +336,16 @@ namespace Monopoly.App
                 ficha.Dispose();
                 fichas.Remove(idJugador);
             }
-
-            if (lblMensaje.Text.StartsWith($"Jugador {idJugador} sacó la carta "))
+            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)
+                ? encontrado
+                : $"Jugador {idJugador}";
+            if (lblMensaje.Text.StartsWith($"{nombre} sacó la carta "))
             {
                 lblMensaje.Text += " Quedó eliminado.";
             }
             else
             {
-                lblMensaje.Text = $"Jugador {idJugador} quedó eliminado.";
+            lblMensaje.Text = $"{nombre} quedó eliminado.";
             }
         }
 
@@ -325,8 +360,8 @@ namespace Monopoly.App
             btnDados.Enabled = false;
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
-            lblMensaje.Text += Environment.NewLine
-                + $"Terminó la partida. Ganó el jugador {idGanador}.";
+            string nombreGanador = nombresJugadores.TryGetValue(idGanador, out string? encontrado)? encontrado: $"Jugador {idGanador}";
+            lblMensaje.Text += Environment.NewLine+ $"Terminó la partida. Ganó {nombreGanador}.";
         }
 
         private void MostrarCasillaEspecial(int idJugador, string tipoCasilla)
@@ -336,13 +371,13 @@ namespace Monopoly.App
                 Invoke(new Action(() => MostrarCasillaEspecial(idJugador, tipoCasilla)));
                 return;
             }
-
+            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)? encontrado: $"Jugador {idJugador}";
             lblMensaje.Text = tipoCasilla switch
             {
-                "SALIDA" => $"Jugador {idJugador} cayó en Salida.",
-                "CARCEL" => $"Jugador {idJugador} cayó en Cárcel y perderá un turno.",
-                "LIBRE" => $"Jugador {idJugador} cayó en Casilla Libre.",
-                _ => $"Jugador {idJugador} cayó en {tipoCasilla}."
+                "SALIDA" => $"Jugador {nombre} cayó en Salida.",
+                "CARCEL" => $"Jugador {nombre} cayó en Cárcel y perderá un turno.",
+                "LIBRE" => $"Jugador {nombre} cayó en Casilla Libre.",
+                _ => $"Jugador {nombre} cayó en {tipoCasilla}."
             };
         }
 
@@ -360,6 +395,11 @@ namespace Monopoly.App
             {
                 btnDados.Enabled = clienteEnTurno != null;
             }
+        }
+        private void btnConsultar_Click(object? sender, EventArgs e)
+        {
+            FormTransacciones ventana = new FormTransacciones(cliente);
+            ventana.Show();
         }
 
     }
