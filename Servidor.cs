@@ -156,6 +156,10 @@ namespace Monopoly.App
 
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
+            Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
+
+            EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
+
             EnviarTodos($"DADOS {idJugador} {dado.Dado1} {dado.Dado2}");
             EnviarTodos($"JUGADOR_MOVIDO {idJugador} {nuevaPosicion}");
         
@@ -215,8 +219,7 @@ namespace Monopoly.App
 
                 string descripcion = string.Join(" ", resultado[2..]);
 
-                Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
-
+                jugadorActualizado = banco.BuscarJugador(idJugador);
                 if (jugadorActualizado == null)
                 {
                     EnviarTodos($"CARTA_EVENTO {idJugador} {idCarta} {descripcion}");
@@ -244,7 +247,7 @@ namespace Monopoly.App
             }
             else if (resultado[0] == "SALIDA")
             {
-                Jugador jugadorActualizado = banco.BuscarJugador(idJugador);
+                jugadorActualizado = banco.BuscarJugador(idJugador);
 
                 EnviarTodos($"CASILLA_ESPECIAL {idJugador} SALIDA");
                 EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugadorActualizado.GetSaldo()}");
