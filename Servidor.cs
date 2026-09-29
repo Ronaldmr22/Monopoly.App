@@ -244,11 +244,6 @@ namespace Monopoly.App
             if (resultado[0] == "DISPONIBLE")
             {
                 esperandoCompra = true;
-
-                Console.WriteLine(
-                    $"ESPERANDO COMPRA - Jugador {idJugador} - Casilla {resultado[1]} - Precio {resultado[2]}"
-                );
-
                 EnviarCliente(cliente, $"PROPIEDAD_DISPONIBLE {resultado[1]} {resultado[2]}");
             }
 
@@ -312,8 +307,7 @@ namespace Monopoly.App
 
                 jugadorActualizado = banco.BuscarJugador(idJugador);
 
-                // Si el jugador ya no existe después del evento,
-                // significa que fue eliminado.
+                // Si el jugador ya no existe después del evnto significa que fue eliminado.
                 if (jugadorActualizado == null)
                 {
                     EnviarTodos($"CARTA_EVENTO {idJugador} {idCarta} {descripcion}");
