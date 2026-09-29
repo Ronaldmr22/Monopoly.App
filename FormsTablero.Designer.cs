@@ -194,7 +194,7 @@
             tablaTablero.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
             tablaTablero.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
             tablaTablero.RowStyles.Add(new RowStyle(SizeType.Percent, 14.2857141F));
-            tablaTablero.Size = new Size(1583, 837);
+            tablaTablero.Size = new Size(1542, 837);
             tablaTablero.TabIndex = 0;
             tablaTablero.Paint += tablaTablero_Paint;
             // 
@@ -204,9 +204,9 @@
             carsel.BorderStyle = BorderStyle.FixedSingle;
             carsel.Controls.Add(carcel);
             carsel.Dock = DockStyle.Fill;
-            carsel.Location = new Point(1359, 717);
+            carsel.Location = new Point(1323, 717);
             carsel.Name = "carsel";
-            carsel.Size = new Size(221, 117);
+            carsel.Size = new Size(216, 117);
             carsel.TabIndex = 48;
             // 
             // carcel
@@ -228,9 +228,9 @@
             Casa5.Controls.Add(panelCasa5);
             Casa5.Controls.Add(lblCasa5);
             Casa5.Dock = DockStyle.Fill;
-            Casa5.Location = new Point(1133, 717);
+            Casa5.Location = new Point(1103, 717);
             Casa5.Name = "Casa5";
-            Casa5.Size = new Size(220, 117);
+            Casa5.Size = new Size(214, 117);
             Casa5.TabIndex = 47;
             // 
             // panelCasa5
@@ -259,9 +259,9 @@
             Casa4.Controls.Add(panelCasa4);
             Casa4.Controls.Add(lblCasa4);
             Casa4.Dock = DockStyle.Fill;
-            Casa4.Location = new Point(907, 717);
+            Casa4.Location = new Point(883, 717);
             Casa4.Name = "Casa4";
-            Casa4.Size = new Size(220, 117);
+            Casa4.Size = new Size(214, 117);
             Casa4.TabIndex = 46;
             // 
             // panelCasa4
@@ -291,9 +291,9 @@
             Casa3.Controls.Add(panelCasa3);
             Casa3.Controls.Add(lblCasa3);
             Casa3.Dock = DockStyle.Fill;
-            Casa3.Location = new Point(681, 717);
+            Casa3.Location = new Point(663, 717);
             Casa3.Name = "Casa3";
-            Casa3.Size = new Size(220, 117);
+            Casa3.Size = new Size(214, 117);
             Casa3.TabIndex = 45;
             // 
             // panelCasa3
@@ -322,9 +322,9 @@
             Casa2.Controls.Add(panelCasa2);
             Casa2.Controls.Add(lblCasa2);
             Casa2.Dock = DockStyle.Fill;
-            Casa2.Location = new Point(455, 717);
+            Casa2.Location = new Point(443, 717);
             Casa2.Name = "Casa2";
-            Casa2.Size = new Size(220, 117);
+            Casa2.Size = new Size(214, 117);
             Casa2.TabIndex = 44;
             // 
             // panelCasa2
@@ -353,9 +353,9 @@
             Casa1.Controls.Add(panelCasa1);
             Casa1.Controls.Add(lblCasa1);
             Casa1.Dock = DockStyle.Fill;
-            Casa1.Location = new Point(229, 717);
+            Casa1.Location = new Point(223, 717);
             Casa1.Name = "Casa1";
-            Casa1.Size = new Size(220, 117);
+            Casa1.Size = new Size(214, 117);
             Casa1.TabIndex = 43;
             // 
             // panelCasa1
@@ -385,7 +385,7 @@
             salida.Dock = DockStyle.Fill;
             salida.Location = new Point(3, 717);
             salida.Name = "salida";
-            salida.Size = new Size(220, 117);
+            salida.Size = new Size(214, 117);
             salida.TabIndex = 42;
             // 
             // lblSalida
@@ -408,9 +408,9 @@
             Casa6.Controls.Add(panelCasa6);
             Casa6.Controls.Add(lblCasa6);
             Casa6.Dock = DockStyle.Fill;
-            Casa6.Location = new Point(1359, 598);
+            Casa6.Location = new Point(1323, 598);
             Casa6.Name = "Casa6";
-            Casa6.Size = new Size(221, 113);
+            Casa6.Size = new Size(216, 113);
             Casa6.TabIndex = 41;
             // 
             // panelCasa6
@@ -418,7 +418,7 @@
             panelCasa6.BackColor = Color.FromArgb(192, 0, 192);
             panelCasa6.Location = new Point(-1, -1);
             panelCasa6.Name = "panelCasa6";
-            panelCasa6.Size = new Size(333, 31);
+            panelCasa6.Size = new Size(475, 31);
             panelCasa6.TabIndex = 7;
             // 
             // lblCasa6
@@ -441,7 +441,7 @@
             Casa18.Dock = DockStyle.Fill;
             Casa18.Location = new Point(3, 598);
             Casa18.Name = "Casa18";
-            Casa18.Size = new Size(220, 113);
+            Casa18.Size = new Size(214, 113);
             Casa18.TabIndex = 35;
             // 
             // panelCasa18
@@ -471,9 +471,9 @@
             primerevento.BorderStyle = BorderStyle.FixedSingle;
             primerevento.Controls.Add(lblPrimerEvento);
             primerevento.Dock = DockStyle.Fill;
-            primerevento.Location = new Point(1359, 479);
+            primerevento.Location = new Point(1323, 479);
             primerevento.Name = "primerevento";
-            primerevento.Size = new Size(221, 113);
+            primerevento.Size = new Size(216, 113);
             primerevento.TabIndex = 34;
             // 
             // lblPrimerEvento
@@ -498,7 +498,7 @@
             Casa17.Dock = DockStyle.Fill;
             Casa17.Location = new Point(3, 479);
             Casa17.Name = "Casa17";
-            Casa17.Size = new Size(220, 113);
+            Casa17.Size = new Size(214, 113);
             Casa17.TabIndex = 28;
             // 
             // panelCasa17
@@ -529,9 +529,9 @@
             Casa7.Controls.Add(lblCasa7);
             Casa7.Controls.Add(panelCasa7);
             Casa7.Dock = DockStyle.Fill;
-            Casa7.Location = new Point(1359, 360);
+            Casa7.Location = new Point(1323, 360);
             Casa7.Name = "Casa7";
-            Casa7.Size = new Size(221, 113);
+            Casa7.Size = new Size(216, 113);
             Casa7.TabIndex = 27;
             // 
             // lblCasa7
@@ -550,7 +550,7 @@
             panelCasa7.BackColor = Color.FromArgb(192, 0, 192);
             panelCasa7.Location = new Point(-1, -1);
             panelCasa7.Name = "panelCasa7";
-            panelCasa7.Size = new Size(305, 33);
+            panelCasa7.Size = new Size(451, 33);
             panelCasa7.TabIndex = 8;
             panelCasa7.Paint += panel1_Paint_2;
             // 
@@ -562,7 +562,7 @@
             libre.Dock = DockStyle.Fill;
             libre.Location = new Point(3, 360);
             libre.Name = "libre";
-            libre.Size = new Size(220, 113);
+            libre.Size = new Size(214, 113);
             libre.TabIndex = 21;
             // 
             // label1
@@ -585,9 +585,9 @@
             Casa8.Controls.Add(panelCasa8);
             Casa8.Controls.Add(lblCasa8);
             Casa8.Dock = DockStyle.Fill;
-            Casa8.Location = new Point(1359, 241);
+            Casa8.Location = new Point(1323, 241);
             Casa8.Name = "Casa8";
-            Casa8.Size = new Size(221, 113);
+            Casa8.Size = new Size(216, 113);
             Casa8.TabIndex = 20;
             // 
             // panelCasa8
@@ -595,7 +595,7 @@
             panelCasa8.BackColor = Color.FromArgb(192, 0, 192);
             panelCasa8.Location = new Point(-1, -1);
             panelCasa8.Name = "panelCasa8";
-            panelCasa8.Size = new Size(317, 30);
+            panelCasa8.Size = new Size(437, 30);
             panelCasa8.TabIndex = 11;
             // 
             // lblCasa8
@@ -618,7 +618,7 @@
             Casa16.Dock = DockStyle.Fill;
             Casa16.Location = new Point(3, 241);
             Casa16.Name = "Casa16";
-            Casa16.Size = new Size(220, 113);
+            Casa16.Size = new Size(214, 113);
             Casa16.TabIndex = 14;
             // 
             // panelCasa16
@@ -648,9 +648,9 @@
             Casa9.Controls.Add(panelCasa9);
             Casa9.Controls.Add(lblCasa9);
             Casa9.Dock = DockStyle.Fill;
-            Casa9.Location = new Point(1359, 122);
+            Casa9.Location = new Point(1323, 122);
             Casa9.Name = "Casa9";
-            Casa9.Size = new Size(221, 113);
+            Casa9.Size = new Size(216, 113);
             Casa9.TabIndex = 13;
             // 
             // panelCasa9
@@ -658,7 +658,7 @@
             panelCasa9.BackColor = Color.FromArgb(255, 128, 0);
             panelCasa9.Location = new Point(-8, -1);
             panelCasa9.Name = "panelCasa9";
-            panelCasa9.Size = new Size(324, 30);
+            panelCasa9.Size = new Size(444, 30);
             panelCasa9.TabIndex = 13;
             // 
             // lblCasa9
@@ -682,7 +682,7 @@
             Casa15.Dock = DockStyle.Fill;
             Casa15.Location = new Point(3, 122);
             Casa15.Name = "Casa15";
-            Casa15.Size = new Size(220, 113);
+            Casa15.Size = new Size(214, 113);
             Casa15.TabIndex = 7;
             // 
             // panelCasa15
@@ -712,9 +712,9 @@
             Casa10.Controls.Add(panelCasa10);
             Casa10.Controls.Add(lblCasa10);
             Casa10.Dock = DockStyle.Fill;
-            Casa10.Location = new Point(1359, 3);
+            Casa10.Location = new Point(1323, 3);
             Casa10.Name = "Casa10";
-            Casa10.Size = new Size(221, 113);
+            Casa10.Size = new Size(216, 113);
             Casa10.TabIndex = 6;
             // 
             // panelCasa10
@@ -722,7 +722,7 @@
             panelCasa10.BackColor = Color.FromArgb(255, 128, 0);
             panelCasa10.Location = new Point(-1, -4);
             panelCasa10.Name = "panelCasa10";
-            panelCasa10.Size = new Size(305, 34);
+            panelCasa10.Size = new Size(475, 34);
             panelCasa10.TabIndex = 14;
             // 
             // lblCasa10
@@ -743,9 +743,9 @@
             segundoevento.BorderStyle = BorderStyle.FixedSingle;
             segundoevento.Controls.Add(labelSegundoEvento);
             segundoevento.Dock = DockStyle.Fill;
-            segundoevento.Location = new Point(1133, 3);
+            segundoevento.Location = new Point(1103, 3);
             segundoevento.Name = "segundoevento";
-            segundoevento.Size = new Size(220, 113);
+            segundoevento.Size = new Size(214, 113);
             segundoevento.TabIndex = 5;
             // 
             // labelSegundoEvento
@@ -768,9 +768,9 @@
             Casa11.Controls.Add(panel1);
             Casa11.Controls.Add(lblCasa11);
             Casa11.Dock = DockStyle.Fill;
-            Casa11.Location = new Point(907, 3);
+            Casa11.Location = new Point(883, 3);
             Casa11.Name = "Casa11";
-            Casa11.Size = new Size(220, 113);
+            Casa11.Size = new Size(214, 113);
             Casa11.TabIndex = 4;
             // 
             // panel1
@@ -800,9 +800,9 @@
             Casa12.Controls.Add(panelCasa12);
             Casa12.Controls.Add(lblCasa12);
             Casa12.Dock = DockStyle.Fill;
-            Casa12.Location = new Point(681, 3);
+            Casa12.Location = new Point(663, 3);
             Casa12.Name = "Casa12";
-            Casa12.Size = new Size(220, 113);
+            Casa12.Size = new Size(214, 113);
             Casa12.TabIndex = 3;
             // 
             // panelCasa12
@@ -832,9 +832,9 @@
             Casa13.Controls.Add(panelCasa13);
             Casa13.Controls.Add(lblCasa13);
             Casa13.Dock = DockStyle.Fill;
-            Casa13.Location = new Point(455, 3);
+            Casa13.Location = new Point(443, 3);
             Casa13.Name = "Casa13";
-            Casa13.Size = new Size(220, 113);
+            Casa13.Size = new Size(214, 113);
             Casa13.TabIndex = 2;
             // 
             // panelCasa13
@@ -863,9 +863,9 @@
             tercerevento.BorderStyle = BorderStyle.FixedSingle;
             tercerevento.Controls.Add(labelTercerEvento);
             tercerevento.Dock = DockStyle.Fill;
-            tercerevento.Location = new Point(229, 3);
+            tercerevento.Location = new Point(223, 3);
             tercerevento.Name = "tercerevento";
-            tercerevento.Size = new Size(220, 113);
+            tercerevento.Size = new Size(214, 113);
             tercerevento.TabIndex = 1;
             // 
             // labelTercerEvento
@@ -890,7 +890,7 @@
             Casa14.Dock = DockStyle.Fill;
             Casa14.Location = new Point(3, 3);
             Casa14.Name = "Casa14";
-            Casa14.Size = new Size(220, 113);
+            Casa14.Size = new Size(214, 113);
             Casa14.TabIndex = 0;
             // 
             // panelCasa14
@@ -906,7 +906,7 @@
             lblCasa14.AutoEllipsis = true;
             lblCasa14.AutoSize = true;
             lblCasa14.Font = new Font("Tahoma", 10F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblCasa14.Location = new Point(56, 48);
+            lblCasa14.Location = new Point(56, 45);
             lblCasa14.Name = "lblCasa14";
             lblCasa14.Size = new Size(98, 48);
             lblCasa14.TabIndex = 19;
@@ -939,10 +939,10 @@
             panelFondo.Controls.Add(Jugador1);
             panelFondo.Controls.Add(label2);
             panelFondo.Controls.Add(lblTurno);
-            panelFondo.Location = new Point(229, 122);
+            panelFondo.Location = new Point(223, 122);
             panelFondo.Name = "panelFondo";
             tablaTablero.SetRowSpan(panelFondo, 5);
-            panelFondo.Size = new Size(1124, 589);
+            panelFondo.Size = new Size(1094, 589);
             panelFondo.TabIndex = 49;
             // 
             // btnConsultar
@@ -991,9 +991,8 @@
             // 
             // lblMensaje
             // 
-            lblMensaje.AutoSize = true;
             lblMensaje.Font = new Font("Tahoma", 14F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblMensaje.Location = new Point(57, 41);
+            lblMensaje.Location = new Point(20, 25);
             lblMensaje.Name = "lblMensaje";
             lblMensaje.Size = new Size(173, 34);
             lblMensaje.TabIndex = 0;
@@ -1207,11 +1206,12 @@
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1583, 837);
+            ClientSize = new Size(1542, 837);
             Controls.Add(tablaTablero);
             Name = "FormsTablero";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Monopoly";
+            WindowState = FormWindowState.Maximized;
             tablaTablero.ResumeLayout(false);
             carsel.ResumeLayout(false);
             carsel.PerformLayout();
@@ -1264,7 +1264,6 @@
             panelFondo.ResumeLayout(false);
             panelFondo.PerformLayout();
             panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             ResumeLayout(false);
         }
 

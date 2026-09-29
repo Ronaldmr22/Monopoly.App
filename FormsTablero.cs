@@ -10,11 +10,11 @@ namespace Monopoly.App
 {
     public partial class FormsTablero : Form
     {
-        private Cliente cliente; 
+        private Cliente cliente;
         private Cliente? cliente2;
         private Cliente? clienteEnTurno;
         private Dictionary<int, Panel> casillas;
-        
+
         private Dictionary<int, Label> fichas = new Dictionary<int, Label>();
         private Dictionary<int, string> nombresJugadores = new Dictionary<int, string>();
         private Dictionary<int, int> dueñosPropiedades = new Dictionary<int, int>();
@@ -26,7 +26,7 @@ namespace Monopoly.App
             btnDados.Click += btnDados_Click;
             btnComprar.Click += btnComprar_Click;
             btnNoComprar.Click += btnNoComprar_Click;
-            casillas = new Dictionary<int, Panel> 
+            casillas = new Dictionary<int, Panel>
             {
                 { 1, salida },
                 { 2, Casa1 },
@@ -55,7 +55,7 @@ namespace Monopoly.App
             };
             this.cliente = cliente;
             this.cliente2 = cliente2;
-            
+
             btnDados.Enabled = false;
             cliente.TurnoCambiado += MostrarTurno;
             cliente.JugadorConectado += CrearFicha;
@@ -148,7 +148,7 @@ namespace Monopoly.App
             string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)
                 ? encontrado
                 : $"Jugador {idJugador}";
-                    }
+        }
 
         private void CrearFicha(int idJugador, string nombre)
         {
@@ -162,7 +162,7 @@ namespace Monopoly.App
 
             if (idJugador >= 1 && idJugador <= etiquetasNombres.Length)
             {
-            etiquetasNombres[idJugador - 1].Text = $"{idJugador}. {nombre}";
+                etiquetasNombres[idJugador - 1].Text = $"{idJugador}. {nombre}";
             }
             if (fichas.ContainsKey(idJugador))
                 return;
@@ -263,14 +263,14 @@ namespace Monopoly.App
 
         private void btnNoComprar_Click(object? sender, EventArgs e)
         {
-            
+
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
             lblMensaje.Text = "Decidiste no comprar la propiedad.";
             clienteEnTurno?.NoComprar();
 
         }
-         private void MostrarPropiedadComprada(int idJugador, int idCasilla)
+        private void MostrarPropiedadComprada(int idJugador, int idCasilla)
         {
             if (InvokeRequired)
             {
@@ -368,7 +368,7 @@ namespace Monopoly.App
             }
             else
             {
-            lblMensaje.Text = $"{nombre} quedó eliminado.";
+                lblMensaje.Text = $"{nombre} quedó eliminado.";
             }
         }
 
@@ -383,8 +383,8 @@ namespace Monopoly.App
             btnDados.Enabled = false;
             btnComprar.Enabled = false;
             btnNoComprar.Enabled = false;
-            string nombreGanador = nombresJugadores.TryGetValue(idGanador, out string? encontrado)? encontrado: $"Jugador {idGanador}";
-            lblMensaje.Text += Environment.NewLine+ $"Terminó la partida. Ganó {nombreGanador}.";
+            string nombreGanador = nombresJugadores.TryGetValue(idGanador, out string? encontrado) ? encontrado : $"Jugador {idGanador}";
+            lblMensaje.Text += Environment.NewLine + $"Terminó la partida. Ganó {nombreGanador}.";
         }
 
         private void MostrarCasillaEspecial(int idJugador, string tipoCasilla)
@@ -394,7 +394,7 @@ namespace Monopoly.App
                 Invoke(new Action(() => MostrarCasillaEspecial(idJugador, tipoCasilla)));
                 return;
             }
-            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado)? encontrado: $"Jugador {idJugador}";
+            string nombre = nombresJugadores.TryGetValue(idJugador, out string? encontrado) ? encontrado : $"Jugador {idJugador}";
             lblMensaje.Text = tipoCasilla switch
             {
                 "SALIDA" => $"Jugador {nombre} cayó en Salida.",
@@ -425,5 +425,9 @@ namespace Monopoly.App
             ventana.Show();
         }
 
+        private void lblCasa14_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
