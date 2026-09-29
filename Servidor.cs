@@ -225,7 +225,7 @@ namespace Monopoly.App
             }
 
             // Calcula cuánto debe avanzar el jugador.
-            int movimiento = dado.Dado1 + dado.Dado2;
+            int movimiento = dado.ObtenerTotal();
 
             int nuevaPosicion = banco.MoverJugador(idJugador, movimiento);
 
