@@ -100,11 +100,6 @@ namespace Monopoly.App
                     NoComprar(cliente);
                     break;
 
-                // Envía al cliente el estado actual del banco.
-                case "CONSULTAR_ESTADO":
-                    EnviarCliente(cliente, "ESTADO " + banco.Getinfo());
-                    break;
-
                 // Genera diferentes consultas sobre el historial de transacciones.
                 case "CONSULTAR_TRANSACCIONES":
 
@@ -510,23 +505,6 @@ namespace Monopoly.App
             }
         }
 
-        // Devuelve el tablero utilizado por el servidor.
-        public Tablero_LL GetTablero()
-        {
-            return tablerito;
-        }
-
-        // Devuelve el banco utilizado por el servidor.
-        public Banco GetBanco()
-        {
-            return banco;
-        }
-
-        // Devuelve el historial de transacciones.
-        public HistorialTransacciones GetHistorialTransacciones()
-        {
-            return historialtransacciones;
-        }
     }
 
     // Representa individualmente a cada cliente conectado al servidor.

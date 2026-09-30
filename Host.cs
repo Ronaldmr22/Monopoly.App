@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Monopoly.App
 {
+    // Clase encargada de crear y conectar los componentes principales de la partida.
     public class Host
     {
+        // Objetos principales que necesita el Host para ejecutar el juego.
         public Servidor Servidor { get; private set; }
         public Cliente Cliente { get; private set; }
         public Banco Banco { get; private set; }
@@ -16,6 +18,7 @@ namespace Monopoly.App
         public HistorialTransacciones Historial { get; private set; }
         public ColaCartas Cartas { get; private set; } 
 
+        // Inicializa los componentes principales del juego.
         public Host()
         {
             Tablero = new Tablero_LL();
@@ -23,31 +26,42 @@ namespace Monopoly.App
             Juego = new Juego();
             Cartas = new ColaCartas();
 
+            // El banco recibe los componentes necesarios para manejar la lógica del juego.
             Banco = new Banco(Tablero, Historial, Juego, Cartas);
 
+            // Crea el cliente que utilizará el jugador que funciona como Host.
             Cliente = new Cliente();
+
+            // Crea las casillas del tablero y las cartas de evento.
             CrearTablero();
             CrearCartas();
 
         }
 
+        // Crea el servidor y conecta al Host como un cliente de ese mismo servidor.
         public async Task IniciarAsync(int puerto, string nombreJugador)
         {
+            // COM5 es el puerto donde se encuentra conectado el hardware de los dados.
             Servidor = new Servidor(puerto,Banco,Tablero,Historial,Juego,"COM5");
 
+            // Inicia el servidor sin detener la ejecución del resto del método.
             _ = Servidor.IniciarConexionAsync();
 
+            // Conecta al cliente del Host a su propio servidor mediante localhost.
             await Cliente.ConectarAsync("127.0.0.1",puerto,nombreJugador);
         }
 
+        // Obtiene la dirección IPv4 local de la computadora que funciona como Host.
         public string ObtenerIpLocal()
         {
             var host = Dns.GetHostEntry(Dns.GetHostName());
             return host.AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString();
         }
 
+        // Crea todas las casillas que forman el tablero.
         private void CrearTablero()
         {
+            // Se crean propiedades, casillas de evento y casillas especiales.
             CasillaEspecial salida= new CasillaEspecial(1,"Salida");
             Propiedad Casa1 = new Propiedad(2, 1, "Avenida Mediterráneo", 50, 25);
             Propiedad Casa2 = new Propiedad(3, 2, "Avenida Báltica", 50, 25);
@@ -74,6 +88,7 @@ namespace Monopoly.App
             Propiedad Casa18 = new Propiedad(24, 18, "Plaza Park", 280, 140);
 
 
+            // Agrega cada casilla al tablero manteniendo el orden correspondiente.
             Tablero.AgregarCasilla(salida);
             Tablero.AgregarCasilla(Casa1);
             Tablero.AgregarCasilla(Casa2);
@@ -99,6 +114,8 @@ namespace Monopoly.App
             Tablero.AgregarCasilla(Casa17);
             Tablero.AgregarCasilla(Casa18);
         }
+
+        // Crea las cartas de evento que pueden aparecer durante la partida.
         private void CrearCartas()
         {
             CartaGanarDinero carta1 = new CartaGanarDinero(1, "Gana $100", 100);
@@ -112,6 +129,7 @@ namespace Monopoly.App
             CartaMoverseDeCasilla carta9 = new CartaMoverseDeCasilla(9, "Avance 3 casillas", 3);
 
             
+            // Agrega las cartas creadas a la cola de cartas.
             Cartas.Encolar(carta1);
             Cartas.Encolar(carta2);
             Cartas.Encolar(carta3);

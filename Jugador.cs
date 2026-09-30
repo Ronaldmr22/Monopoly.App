@@ -31,10 +31,6 @@ public class Jugador{
         return this.Saldo;
     }
 
-    public void SetSaldo(int Saldo)
-    {
-        this.Saldo = Saldo;
-    }
 
     public int GetPosicion()
     {
@@ -59,19 +55,9 @@ public class Jugador{
         return this.TurnoPerdido;
     }
 
-    public void SetEstado(bool Estado)
-    {
-        this.Estado = Estado;
-    }
-
     public ListaPropiedades GetPropiedades()
     {
         return this.Propiedades;
-    }
-
-    public string GetInfo()
-    {
-        return $"Nombre: {Nombre}, Id: {Id}, Saldo: {Saldo}, Posicion: {Posicion}, Estado: {Estado}, Propiedades: {Propiedades}";
     }
 
     public bool PagarDinero(int Dinero)
