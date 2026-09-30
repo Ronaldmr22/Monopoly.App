@@ -72,11 +72,6 @@ namespace Monopoly.App
     }
 
 
-
-
-
-
-
     //https://youtu.be/ZsQMMeWXypk
 
     public class NodoTurno
