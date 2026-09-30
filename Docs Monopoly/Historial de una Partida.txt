@@ -1,0 +1,37 @@
+1|30/9/2026 14:15:00|2|Compra de propiedad|Leonardo|Banco|120|Leonardo ha comprado la propiedad Avenida Connecticut por 120
+2|30/9/2026 14:15:06|3|Jugador gana dinero|Banco|Alejandro|100|Evento de carta
+3|30/9/2026 14:15:28|1|Jugador pierde dinero|Ronald|Banco|50|Evento de carta
+4|30/9/2026 14:15:42|2|Compra de propiedad|Leonardo|Banco|180|Leonardo ha comprado la propiedad Plaza St. James por 180
+5|30/9/2026 14:15:53|3|Compra de propiedad|Alejandro|Banco|200|Alejandro ha comprado la propiedad Avenida Nueva York por 200
+6|30/9/2026 14:16:09|1|Compra de propiedad|Ronald|Banco|240|Ronald ha comprado la propiedad Avenida Illinois por 240
+7|30/9/2026 14:16:18|2|Cobro de alquiler|Leonardo|Ronald|120|Leonardo le ha pagado renta a Ronald por una cantidad de 120
+8|30/9/2026 14:16:32|3|Compra de propiedad|Alejandro|Banco|240|Alejandro ha comprado la propiedad Avenida Atlántico por 240
+9|30/9/2026 14:16:39|4|Cobro de alquiler|Fariathna|Leonardo|90|Fariathna le ha pagado renta a Leonardo por una cantidad de 90
+10|30/9/2026 14:17:01|1|Premio de salida|Banco|Ronald|200|Paso por Salida
+11|30/9/2026 14:17:07|1|Compra de propiedad|Ronald|Banco|50|Ronald ha comprado la propiedad Avenida Báltica por 50
+12|30/9/2026 14:17:12|2|Premio de salida|Banco|Leonardo|200|Paso por Salida
+13|30/9/2026 14:17:12|2|Cobro de alquiler|Leonardo|Ronald|25|Leonardo le ha pagado renta a Ronald por una cantidad de 25
+14|30/9/2026 14:17:23|3|Premio de salida|Banco|Alejandro|200|Paso por Salida
+15|30/9/2026 14:17:23|3|Cobro de alquiler|Alejandro|Ronald|25|Alejandro le ha pagado renta a Ronald por una cantidad de 25
+16|30/9/2026 14:17:57|3|Cobro de alquiler|Alejandro|Leonardo|60|Alejandro le ha pagado renta a Leonardo por una cantidad de 60
+17|30/9/2026 14:18:07|4|Premio de salida|Banco|Fariathna|200|Paso por Salida
+18|30/9/2026 14:18:10|4|Compra de propiedad|Fariathna|Banco|140|Fariathna ha comprado la propiedad Plaza San Carlos por 140
+19|30/9/2026 14:18:28|2|Compra de propiedad|Leonardo|Banco|220|Leonardo ha comprado la propiedad Avenida Pennsylvania por 220
+20|30/9/2026 14:18:54|4|Compra de propiedad|Fariathna|Banco|160|Fariathna ha comprado la propiedad Avenida Virginia por 160
+21|30/9/2026 14:19:17|3|Premio de salida|Banco|Alejandro|200|Paso por Salida
+22|30/9/2026 14:19:21|3|Compra de propiedad|Alejandro|Banco|100|Alejandro ha comprado la propiedad Avenida Oriental por 100
+23|30/9/2026 14:19:34|4|Compra de propiedad|Fariathna|Banco|240|Fariathna ha comprado la propiedad Avenida Indiana por 240
+24|30/9/2026 14:19:46|1|Compra de propiedad|Ronald|Banco|280|Ronald ha comprado la propiedad Plaza Park por 280
+25|30/9/2026 14:19:51|2|Premio de salida|Banco|Leonardo|200|Paso por Salida
+26|30/9/2026 14:19:51|2|Cobro de alquiler|Leonardo|Alejandro|50|Leonardo le ha pagado renta a Alejandro por una cantidad de 50
+27|30/9/2026 14:19:59|3|Cobro de alquiler|Alejandro|Fariathna|80|Alejandro le ha pagado renta a Fariathna por una cantidad de 80
+28|30/9/2026 14:20:07|4|Cobro de alquiler|Fariathna|Alejandro|120|Fariathna le ha pagado renta a Alejandro por una cantidad de 120
+29|30/9/2026 14:20:14|1|Premio de salida|Banco|Ronald|200|Paso por Salida
+30|30/9/2026 14:20:14|1|Cobro de alquiler|Ronald|Leonardo|60|Ronald le ha pagado renta a Leonardo por una cantidad de 60
+31|30/9/2026 14:20:31|4|Premio de salida|Banco|Fariathna|200|Paso por Salida
+32|30/9/2026 14:20:31|4|Cobro de alquiler|Fariathna|Alejandro|50|Fariathna le ha pagado renta a Alejandro por una cantidad de 50
+33|30/9/2026 14:20:42|1|Cobro de alquiler|Ronald|Fariathna|70|Ronald le ha pagado renta a Fariathna por una cantidad de 70
+34|30/9/2026 14:20:51|2|Compra de propiedad|Leonardo|Banco|220|Leonardo ha comprado la propiedad Avenida Kentucky por 220
+35|30/9/2026 14:21:04|3|Premio de salida|Banco|Alejandro|200|Paso por Salida
+36|30/9/2026 14:22:02|3|Compra de propiedad|Alejandro|Banco|140|Alejandro ha comprado la propiedad Avenida Estados por 140
+37|30/9/2026 14:22:16|4|Cobro de alquiler|Fariathna|Leonardo|60|Fariathna le ha pagado renta a Leonardo por una cantidad de 60

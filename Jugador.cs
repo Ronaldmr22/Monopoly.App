@@ -3,15 +3,27 @@ using Monopoly.App;
 public class Jugador{
     private int Id;
     private string Nombre;
-    private int Saldo = 0;
-    private int Posicion = 0;
+    private int Saldo = 500;
+    private int Posicion = 1;
     private bool Estado = false;
-    private List<Object> Propiedades = [];
+    private ListaPropiedades Propiedades;
+    private bool TurnoPerdido = false;
 
     public Jugador(int Id, string Nombre)
     {
         this.Id = Id;
         this.Nombre = Nombre;
+        this.Propiedades = new ListaPropiedades();
+    }
+
+        public string GetNombre()
+    {
+        return this.Nombre;
+    }
+
+    public int GetId()
+    {
+        return this.Id;
     }
 
     public int GetSaldo()
@@ -19,10 +31,6 @@ public class Jugador{
         return this.Saldo;
     }
 
-    public void SetSaldo(int Saldo)
-    {
-        this.Saldo = Saldo;
-    }
 
     public int GetPosicion()
     {
@@ -38,30 +46,23 @@ public class Jugador{
     {
         return this.Estado;
     }
-
-    public void SetEstado(bool Estado)
+    public void SetTurnoPerdido(bool TurnoPerdido)
     {
-        this.Estado = Estado;
+        this.TurnoPerdido = TurnoPerdido;
+    }
+    public bool GetTurnoPerdido()
+    {
+        return this.TurnoPerdido;
     }
 
-    public List<Object> GetPropiedades()
+    public ListaPropiedades GetPropiedades()
     {
         return this.Propiedades;
     }
 
-    public void SetPropiedades(List<Object> Propiedades)
-    {
-        this.Propiedades = Propiedades;
-    }
-
-    public string GetInfo()
-    {
-        return $"Nombre: {Nombre}, Id: {Id}, Saldo: {Saldo}, Posicion: {Posicion}, Estado: {Estado}, Propiedades: {Propiedades}";
-    }
-
     public bool PagarDinero(int Dinero)
     {
-        if (this.Saldo > Dinero)
+        if (this.Saldo >= Dinero)
         {
             this.Saldo -= Dinero;
             return true;
@@ -69,13 +70,18 @@ public class Jugador{
         return false;
     }
 
-    public void AgregarPropiedad(Object Propiedad)
+    public void AgregarPropiedad(Propiedad propiedad)
     {
-        Propiedades.Add(Propiedad);
+        Propiedades.InsertarFinal(propiedad);
     }
 
     public void RecibirDinero(int Dinero)
     {
         this.Saldo += Dinero;
+    }
+
+    public int GetPatrimonio()
+    {
+        return Saldo + Propiedades.ValorTotal();
     }
 }

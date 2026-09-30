@@ -19,15 +19,15 @@ public class Casilla
 }
 
 
-class Propiedad : Casilla
+public class Propiedad : Casilla
 {
     private int id_propiedad;
     private String nombre;
-    private double precio;
-    private double alquiler;
+    private int precio;
+    private int alquiler;
     // Propietario propietario;
 
-    public Propiedad(int numeroCasilla, int id_propiedad, String nombre, double precio, double alquiler)
+    public Propiedad(int numeroCasilla, int id_propiedad, String nombre, int precio, int alquiler)
     : base(numeroCasilla)
     {
         this.id_propiedad = id_propiedad;
@@ -35,12 +35,12 @@ class Propiedad : Casilla
         this.precio = precio;
         this.alquiler = alquiler;
     }
-    public double Precio
+    public int Precio
     {
         get
         {return this.precio; }
     }
-    public double Alquiler
+    public int Alquiler
     {
         get
         { return this.alquiler;}
@@ -58,7 +58,7 @@ class Propiedad : Casilla
 }
 
 
-class CasillaEspecial : Casilla
+public class CasillaEspecial : Casilla
 {
     private string nombre;
     public CasillaEspecial(int numeroCasilla, String nombre)
@@ -75,7 +75,7 @@ class CasillaEspecial : Casilla
 }
 
 
-class CasillaEvento : Casilla
+public class CasillaEvento : Casilla
 {
     private int idEvento;
     public CasillaEvento(int numeroCasilla, int idEvento)
@@ -92,8 +92,8 @@ class CasillaEvento : Casilla
 public class Nodo
 {
     private Casilla data;
-    private Nodo next;
-    private Nodo previous;
+    private Nodo? next;
+    private Nodo? previous;
 
     public Nodo(Casilla casilla)
     {
@@ -121,8 +121,14 @@ public class Nodo
 
 public class Tablero_LL
 {
-    private Nodo head;
+    private Nodo? head;
 
+    
+
+    public Nodo GetHead()
+    {
+        return head;
+    }
 
     public void AgregarCasilla(Casilla casilla)
     {
@@ -142,16 +148,27 @@ public class Tablero_LL
 
 
     }
-        public void ImprimirTablero()
-        {
-            if (head == null) return;
 
-            Nodo actual = head;
-            do
-            {
-                // 'actual' es el Nodo, 'actual.Data' es la Casilla, 'actual.Next' es el siguiente Nodo
-                Console.WriteLine($"Casilla: {actual.Data.NumeroCasilla} -> Siguiente Casilla: {actual.Next.Data.NumeroCasilla}");
-                actual = actual.Next;
-            } while (actual != head);
+    public Casilla? BuscarCasilla(int numCasilla)
+    {
+        if (head == null)
+        {
+            return null;
         }
+
+        Nodo actual = head;
+
+        do
+        {
+            if (actual.Data.NumeroCasilla == numCasilla)
+            {
+                return actual.Data;
+            }
+
+            actual = actual.Next;
+
+        } while (actual != head);
+
+        return null;
+    }
 }

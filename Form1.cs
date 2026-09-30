@@ -5,6 +5,7 @@ namespace Monopoly.App
         public Form1()
         {
             InitializeComponent();
+            Host host = new Host();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -13,6 +14,71 @@ namespace Monopoly.App
         }
 
         private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private async void btn_host_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txt_nombre.Text))
+            {
+                string nombreJugador = txt_nombre.Text;
+                string nombreJugador2 = txt_nombre2.Text;
+                int puerto = 5000;
+                Host host = new Host();
+                await host.IniciarAsync(5000, nombreJugador);
+                
+
+                Cliente cliente2 = null;
+                if (!string.IsNullOrWhiteSpace(nombreJugador2))
+                {
+                    cliente2 = new Cliente();
+
+                    await cliente2.ConectarAsync("127.0.0.1",puerto,nombreJugador2);
+                
+                }
+
+
+                FormHost siguiente = new FormHost(host.Cliente,cliente2, nombreJugador, true);
+                siguiente.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un nombre.");
+            }
+        }
+
+        private async void btn_unirse_Click(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txt_nombre.Text))
+            {
+                string nombreJugador = txt_nombre.Text;
+                string nombreJugador2 = txt_nombre2.Text;
+                Cliente cliente = new Cliente();
+
+                await cliente.ConectarAsync("100.87.62.97", 5000, nombreJugador);
+                
+                Cliente cliente2 = null;
+                
+                if (!string.IsNullOrWhiteSpace(nombreJugador2))
+                {
+                    cliente2 = new Cliente();
+
+                    await cliente2.ConectarAsync("100.87.62.97",5000,nombreJugador2);
+                }
+                FormHost siguiente = new FormHost(cliente,cliente2, nombreJugador, false);
+
+                siguiente.Show();
+                this.Hide();
+            }
+            else
+            {
+                MessageBox.Show("Debe ingresar un nombre.");
+            }
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
         {
 
         }

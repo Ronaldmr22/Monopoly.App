@@ -1,0 +1,144 @@
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Threading.Tasks;
+
+namespace Monopoly.App
+{
+    // Clase encargada de crear y conectar los componentes principales de la partida.
+    public class Host
+    {
+        // Objetos principales que necesita el Host para ejecutar el juego.
+        public Servidor Servidor { get; private set; }
+        public Cliente Cliente { get; private set; }
+        public Banco Banco { get; private set; }
+        public Tablero_LL Tablero { get; private set; }
+        public Juego Juego { get; private set; }
+        public HistorialTransacciones Historial { get; private set; }
+        public ColaCartas Cartas { get; private set; } 
+
+        // Inicializa los componentes principales del juego.
+        public Host()
+        {
+            Tablero = new Tablero_LL();
+            Historial = new HistorialTransacciones();
+            Juego = new Juego();
+            Cartas = new ColaCartas();
+
+            // El banco recibe los componentes necesarios para manejar la lógica del juego.
+            Banco = new Banco(Tablero, Historial, Juego, Cartas);
+
+            // Crea el cliente que utilizará el jugador que funciona como Host.
+            Cliente = new Cliente();
+
+            // Crea las casillas del tablero y las cartas de evento.
+            CrearTablero();
+            CrearCartas();
+
+        }
+
+        // Crea el servidor y conecta al Host como un cliente de ese mismo servidor.
+        public async Task IniciarAsync(int puerto, string nombreJugador)
+        {
+            // COM5 es el puerto donde se encuentra conectado el hardware de los dados.
+            Servidor = new Servidor(puerto,Banco,Tablero,Historial,Juego,"COM5");
+
+            // Inicia el servidor sin detener la ejecución del resto del método.
+            _ = Servidor.IniciarConexionAsync();
+
+            // Conecta al cliente del Host a su propio servidor mediante localhost.
+            await Cliente.ConectarAsync("127.0.0.1",puerto,nombreJugador);
+        }
+
+        // Obtiene la dirección IPv4 local de la computadora que funciona como Host.
+        public string ObtenerIpLocal()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            return host.AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString();
+        }
+
+        // Crea todas las casillas que forman el tablero.
+        private void CrearTablero()
+        {
+            // Se crean propiedades, casillas de evento y casillas especiales.
+            CasillaEspecial salida= new CasillaEspecial(1,"Salida");
+            Propiedad Casa1 = new Propiedad(2, 1, "Avenida Mediterráneo", 50, 25);
+            Propiedad Casa2 = new Propiedad(3, 2, "Avenida Báltica", 50, 25);
+            Propiedad Casa3 = new Propiedad(4, 3, "Avenida Oriental", 100, 50);
+            Propiedad Casa4 = new Propiedad(5, 4, "Avenida Vermont", 100, 50);
+            Propiedad Casa5 = new Propiedad(6, 5, "Avenida Connecticut", 120, 60);
+            CasillaEspecial carcel = new CasillaEspecial(7, "Carcel");
+            Propiedad Casa6 = new Propiedad(8, 6, "Plaza San Carlos", 140, 70);
+            CasillaEvento primerevento = new CasillaEvento(9,1);
+            Propiedad Casa7 = new Propiedad(10, 7, "Avenida Estados", 140, 70);
+            Propiedad Casa8 = new Propiedad(11, 8, "Avenida Virginia", 160, 80);
+            Propiedad Casa9 = new Propiedad(12, 9, "Plaza St. James", 180, 90);
+            Propiedad Casa10= new Propiedad(13, 10, "Avenida Tenesse", 180, 90);
+            CasillaEvento segundoevento = new CasillaEvento(14, 2);
+            Propiedad Casa11 = new Propiedad(15, 11, "Avenida Nueva York", 200, 100);
+            Propiedad Casa12 = new Propiedad(16, 12, "Avenida Kentucky", 220, 110);
+            Propiedad Casa13 = new Propiedad(17, 13, "Avenida Pennsylvania", 220, 110);
+            CasillaEvento tercerevento = new CasillaEvento(18, 2);
+            Propiedad Casa14 = new Propiedad(19, 14, "Avenida Indiana", 240, 120);
+            Propiedad Casa15 = new Propiedad(20, 15, "Avenida Illinois", 240, 120);
+            Propiedad Casa16 = new Propiedad(21, 16, "Avenida Atlántico", 240, 120);
+            CasillaEspecial libre = new CasillaEspecial(22, "Casilla Libre");
+            Propiedad Casa17 = new Propiedad(23, 17, "Jardines Marvin", 260, 130);
+            Propiedad Casa18 = new Propiedad(24, 18, "Plaza Park", 280, 140);
+
+
+            // Agrega cada casilla al tablero manteniendo el orden correspondiente.
+            Tablero.AgregarCasilla(salida);
+            Tablero.AgregarCasilla(Casa1);
+            Tablero.AgregarCasilla(Casa2);
+            Tablero.AgregarCasilla(Casa3);
+            Tablero.AgregarCasilla(Casa4);
+            Tablero.AgregarCasilla(Casa5);
+            Tablero.AgregarCasilla(carcel);
+            Tablero.AgregarCasilla(Casa6);
+            Tablero.AgregarCasilla(primerevento);
+            Tablero.AgregarCasilla(Casa7);
+            Tablero.AgregarCasilla(Casa8);
+            Tablero.AgregarCasilla(Casa9);
+            Tablero.AgregarCasilla(Casa10);
+            Tablero.AgregarCasilla(segundoevento);
+            Tablero.AgregarCasilla(Casa11);
+            Tablero.AgregarCasilla(Casa12);
+            Tablero.AgregarCasilla(Casa13);
+            Tablero.AgregarCasilla(tercerevento);
+            Tablero.AgregarCasilla(Casa14);
+            Tablero.AgregarCasilla(Casa15);
+            Tablero.AgregarCasilla(Casa16);
+            Tablero.AgregarCasilla(libre);
+            Tablero.AgregarCasilla(Casa17);
+            Tablero.AgregarCasilla(Casa18);
+        }
+
+        // Crea las cartas de evento que pueden aparecer durante la partida.
+        private void CrearCartas()
+        {
+            CartaGanarDinero carta1 = new CartaGanarDinero(1, "Gana $100", 100);
+            CartaPerderDinero carta2 = new CartaPerderDinero(2, "Pierde $50", 50);
+            CartaPerderTurno carta3 = new CartaPerderTurno(3, "Pierda un turno");
+            CartaMoverseDeCasilla carta4 = new CartaMoverseDeCasilla(4, "Avance 10 casillas", 10);
+            CartaMoverseDeCasilla carta5 = new CartaMoverseDeCasilla(5, "Retroceda 1 casilla", 23);
+            CartaGanarDinero carta6 = new CartaGanarDinero(6, "Gana $200", 200);
+            CartaPerderDinero carta7 = new CartaPerderDinero(7, "Perdiste el juego, fantasma", 1000000000);
+            CartaPerderTurno carta8 = new CartaPerderTurno(8, "Pierda dos turnos");
+            CartaMoverseDeCasilla carta9 = new CartaMoverseDeCasilla(9, "Avance 3 casillas", 3);
+
+            
+            // Agrega las cartas creadas a la cola de cartas.
+            Cartas.Encolar(carta1);
+            Cartas.Encolar(carta2);
+            Cartas.Encolar(carta3);
+            Cartas.Encolar(carta4);
+            Cartas.Encolar(carta5);
+            Cartas.Encolar(carta6);
+            Cartas.Encolar(carta7);
+            Cartas.Encolar(carta8);
+            Cartas.Encolar(carta9);
+        }
+    }
+}
