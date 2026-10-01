@@ -42,7 +42,7 @@ namespace Monopoly.App
         public async Task IniciarAsync(int puerto, string nombreJugador)
         {
             // COM5 es el puerto donde se encuentra conectado el hardware de los dados.
-            Servidor = new Servidor(puerto,Banco,Tablero,Historial,Juego,"COM5");
+            Servidor = new Servidor(puerto,Banco,Tablero,Historial,Juego,"COM9");
 
             // Inicia el servidor sin detener la ejecución del resto del método.
             _ = Servidor.IniciarConexionAsync();
