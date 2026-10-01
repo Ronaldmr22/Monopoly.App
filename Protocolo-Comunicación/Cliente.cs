@@ -31,7 +31,7 @@ namespace Monopoly.App
         public event Action<int> TurnoCambiado;
         public event Action<int, int> DineroActualizado;
         public event Action<int> PropiedadPropia;
-        public event Action<int, int, int> AlquilerPagado;
+        public event Action<int, int, int, int> AlquilerPagado;
         public event Action<int> JugadorEliminado;
         public event Action<int> PartidaTerminada;
         public event Action<int, int, string> CartaEventoRecibida;
@@ -208,8 +208,9 @@ namespace Monopoly.App
                 int idJugador = int.Parse(partes[1]);
                 int idDueño = int.Parse(partes[2]);
                 int idCasilla = int.Parse(partes[3]);
+                int monto = int.Parse(partes[4]);
 
-                AlquilerPagado?.Invoke(idJugador, idDueño, idCasilla);
+                AlquilerPagado?.Invoke(idJugador, idDueño, idCasilla, monto);
             }
 
             // Informa que el jugador cayó en una propiedad que ya posee.

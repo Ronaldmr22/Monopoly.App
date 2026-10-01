@@ -246,15 +246,22 @@ namespace Monopoly.App
             else if (resultado[0] == "OCUPADA")
             {
                 int idDueño = int.Parse(resultado[2]);
+                int idCasilla = int.Parse(resultado[1]);
 
                 Jugador jugador = banco.BuscarJugador(idJugador);
                 Jugador dueño = banco.BuscarJugador(idDueño);
 
+                Propiedad? propiedad = tablerito.BuscarPropiedad(idCasilla);
+
+                if (propiedad != null)
+                {
+                    int monto = propiedad.Alquiler;
+                
                 // Actualiza el dinero después del pago del alquiler.
                 EnviarTodos($"DINERO_ACTUALIZADO {idJugador} {jugador.GetSaldo()}");
                 EnviarTodos($"DINERO_ACTUALIZADO {idDueño} {dueño.GetSaldo()}");
-                EnviarTodos($"ALQUILER_PAGADO {idJugador} {idDueño} {resultado[1]}");
-
+                EnviarTodos($"ALQUILER_PAGADO {idJugador} {idDueño} {idCasilla} {monto}");
+                }
                 TerminarTurno();
             }
 

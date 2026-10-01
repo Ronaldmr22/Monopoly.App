@@ -291,11 +291,11 @@ namespace Monopoly.App
             }
         }
 
-        private void MostrarAlquilerPagado(int idJugador, int idDueño, int idCasilla)
+        private void MostrarAlquilerPagado(int idJugador, int idDueño, int idCasilla, int monto)
         {
             if (InvokeRequired)
             {
-                Invoke(new Action(() => MostrarAlquilerPagado(idJugador, idDueño, idCasilla)));
+                Invoke(new Action(() => MostrarAlquilerPagado(idJugador, idDueño, idCasilla, monto)));
                 return;
             }
 
@@ -307,7 +307,7 @@ namespace Monopoly.App
                 ? nombreDueño
                 : $"Jugador {idDueño}";
 
-            lblMensaje.Text = $"{quienPaga} pagó alquiler a {quienCobra} por la casilla {idCasilla}.";
+            lblMensaje.Text = $"{quienPaga} pagó ${monto} de alquiler a {quienCobra} por la casilla {idCasilla}.";
         }
 
         private void MostrarCartaEvento(int idJugador, int idCarta, string descripcion)

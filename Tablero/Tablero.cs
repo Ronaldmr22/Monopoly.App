@@ -171,4 +171,15 @@ public class Tablero_LL
 
         return null;
     }
+    public Propiedad? BuscarPropiedad(int numCasilla)
+    {
+        Casilla? casilla = BuscarCasilla(numCasilla);
+
+        if (casilla is Propiedad propiedad)
+        {
+            return propiedad;
+        }
+
+        return null;
+    }
 }
