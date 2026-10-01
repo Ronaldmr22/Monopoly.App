@@ -51,12 +51,6 @@ namespace Monopoly.App
             await Cliente.ConectarAsync("127.0.0.1",puerto,nombreJugador);
         }
 
-        // Obtiene la dirección IPv4 local de la computadora que funciona como Host.
-        public string ObtenerIpLocal()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            return host.AddressList.First(ip => ip.AddressFamily == AddressFamily.InterNetwork).ToString();
-        }
 
         // Crea todas las casillas que forman el tablero.
         private void CrearTablero()
